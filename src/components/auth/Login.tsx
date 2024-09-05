@@ -1,15 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { authLogin } from "../../api/auth";
+import { useLoginHook } from "../../hook/useLoginHook";
+import { useUserStore } from "../../store/useUserStore";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login, isLoggedIn } = useUserStore();
+  const navigate = useNavigate();
+
+  const { mutate, data } = useLoginHook({
+    email: email,
+    password: password,
+  });
 
   const handleLogin = () => {
-    authLogin(email, password);
+    mutate();
+    if (data.status_code === 200) {
+      const { access, refresh } = data.data.token;
+      localStorage.setItem("accessToken", access);
+      localStorage.setItem("refreshToken", refresh);
+      login(data.data);
+      navigate("/dashboard");
+    }
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/dashboard");
+    }
+  }, [isLoggedIn, navigate]);
   return (
     <section className="w-[40%] h-full flex flex-col gap-4 items-center justify-center px-[10rem]">
       <h1 className=" font-bold text-2xl">관리자 로그인</h1>

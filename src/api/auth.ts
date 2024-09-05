@@ -17,7 +17,7 @@ export const authLogin = async (email: string, password: string) => {
         //     login(response.data.data);
         //     router.push("/home");
         //   }
-        console.log(response.data)
+        // console.log(response.data)
         return response.data;
     } catch (error) {
         console.log(error);
