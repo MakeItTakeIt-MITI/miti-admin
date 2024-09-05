@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { authLogin } from "../../api/auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleLogin = () => {
+    authLogin(email, password);
+  };
   return (
     <section className="w-[40%] h-full flex flex-col gap-4 items-center justify-center px-[10rem]">
       <h1 className=" font-bold text-2xl">관리자 로그인</h1>
@@ -22,7 +27,7 @@ const Login = () => {
         type="password"
         autoComplete="false"
       />
-      <Button type="submit" className="w-full">
+      <Button onClick={handleLogin} type="submit" className="w-full">
         로그인
       </Button>
     </section>
