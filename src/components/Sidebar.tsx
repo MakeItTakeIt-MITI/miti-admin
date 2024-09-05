@@ -58,8 +58,11 @@ const Sidebar = () => {
                   <Link
                     style={{
                       backgroundColor:
-                        location.pathname === nav.path ? "#01060fb4" : "#fff",
-                      color: location.pathname === nav.path ? "#fff" : "#000",
+                        location.pathname === category.path
+                          ? "#01060fb4"
+                          : "#fff",
+                      color:
+                        location.pathname === category.path ? "#fff" : "#000",
                     }}
                     key={index}
                     to={category.path}
