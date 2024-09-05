@@ -6,6 +6,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Auth from "./pages/Auth.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
+import UserList from "./pages/UserList.tsx";
+import ReportedHosts from "./pages/ReportedHosts.tsx";
+import ReportedGuests from "./pages/ReportedGuests.tsx";
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
@@ -15,6 +18,14 @@ const router = createBrowserRouter([
     children: [
       { element: <Auth />, path: "/" },
       { element: <Dashboard />, path: "/dashboard" },
+      { element: <UserList />, path: "/users" },
+      {
+        path: "/reports",
+        children: [
+          { path: "host", element: <ReportedHosts /> },
+          { path: "guest", element: <ReportedGuests /> },
+        ],
+      },
     ],
   },
 ]);
