@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import Logout from "./auth/Logout";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -75,7 +76,9 @@ const Sidebar = () => {
             </>
           ))}
         </div>
-        <div className="flex justify-center">{/* <LogoutBtn /> */}</div>
+        <div className="flex justify-center">
+          <Logout />
+        </div>
       </div>
     </aside>
   );
