@@ -1,20 +1,19 @@
 import { Link, useLocation } from "react-router-dom";
 import Logout from "./auth/Logout";
+import { useReportsListHook } from "../hook/useReportsListHook";
 
 const Sidebar = () => {
   const location = useLocation();
+  const { data: reportsListData } = useReportsListHook();
 
   const NAVITEMS = [
     { title: "대시보드", path: "/dashboard" },
     { title: "회원 관리", path: "/users" },
     {
-      title: "신고 목록",
-      subcategories: [
-        { title: "호스트 신고", path: "/reports/host" },
-        { title: "게스트 신고", path: "/reports/guest" },
-      ],
+      title: "경기 신고 목록",
     },
   ];
+
   return (
     <aside className="w-[240px] h-full bg-[#fff] text-[#000] flex flex-col">
       <div className="flex items-center justify-center h-[10rem] w-full border-b border-[#fff]">
@@ -28,10 +27,10 @@ const Sidebar = () => {
         </h1>
       </div>
 
-      <div className="p-4   relative h-full w-full ">
-        <div className="flex flex-col   gap-3 font-[500] text-[14px]">
+      <div className="p-4 relative h-full w-full">
+        <div className="flex flex-col gap-3 font-[500] text-[14px]">
           {NAVITEMS.map((nav, index) => (
-            <>
+            <div key={index}>
               {nav.path ? (
                 <Link
                   style={{
@@ -39,41 +38,64 @@ const Sidebar = () => {
                       location.pathname === nav.path ? "#01060fb4" : "#fff",
                     color: location.pathname === nav.path ? "#fff" : "#000",
                   }}
-                  className=" text-black h-[2rem] rounded-lg px-2 flex items-center "
+                  className="text-black h-[2rem] rounded-lg px-2 flex items-center"
                   to={nav.path}
-                  key={index}
                 >
                   {nav.title}
                 </Link>
               ) : (
-                <div
-                  key={index}
-                  className=" text-black h-[2rem] rounded-lg px-2 flex items-center"
-                >
+                <div className="text-black h-[2rem] rounded-lg px-2 flex items-center">
                   {nav.title}
                 </div>
               )}
 
-              {nav.subcategories &&
-                nav.subcategories.map((category, index) => (
-                  <Link
-                    style={{
-                      backgroundColor:
-                        location.pathname === category.path
-                          ? "#01060fb4"
-                          : "#fff",
-                      color:
-                        location.pathname === category.path ? "#fff" : "#000",
-                    }}
-                    key={index}
-                    to={category.path}
-                    className="ml-5 text-black h-[2rem] rounded-lg px-2 flex items-center "
-                  >
-                    {category.title}
-                  </Link>
-                ))}
+              {/* Display reportsListData only under "신고 목록" */}
+              {nav.title === "경기 신고 목록" && reportsListData && (
+                <div className="ml-5 ">
+                  {reportsListData.data.map(
+                    (data: {
+                      category: string;
+                      id: number | string;
+                      subcategory: string;
+                    }) => (
+                      <Link
+                        key={data.id}
+                        to={`/reports/${data.id}`}
+                        style={{
+                          backgroundColor:
+                            location.pathname === `/reports/${data.id}`
+                              ? "#01060fb4"
+                              : "#fff",
+                          color:
+                            location.pathname === `/reports/${data.id}`
+                              ? "#fff"
+                              : "#000",
+                        }}
+                        className="text-black h-[2rem] rounded-lg px-2 flex items-center"
+                      >
+                        {data.category === "game_hosting_report" && (
+                          /*
+                          intentional_cheating: "고의적인 부정행위",
+  incorrect_information: "잘못된 정보",
+  etc: "기타",
+                          */
+                          <>
+                            {data?.subcategory === "intentional_cheating" && (
+                              <>고의적인 부정행휘 </>
+                            )}
+                            {data?.subcategory === "incorrect_information" && (
+                              <>잘못된 정보 </>
+                            )}
+                            {data?.subcategory === "etc" && <>기타 </>}
+                          </>
+                        )}
+                      </Link>
+                    )
+                  )}
+                </div>
+              )}
               <hr />
-            </>
+            </div>
           ))}
         </div>
         <div className="flex justify-center">

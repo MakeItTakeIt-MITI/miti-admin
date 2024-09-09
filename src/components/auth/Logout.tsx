@@ -13,7 +13,7 @@ const Logout = () => {
         logout();
         router("/");
       }}
-      className="absolute bottom-4 text-white    w-40 h-10 rounded-lg  font-semibold text-[14px]"
+      className="hover:opacity-90 absolute bottom-4 text-white    w-40 h-10 rounded-lg  font-semibold text-[14px]"
     >
       로그아웃 하기
     </button>

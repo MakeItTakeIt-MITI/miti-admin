@@ -7,8 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Auth from "./pages/Auth.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import UserList from "./pages/UserList.tsx";
-import ReportedHosts from "./pages/ReportedHosts.tsx";
-import ReportedGuests from "./pages/ReportedGuests.tsx";
+import ReportDetail from "./pages/ReportDetail.tsx";
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
@@ -22,8 +21,9 @@ const router = createBrowserRouter([
       {
         path: "/reports",
         children: [
-          { path: "host", element: <ReportedHosts /> },
-          { path: "guest", element: <ReportedGuests /> },
+          // { path: "categories", element: <Reports /> },
+          { path: ":id", element: <ReportDetail /> },
+          // { path: "guest", element: <ReportedGuests /> },
         ],
       },
     ],
