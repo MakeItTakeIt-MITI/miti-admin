@@ -16,7 +16,7 @@ const Dashboard = () => {
     <div className="flex h-screen bg-[#f8f8f9]">
       <Sidebar />
       <section className="p-10 space-y-6 w-full">
-        <h1 className="font-bold text-[36px]">Home </h1>
+        <h1 className="font-bold text-[36px]">Dashboard</h1>
         {/* <Chart /> */}
       </section>
     </div>

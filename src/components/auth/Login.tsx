@@ -24,7 +24,7 @@ const Login = () => {
   const onSubmit = () => mutate({ email: email, password: password });
   useEffect(() => {
     if (isLoggedIn) {
-      navigate("/dashboard");
+      navigate("/dashboard/main");
     }
   }, [isLoggedIn, navigate]);
   return (

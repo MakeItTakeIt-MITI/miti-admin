@@ -1,16 +1,15 @@
 import { Link, useLocation } from "react-router-dom";
 import Logout from "./auth/Logout";
-import { useReportsListHook } from "../hook/useReportsListHook";
 
 const Sidebar = () => {
   const location = useLocation();
-  const { data: reportsListData } = useReportsListHook();
 
   const NAVITEMS = [
-    { title: "대시보드", path: "/dashboard" },
-    { title: "회원 관리", path: "/users" },
+    { title: "대시보드", path: "/dashboard/main" },
+    { title: "회원 관리", path: "/users/list" },
     {
-      title: "경기 신고 목록",
+      title: "신고 목록",
+      path: "/reports/category",
     },
   ];
 
@@ -50,50 +49,7 @@ const Sidebar = () => {
               )}
 
               {/* Display reportsListData only under "신고 목록" */}
-              {nav.title === "경기 신고 목록" && reportsListData && (
-                <div className="ml-5 ">
-                  {reportsListData.data.map(
-                    (data: {
-                      category: string;
-                      id: number | string;
-                      subcategory: string;
-                    }) => (
-                      <Link
-                        key={data.id}
-                        to={`/reports/${data.id}`}
-                        style={{
-                          backgroundColor:
-                            location.pathname === `/reports/${data.id}`
-                              ? "#01060fb4"
-                              : "#fff",
-                          color:
-                            location.pathname === `/reports/${data.id}`
-                              ? "#fff"
-                              : "#000",
-                        }}
-                        className="text-black h-[2rem] rounded-lg px-2 flex items-center"
-                      >
-                        {data.category === "game_hosting_report" && (
-                          /*
-                          intentional_cheating: "고의적인 부정행위",
-  incorrect_information: "잘못된 정보",
-  etc: "기타",
-                          */
-                          <>
-                            {data?.subcategory === "intentional_cheating" && (
-                              <>고의적인 부정행휘 </>
-                            )}
-                            {data?.subcategory === "incorrect_information" && (
-                              <>잘못된 정보 </>
-                            )}
-                            {data?.subcategory === "etc" && <>기타 </>}
-                          </>
-                        )}
-                      </Link>
-                    )
-                  )}
-                </div>
-              )}
+
               <hr />
             </div>
           ))}

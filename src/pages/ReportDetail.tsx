@@ -9,10 +9,8 @@ const ReportDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const paramId = Number(id);
-  const { data } = useReportDetailsHook(paramId);
-  const reportDetailData = data?.data;
+  const { data: reportDetailData } = useReportDetailsHook(paramId);
 
-  console.log(reportDetailData);
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/");
@@ -22,17 +20,27 @@ const ReportDetail = () => {
     <div className="flex h-screen bg-[#f8f8f9]">
       <Sidebar />
       <section className="p-10 space-y-6 w-full">
-        <h1 className="font-bold text-[36px]">
-          {/* {reportDetailData.subcategory === "game_hosting_report" && (
-            <>경기 운영 상세 정보</>
-          )} */}
-          {reportDetailData?.subcategory}
+        <h1 className="font-bold text-[18px] bg-white rounded-[12px] p-4">
+          대시보드 &#8594; 신고 목록 &#8594; 신고 상세 정보
         </h1>
         {/* <Chart /> */}
-        <div>
+        <div className="bg-white rounded-[12px] p-4 min-h-[30rem] flex flex-col gap-4">
+          <h2 className="font-bold text-[18px]">
+            {reportDetailData?.data.category} -{" "}
+            {reportDetailData?.data.subcategory}
+          </h2>
+          <hr />
           <p
-            dangerouslySetInnerHTML={{ __html: `${reportDetailData?.content}` }}
+            dangerouslySetInnerHTML={{
+              __html: `${reportDetailData?.data.content}`,
+            }}
           />
+        </div>
+
+        <div>
+          {/* <p
+            dangerouslySetInnerHTML={{ __html: `${reportDetailData?.content}` }}
+          /> */}
         </div>
       </section>
     </div>

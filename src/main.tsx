@@ -7,7 +7,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Auth from "./pages/Auth.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import UserList from "./pages/UserList.tsx";
+import ReportsCategory from "./pages/ReportsCategory.tsx";
+
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ReportDetail from "./pages/ReportDetail.tsx";
+
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
@@ -16,14 +20,13 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { element: <Auth />, path: "/" },
-      { element: <Dashboard />, path: "/dashboard" },
-      { element: <UserList />, path: "/users" },
+      { element: <Dashboard />, path: "/dashboard/main" },
+      { element: <UserList />, path: "/users/list" },
       {
         path: "/reports",
         children: [
-          // { path: "categories", element: <Reports /> },
-          { path: ":id", element: <ReportDetail /> },
-          // { path: "guest", element: <ReportedGuests /> },
+          { path: "category", element: <ReportsCategory /> },
+          { path: "category/:id", element: <ReportDetail /> },
         ],
       },
     ],
@@ -33,7 +36,7 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      <ReactQueryDevtools initialIsOpen={false} />
       <RouterProvider router={router}></RouterProvider>
     </QueryClientProvider>
     <App />
