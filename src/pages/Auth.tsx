@@ -1,10 +1,9 @@
-import Hero from "../components/auth/Hero";
 import Login from "../components/auth/Login";
 
 const Auth = () => {
   return (
-    <main className="h-screen bg-[rgb(255,255,255)] flex items-center ">
-      <Hero />
+    <main className="h-screen bg-black flex items-center justify-center ">
+      {/* <Hero /> */}
       <Login />
     </main>
   );

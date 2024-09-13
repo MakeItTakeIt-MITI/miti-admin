@@ -23,9 +23,19 @@ axiosUrl.interceptors.request.use((config) => {
 }
 
 );
+axiosUrl.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    (error) => {
+        if (error.response) {
+            return error.response
+        }
+        return Promise.reject(error);
+    }
+);
 
 
-axios.interceptors.response.use()
 
 export default axiosUrl;
 
