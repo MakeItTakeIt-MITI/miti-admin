@@ -4,7 +4,7 @@ import GroupIcon from "@mui/icons-material/Group";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FlagIcon from "@mui/icons-material/Flag";
 import PaymentIcon from "@mui/icons-material/Payment";
-
+import logo from "../assets/logo.svg";
 const Sidebar = () => {
   const location = useLocation();
   const NAVITEMS = [
@@ -27,51 +27,36 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="w-[240px] h-full bg-[#fff] text-[#000] flex flex-col">
-      <div className="flex items-center justify-center h-[10rem] w-full ">
-        <h1
-          style={{
-            letterSpacing: "2px",
-          }}
-          className="text-4xl font-bold "
-        >
-          MITI
-        </h1>
+    <aside className="w-[300px] h-full bg-[#fff] text-[#000] flex flex-col">
+      <div className="flex items-center justify-center h-[10rem] w-full bg-black ">
+        <img src={logo} alt="logo" />
       </div>
 
       <div className="p-4 relative h-full w-full flex flex-col justify-between">
-        <div className="flex flex-col gap-4 font-[500] text-[14px]">
+        <div className="flex flex-col gap-3 font-[500] text-[14px]">
           {NAVITEMS.map((nav, index) => (
-            <div
+            <Link
+              className="  h-[2.5rem] rounded-lg px-2 py-1 flex items-center"
+              to={nav.path}
               style={{
-                padding: "4px",
+                color: "#000",
                 borderRadius: "4px",
                 border:
-                  location.pathname === nav.path ? "0.5px solid black" : "none",
-                // backgroundColor:
-                //   location.pathname === nav.path ? "#01060fb4" : "#fff",
+                  location.pathname === nav.path
+                    ? "0.5px solid #a0a0a0"
+                    : "none",
               }}
-              key={index}
-              className="flex items-center gap-1 "
             >
-              <div> {nav.icon}</div>
-              <Link
-                className="  h-[2rem] rounded-lg px-2 flex items-center"
-                to={nav.path}
-                style={{
-                  color: location.pathname === nav.path ? "#585858" : "#000",
-                }}
-              >
-                {nav.title}
-              </Link>
-              {location.pathname !== nav.path &&
-                index !== NAVITEMS.length - 1 && <hr />}
-            </div>
+              <div key={index} className="flex items-center gap-1 ">
+                <div> {nav.icon}</div>
+                <h2> {nav.title}</h2>
+                {location.pathname !== nav.path &&
+                  index !== NAVITEMS.length - 1 && <hr />}
+              </div>
+            </Link>
           ))}
         </div>
-        {/* <div className=" "> */}
         <Logout />
-        {/* </div> */}
       </div>
     </aside>
   );

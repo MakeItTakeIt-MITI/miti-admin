@@ -12,20 +12,30 @@ import GroupIcon from "@mui/icons-material/Group";
 const UserList = () => {
   const [open, setOpen] = useState(false);
   const [userId, setUserId] = useState<number | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const { isLoggedIn } = useUserStore();
   const navigate = useNavigate();
 
-  const { data } = useUsersListHook();
+  const { data, fetchNextPage, hasNextPage } = useUsersListHook();
   const endPageParam = data?.pages[0].data.end_index;
   const userData = data?.pages[0].data.page_content;
+
+  console.log(currentPage);
+  console.log(hasNextPage);
 
   // console.lodata);
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/");
     }
-  }, [navigate, isLoggedIn]);
+  }, [navigate, isLoggedIn, data]);
+
+  useEffect(() => {
+    // if (currentPage > 1) {
+    //   fetchNextPage();
+    // }
+  }, [currentPage, fetchNextPage]);
 
   return (
     <section className="flex h-screen bg-[#f8f8f9] relative">
@@ -33,7 +43,7 @@ const UserList = () => {
       <Sidebar />
       <div className="p-10 space-y-6 w-full">
         <div className=" bg-white rounded-[12px] p-4 flex items-center gap-2">
-          <GroupIcon />
+          <GroupIcon fontSize="large" />
           <h1 className="font-bold text-[28px]">회원 관리</h1>
         </div>
 
@@ -84,7 +94,14 @@ const UserList = () => {
                   ))}
                 </tbody>
               </table>
-              <PaginationBtns spacing={2} count={endPageParam} />
+              <PaginationBtns
+                spacing={2}
+                count={endPageParam}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                fetchNextPage={fetchNextPage}
+                hasNextPage={hasNextPage}
+              />
             </>
           ) : (
             <h1 className="flex items-center justify-center font-bold text-xl">

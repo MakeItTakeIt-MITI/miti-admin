@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../../store/useUserStore";
+import { Button } from "@mui/material";
 
 const Logout = () => {
   const { logout } = useUserStore();
@@ -7,16 +8,32 @@ const Logout = () => {
   const router = useNavigate();
 
   return (
-    <button
-      type="button"
+    // <button
+    //   type="button"
+    //   onClick={() => {
+    //     logout();
+    //     router("/");
+    //   }}
+    //   className="hover:opacity-90 text-[12px]  text-white   w-full rounded-lg  font-semibold"
+    // >
+    //   로그아웃
+    // </button>
+    <Button
       onClick={() => {
         logout();
         router("/");
       }}
-      className="hover:opacity-90 text-[12px]  text-white    w-40 h-10 rounded-lg  font-semibold"
+      variant="contained"
+      sx={{
+        backgroundColor: "#000000",
+        color: "#FFFFFF",
+        "&:hover": {
+          opacity: "90p",
+        },
+      }}
     >
       로그아웃
-    </button>
+    </Button>
   );
 };
 

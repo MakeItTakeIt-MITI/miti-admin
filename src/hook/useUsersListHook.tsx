@@ -7,6 +7,7 @@ export const useUsersListHook = () => {
     queryFn: ({ pageParam = 1 }) => usersListData(pageParam),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
+      console.log("lastPage:", lastPage);
       const nextPage = lastPage.current_index + 1;
       const hasNextPage = nextPage <= lastPage.end_index;
 
