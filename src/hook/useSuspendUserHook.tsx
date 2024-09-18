@@ -8,7 +8,8 @@ export const useSuspendUserHook = (userId: number | null) => {
     mutationFn: (days: { days: number | null }) =>
       suspendUserDays(userId, days),
     onSuccess: () => {
-      queryClient.invalidateQueries("Users");
+      //   queryClient.invalidateQueries("Users");
+      queryClient.invalidateQueries({ queryKey: ["Users"] });
     },
   });
 };
