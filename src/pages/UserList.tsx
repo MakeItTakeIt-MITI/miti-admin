@@ -17,25 +17,17 @@ const UserList = () => {
   const { isLoggedIn } = useUserStore();
   const navigate = useNavigate();
 
-  const { data, fetchNextPage, hasNextPage } = useUsersListHook();
-  const endPageParam = data?.pages[0].data.end_index;
-  const userData = data?.pages[0].data.page_content;
-
-  console.log(currentPage);
-  console.log(hasNextPage);
+  const { data } = useUsersListHook(currentPage);
+  console.log(data);
+  const endIndex = data?.data.end_index;
+  const userData = data?.data.page_content;
 
   // console.lodata);
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/");
     }
-  }, [navigate, isLoggedIn, data]);
-
-  useEffect(() => {
-    // if (currentPage > 1) {
-    //   fetchNextPage();
-    // }
-  }, [currentPage, fetchNextPage]);
+  }, [navigate, isLoggedIn]);
 
   return (
     <section className="flex h-screen bg-[#f8f8f9] relative">
@@ -50,7 +42,11 @@ const UserList = () => {
         <div className="bg-white rounded-[12px] p-4 min-h-[30rem]  space-y-6  ">
           {userData?.length >= 1 ? (
             <>
-              <table cellPadding="10" className="w-full h-full">
+              <table
+                style={{ tableLayout: "fixed" }}
+                cellPadding="10"
+                className="w-full h-full"
+              >
                 <thead>
                   <tr className="">
                     <th>아이디</th>
@@ -96,11 +92,11 @@ const UserList = () => {
               </table>
               <PaginationBtns
                 spacing={2}
-                count={endPageParam}
+                count={endIndex}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
-                fetchNextPage={fetchNextPage}
-                hasNextPage={hasNextPage}
+                // fetchNextPage={fetchNextPage}
+                // hasNextPage={hasNextPage}
               />
             </>
           ) : (

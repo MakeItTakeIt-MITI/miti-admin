@@ -1,6 +1,6 @@
 import axiosUrl from "../utils/axios";
 
-export const usersListData = async (page: number | null) => {
+export const usersListData = async (page: number) => {
     try {
         const response = await axiosUrl.get('/admin/users', { params: { page } })
         return response.data

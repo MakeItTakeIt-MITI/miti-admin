@@ -6,8 +6,6 @@ const PaginationBtns = ({
   count,
   currentPage,
   setCurrentPage,
-  fetchNextPage,
-  hasNextPage,
 }: {
   spacing: number;
   count: number;
@@ -16,10 +14,9 @@ const PaginationBtns = ({
 }) => {
   const handlePageChange = (e: React.ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);
-    if (value > currentPage) {
-      fetchNextPage({ pageParam: value });
-    }
   };
+
+  console.log(currentPage);
 
   return (
     <div className="flex justify-center">
@@ -29,7 +26,7 @@ const PaginationBtns = ({
           color="primary"
           page={currentPage}
           onChange={handlePageChange}
-          // disabled={!hasNextPage}
+          disabled={count === 0}
         />
       </Stack>
     </div>
