@@ -3,15 +3,9 @@ import { useUserStore } from "../store/useUserStore";
 import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
 import { useReportsListHook } from "../hook/useReportsListHook";
 import search from "../assets/search.svg";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
 
 import {
   Table,
@@ -22,7 +16,7 @@ import {
   TableRow,
 } from "../components/ui/table";
 
-const ReportsCategory = () => {
+const Settlements = () => {
   const { isLoggedIn } = useUserStore();
   const navigate = useNavigate();
 
@@ -39,21 +33,17 @@ const ReportsCategory = () => {
       <Sidebar />
       <div className="p-10 space-y-6 w-full">
         <h1 className="font-bold text-[18px] bg-white rounded-[12px] p-4">
-          신고 목록
+          정산금 목록
         </h1>
         <div className="flex flex-col gap-2 font-bold text-[18px] bg-white rounded-[12px] p-4">
-          <h2>신고 카테고리 필터</h2>
+          <h2>신고 카테고리 검색</h2>
           <div className="flex items-center gap-2">
-            <Select>
-              <SelectTrigger className="w-[40%]">
-                <SelectValue placeholder="선택" />
-              </SelectTrigger>
-              <SelectContent className="w-full">
-                <SelectItem value="light">game_hosting_report</SelectItem>
-                <SelectItem value="dark">etc</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button type="button">필터</Button>
+            <Input
+              type="text"
+              className="w-[50%]"
+              placeholder="아이디 / 카테고리로 검색해서 찾아보세요."
+            />
+            <Button type="button">찾기</Button>
           </div>
         </div>
 
@@ -116,4 +106,4 @@ const ReportsCategory = () => {
   );
 };
 
-export default ReportsCategory;
+export default Settlements;

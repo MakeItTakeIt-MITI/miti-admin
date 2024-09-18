@@ -1,106 +1,99 @@
-import { useEffect } from "react";
-// import {
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableHead,
-//   TableHeader,
-//   TableRow,
-// } from "../components/ui/table";
+import { useEffect, useState } from "react";
 import { useUserStore } from "../store/useUserStore";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+import { useUsersListHook } from "../hook/useUsersListHook";
+import PaginationBtns from "../components/common/PaginationBtns";
+import { UserField } from "../interface/users";
+import { Button } from "@mui/material";
+import SuspendModal from "../components/common/SuspendModal";
+import GroupIcon from "@mui/icons-material/Group";
 
 const UserList = () => {
+  const [open, setOpen] = useState(false);
+  const [userId, setUserId] = useState<number | null>(null);
+
   const { isLoggedIn } = useUserStore();
-  //   const router = useRouter();
-  const router = useNavigate();
+  const navigate = useNavigate();
 
-  // const USERS = [
-  //   {
-  //     id: 1,
-  //     name: "지원",
-  //     email: "testuser123@miti.com",
-  //     authorized: false,
-  //     reports: 4,
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "지원",
-  //     email: "testuser123@miti.com",
-  //     authorized: true,
-  //     reports: 0,
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "지원",
-  //     email: "testuser123@miti.com",
-  //     authorized: false,
-  //     reports: 7,
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "지원",
-  //     email: "testuser123@miti.com",
-  //     authorized: true,
-  //     reports: 2,
-  //   },
-  // ];
+  const { data } = useUsersListHook();
+  const endPageParam = data?.pages[0].data.end_index;
+  const userData = data?.pages[0].data.page_content;
 
+  // console.lodata);
   useEffect(() => {
     if (!isLoggedIn) {
-      router("/");
+      navigate("/");
     }
-  }, [router, isLoggedIn]);
+  }, [navigate, isLoggedIn]);
 
   return (
-    <div className="flex h-screen ">
+    <section className="flex h-screen bg-[#f8f8f9] relative">
+      {open && <SuspendModal setOpen={setOpen} open={open} userId={userId} />}
       <Sidebar />
-      <section className="p-10 space-y-6 w-full bg-[#f8f8f9]">
-        <h1 className="font-bold text-[36px]">회원 관리</h1>
+      <div className="p-10 space-y-6 w-full">
+        <div className=" bg-white rounded-[12px] p-4 flex items-center gap-2">
+          <GroupIcon />
+          <h1 className="font-bold text-[28px]">회원 관리</h1>
+        </div>
 
-        {/* <div className="px-[2em]">
-          <Table className="">
-            <TableHeader>
-              <TableRow className="flex items-center justify-between">
-                <TableHead className="w-[100px] flex justify-center">
-                  아이디
-                </TableHead>
-                <TableHead className="w-[100px]">이름</TableHead>
-                <TableHead className="w-[100px]">이메일</TableHead>
-                <TableHead className="w-[100px] flex justify-center">
-                  인증 상태
-                </TableHead>
-                <TableHead className="w-[100px] flex justify-center">
-                  누적 신고 수
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {USERS.map((user) => (
-                <TableRow
-                  key={user.id}
-                  className="flex items-center justify-between"
-                >
-                  <TableCell className="w-[100px] flex justify-center">
-                    {user.id}
-                  </TableCell>
+        <div className="bg-white rounded-[12px] p-4 min-h-[30rem]  space-y-6  ">
+          {userData?.length >= 1 ? (
+            <>
+              <table cellPadding="10" className="w-full h-full">
+                <thead>
+                  <tr className="">
+                    <th>아이디</th>
+                    <th>이메일</th>
+                    <th>닉네임</th>
+                    <th>이름</th>
+                    <th>가입 방법</th>
+                    <th>정지상태</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {userData?.map((user: UserField) => (
+                    <tr
+                      key={user.id}
+                      className=" border-b border-gray-200 text-center text-[14px] hover:bg-gray-100"
+                    >
+                      <td>{user.id}</td>
 
-                  <TableCell className="w-[100px]">{user.name}</TableCell>
-                  <TableCell className="w-[100px]">{user.email}</TableCell>
-                  <TableCell className="w-[100px] flex justify-center">
-                    {user.authorized ? "인증됨" : "미인증"}
-                  </TableCell>
-                  <TableCell className="w-[100px] flex justify-center hover:underline">
-                    {user.reports}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div> */}
-      </section>
-    </div>
+                      <td>{user.email}</td>
+                      <td>{user.nickname}</td>
+                      <td>{user.name}</td>
+                      <td>{user.signup_method}</td>
+                      <td>
+                        {user.suspended_until === null ? (
+                          <Button
+                            style={{ fontSize: "14px" }}
+                            onClick={() => {
+                              setUserId(user.id);
+                              setOpen(true);
+                            }}
+                            variant="contained"
+                            color="success"
+                          >
+                            정지하기
+                          </Button>
+                        ) : (
+                          <Button disabled>{user.suspended_until} 만료</Button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <PaginationBtns spacing={2} count={endPageParam} />
+            </>
+          ) : (
+            <h1 className="flex items-center justify-center font-bold text-xl">
+              사용자 목록이 없습니다.
+            </h1>
+          )}
+        </div>
+      </div>
+    </section>
   );
 };
 
