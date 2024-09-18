@@ -95,8 +95,6 @@ const UserList = () => {
                 count={endIndex}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
-                // fetchNextPage={fetchNextPage}
-                // hasNextPage={hasNextPage}
               />
             </>
           ) : (

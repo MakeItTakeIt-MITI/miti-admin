@@ -7,7 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Auth from "./pages/Auth.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import UserList from "./pages/UserList.tsx";
-import ReportsCategory from "./pages/ReportsCategory.tsx";
+import ReportCategories from "./pages/ReportCategories.tsx";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ReportDetail from "./pages/ReportDetail.tsx";
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
       {
         path: "/reports",
         children: [
-          { path: "category", element: <ReportsCategory /> },
+          { path: "category", element: <ReportCategories /> },
           { path: "category/:id", element: <ReportDetail /> },
         ],
       },
