@@ -12,7 +12,7 @@ const PaginationBtns = ({
   currentPage: number;
   setCurrentPage: (arg: number) => void;
 }) => {
-  const handlePageChange = (e: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (_e: React.ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);
   };
 

@@ -1,26 +1,13 @@
 import { useEffect } from "react";
 import { useUserStore } from "../store/useUserStore";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
-import { useReportsListHook } from "../hook/useReportsListHook";
-import search from "../assets/search.svg";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../components/ui/table";
 
 const Settlements = () => {
   const { isLoggedIn } = useUserStore();
   const navigate = useNavigate();
-
-  const { data: reportsListData } = useReportsListHook();
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -47,60 +34,7 @@ const Settlements = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-[12px] p-4 min-h-[30rem]">
-          {reportsListData?.data && reportsListData.data.length > 0 ? (
-            <Table>
-              <TableHeader>
-                <TableRow className="flex items-center justify-start gap-[7rem]">
-                  <TableHead className="w-[100px] flex justify-center">
-                    아이디
-                  </TableHead>
-                  <TableHead className="w-[100px]">카테고리</TableHead>
-                  <TableHead className="w-[100px]">하위 카테고리</TableHead>
-                  <TableHead className="w-[100px] flex justify-center">
-                    처리 상태
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {reportsListData.data.map(
-                  (report: {
-                    id: number;
-                    category: string;
-                    subcategory: string;
-                  }) => (
-                    <TableRow
-                      key={report.id}
-                      className="flex items-center justify-start gap-[7rem]"
-                    >
-                      <TableCell className="w-[100px] flex justify-center">
-                        {report.id}
-                      </TableCell>
-                      <TableCell className="w-[100px] flex justify-center">
-                        {report.category}
-                      </TableCell>
-                      <TableCell className="w-[100px]">
-                        {report.subcategory}
-                      </TableCell>
-                      <div className="flex items-center gap-[2px]">
-                        <TableCell className="w-[100px] flex justify-center text-red-500 font-[500]">
-                          기각
-                        </TableCell>
-                        <TableCell className="w-[100px] flex justify-center">
-                          <Link to={`${report.id}`} className="hover:underline">
-                            <img src={search} alt="search" className="size-4" />
-                          </Link>
-                        </TableCell>
-                      </div>
-                    </TableRow>
-                  )
-                )}
-              </TableBody>
-            </Table>
-          ) : (
-            <h1>신고 목록을 찾을 수 없었습니다.</h1>
-          )}
-        </div>
+        <div className="bg-white rounded-[12px] p-4 min-h-[30rem]"></div>
       </div>
     </section>
   );
