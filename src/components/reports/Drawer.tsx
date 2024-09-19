@@ -21,6 +21,7 @@ const Drawer = ({
   };
 }) => {
   const gameDetailData = reportDetailsData?.data;
+
   return (
     <aside
       onClick={() => setOpenDrawer(false)}
@@ -48,7 +49,10 @@ const Drawer = ({
         {/* details */}
         <div className="flex gap-4 px-6 py-2 w-full h-full">
           {/* left container */}
-          <ReporteeDetails gameDetailData={gameDetailData} />
+          <ReporteeDetails
+            gameDetailData={gameDetailData}
+            setOpenDrawer={setOpenDrawer}
+          />
           <hr className="w-[1px] h-screen bg-gray-200" />
           {/* right container */}
           <div className="flex flex-col gap-8 w-full">

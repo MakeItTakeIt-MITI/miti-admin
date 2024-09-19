@@ -38,6 +38,7 @@ const Sidebar = () => {
             <Link
               className="  h-[2.5rem] rounded-lg px-2 py-1 flex items-center"
               to={nav.path}
+              key={index}
               style={{
                 color: "#000",
                 borderRadius: "4px",
@@ -47,7 +48,7 @@ const Sidebar = () => {
                     : "none",
               }}
             >
-              <div key={index} className="flex items-center gap-1 ">
+              <div className="flex items-center gap-1 ">
                 <div> {nav.icon}</div>
                 <h2> {nav.title}</h2>
                 {location.pathname !== nav.path &&

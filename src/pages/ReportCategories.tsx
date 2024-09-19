@@ -65,31 +65,29 @@ const ReportCategories = () => {
               </thead>
               <tbody>
                 {reportsListData?.data.page_content.map((page: ReportField) => (
-                  <>
-                    <tr
-                      key={page.id}
-                      className=" border-b border-gray-200 text-center text-[14px] hover:bg-gray-100"
-                    >
-                      <td>{page.id}</td>
-                      <td>{page.reportee}</td>
-                      <td>{page.game}</td>
-                      <td>{page.category}</td>
-                      <td>{page.report_status}</td>
-                      <td>
-                        {page.created_at.slice(0, 10)} (
-                        {page.created_at.slice(11, 16)})
-                      </td>
-                      <td>
-                        <PlagiarismIcon
-                          onClick={() => {
-                            setReportId(page.id);
-                            setOpenDrawer(true);
-                          }}
-                          className="hover:cursor-pointer"
-                        />
-                      </td>
-                    </tr>
-                  </>
+                  <tr
+                    key={page.id}
+                    className=" border-b border-gray-200 text-center text-[14px] hover:bg-gray-100"
+                  >
+                    <td>{page.id}</td>
+                    <td>{page.reportee}</td>
+                    <td>{page.game}</td>
+                    <td>{page.category}</td>
+                    <td>{page.report_status}</td>
+                    <td>
+                      {page.created_at.slice(0, 10)} (
+                      {page.created_at.slice(11, 16)})
+                    </td>
+                    <td>
+                      <PlagiarismIcon
+                        onClick={() => {
+                          setReportId(page.id);
+                          setOpenDrawer(true);
+                        }}
+                        className="hover:cursor-pointer"
+                      />
+                    </td>
+                  </tr>
                 ))}
               </tbody>
             </table>

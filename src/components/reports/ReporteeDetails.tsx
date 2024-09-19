@@ -1,11 +1,23 @@
 import { Button } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import { ReportDetailField } from "../../interface/reports";
+import { useDismissReportHook } from "../../hook/useDismissReportHook";
 
 interface ReporteeDetailProp {
   gameDetailData: ReportDetailField;
+  setOpenDrawer: (arg: boolean) => void;
 }
-const ReporteeDetails = ({ gameDetailData }: ReporteeDetailProp) => {
+const ReporteeDetails = ({
+  gameDetailData,
+  setOpenDrawer,
+}: ReporteeDetailProp) => {
+  const reportId = gameDetailData?.id;
+  const { mutate } = useDismissReportHook(reportId);
+  function handleDismissReport() {
+    mutate();
+    setOpenDrawer(false);
+  }
+
   return (
     <div className="w-[35%] flex flex-col gap-6  ">
       <div className="flex gap-2 items-center">
@@ -43,7 +55,7 @@ const ReporteeDetails = ({ gameDetailData }: ReporteeDetailProp) => {
           </p>
         </div>
       </div>
-      <Button variant="contained" color="error">
+      <Button variant="contained" color="error" onClick={handleDismissReport}>
         신고 기각
       </Button>
     </div>

@@ -16,3 +16,12 @@ export const reportDetailData = async (reportId: number | null) => {
         throw new Error
     }
 };
+
+export const dismissReport = async (reportId: number | null) => {
+    try {
+        const response = await axiosUrl.patch(`/admin/reports/${reportId}/dismiss`)
+        return response.data
+    } catch {
+        throw new Error
+    }
+};
