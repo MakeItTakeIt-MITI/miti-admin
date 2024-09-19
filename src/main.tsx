@@ -10,7 +10,6 @@ import UserList from "./pages/UserList.tsx";
 import ReportCategories from "./pages/ReportCategories.tsx";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import ReportDetail from "./pages/ReportDetail.tsx";
 import Settlements from "./pages/Settlements.tsx";
 
 const queryClient = new QueryClient();
@@ -25,10 +24,7 @@ const router = createBrowserRouter([
       { element: <UserList />, path: "/users/list" },
       {
         path: "/reports",
-        children: [
-          { path: "category", element: <ReportCategories /> },
-          { path: "category/:id", element: <ReportDetail /> },
-        ],
+        children: [{ path: "category", element: <ReportCategories /> }],
       },
       {
         path: "settlements",

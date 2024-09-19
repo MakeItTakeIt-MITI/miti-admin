@@ -49,7 +49,7 @@ const UserList = () => {
               >
                 <thead>
                   <tr className="">
-                    <th>아이디</th>
+                    <th>ID</th>
                     <th>이메일</th>
                     <th>닉네임</th>
                     <th>이름</th>
@@ -78,8 +78,8 @@ const UserList = () => {
                             }}
                             className="flex justify-center"
                           >
-                            <p className="bg-[#dd0000b1] text-white font-bold py-1 border-2  rounded-lg w-20 hover:opacity-85 cursor-pointer">
-                              정지하기
+                            <p className="bg-[#dd0000b1] text-[12px] text-white font-bold py-1 border-2  rounded-lg w-20 hover:opacity-85 cursor-pointer">
+                              사용자 정지
                             </p>
                           </div>
                         ) : (

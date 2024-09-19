@@ -1,13 +1,27 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useUserStore } from "../store/useUserStore";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
+import PaymentIcon from "@mui/icons-material/Payment";
+import PaginationBtns from "../components/common/PaginationBtns";
+
+import PostAddIcon from "@mui/icons-material/PostAdd"; /**
+ *  TRANSFER STATUS 
+ * completed
+waiting
+declined
+ */
+import { usePaymentsListhook } from "../hook/usePaymentsListhook";
+import { TransferField } from "../interface/payment";
 
 const Settlements = () => {
   const { isLoggedIn } = useUserStore();
   const navigate = useNavigate();
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const { data: paymentsData } = usePaymentsListhook(1);
+  const endIndex = paymentsData?.data.end_index;
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -19,22 +33,74 @@ const Settlements = () => {
     <section className="flex h-screen bg-[#f8f8f9]">
       <Sidebar />
       <div className="p-10 space-y-6 w-full">
-        <h1 className="font-bold text-[18px] bg-white rounded-[12px] p-4">
-          정산금 목록
-        </h1>
-        <div className="flex flex-col gap-2 font-bold text-[18px] bg-white rounded-[12px] p-4">
-          <h2>신고 카테고리 검색</h2>
-          <div className="flex items-center gap-2">
-            <Input
-              type="text"
-              className="w-[50%]"
-              placeholder="아이디 / 카테고리로 검색해서 찾아보세요."
-            />
-            <Button type="button">찾기</Button>
-          </div>
+        <div className=" bg-white rounded-[12px] p-4 flex items-center gap-2">
+          <PaymentIcon fontSize="large" />
+          <h1 className="font-bold text-[28px]">정산금 목록</h1>
         </div>
+        <div className="bg-white rounded-[12px] p-4 min-h-[40rem] flex flex-col  justify-between ">
+          <>
+            <table
+              style={{ tableLayout: "fixed" }}
+              cellPadding="10"
+              className="w-full h-full"
+            >
+              <thead>
+                <tr className="">
+                  <th>ID</th>
+                  <th>은행</th>
+                  <th>예금주</th>
+                  <th>금액</th>
+                  <th>계좌번호</th>
+                  <th>이체 상태</th>
+                  <th>생성일</th>
+                  <th>이체 완료일 </th>
+                  <th>이체 상태 변경</th>
+                </tr>
+              </thead>
+              <tbody className="">
+                {/* {reportsListData?.data.page_content.map((page: ReportField) => ( */}
+                {paymentsData?.data.page_content.length >= 1 &&
+                  paymentsData?.data.page_content.map(
+                    (payment: TransferField) => {
+                      return (
+                        <tr className="border-b border-gray-200 text-center text-[14px] hover:bg-gray-100 ">
+                          {" "}
+                          <td>{payment.id}</td>
+                          <td>{payment.account_bank}</td>
+                          <td>{payment.account_holder}</td>
+                          <td>
+                            {payment.amount.toLocaleString("ko-KR", {
+                              style: "currency",
+                              currency: "KRW",
+                            })}
+                          </td>
+                          <td>{payment.account_number}1</td>
+                          <td>{payment.transfer_status}</td>
+                          <td>{payment.created_at.slice(0, 10)}</td>
+                          <td>
+                            {payment.transferred_at === null
+                              ? "미안료"
+                              : payment.transferred_at}
+                          </td>
+                          <td>
+                            <PostAddIcon className="cursor-pointer" />
+                          </td>
+                        </tr>
+                      );
+                    }
+                  )}
 
-        <div className="bg-white rounded-[12px] p-4 min-h-[30rem]"></div>
+                {/* ))} */}
+              </tbody>
+            </table>
+            <PaginationBtns
+              spacing={2}
+              count={endIndex}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          </>
+        </div>{" "}
       </div>
     </section>
   );
