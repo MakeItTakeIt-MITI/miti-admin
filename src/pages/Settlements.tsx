@@ -5,12 +5,7 @@ import Sidebar from "../components/Sidebar";
 import PaymentIcon from "@mui/icons-material/Payment";
 import PaginationBtns from "../components/common/PaginationBtns";
 
-import PostAddIcon from "@mui/icons-material/PostAdd"; /**
- *  TRANSFER STATUS 
- * completed
-waiting
-declined
- */
+import PostAddIcon from "@mui/icons-material/PostAdd";
 import { usePaymentsListhook } from "../hook/usePaymentsListhook";
 import { TransferField } from "../interface/payment";
 import Drawer from "../components/settlements/Drawer";
@@ -28,6 +23,7 @@ const Settlements = () => {
   const endIndex = paymentsData?.data.end_index;
 
   const { data } = usePaymentDetailsHook(paymentId);
+  console.log(data);
 
   useEffect(() => {
     if (!isLoggedIn) {

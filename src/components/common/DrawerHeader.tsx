@@ -1,7 +1,11 @@
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import CloseIcon from "@mui/icons-material/Close";
 
-const DrawerHeader = ({ setOpenDrawer }) => {
+const DrawerHeader = ({
+  setOpenDrawer,
+}: {
+  setOpenDrawer: (arg: boolean) => void;
+}) => {
   return (
     <div className="flex justify-between p-4 border-b border-gray-400">
       <div className="flex items-center gap-2">

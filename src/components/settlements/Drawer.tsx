@@ -1,9 +1,13 @@
-import { Button, Chip } from "@mui/material";
+import { Button } from "@mui/material";
 import TransactionDetails from "./TransactionDetails";
 import UserDetails from "./UserDetails";
 import DrawerHeader from "../common/DrawerHeader";
 
-const Drawer = ({ setOpenDrawer }) => {
+interface DrawerProps {
+  setOpenDrawer: (arg: boolean) => void;
+}
+
+const Drawer = ({ setOpenDrawer }: DrawerProps) => {
   return (
     <aside
       onClick={() => setOpenDrawer(false)}
