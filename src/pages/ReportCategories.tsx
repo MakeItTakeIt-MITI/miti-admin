@@ -8,9 +8,10 @@ import FlagIcon from "@mui/icons-material/Flag";
 
 import PaginationBtns from "../components/common/PaginationBtns";
 import { ReportField } from "../interface/reports";
-import PlagiarismIcon from "@mui/icons-material/Plagiarism";
 import Drawer from "../components/reports/Drawer";
 import { useReportDetailsHook } from "../hook/useReportDetailsHook";
+import FindInPageIcon from "@mui/icons-material/FindInPage";
+
 const ReportCategories = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -81,7 +82,8 @@ const ReportCategories = () => {
                           {page.created_at.slice(11, 16)})
                         </td>
                         <td>
-                          <PlagiarismIcon
+                          <FindInPageIcon
+                            sx={{ color: "gray" }}
                             onClick={() => {
                               setReportId(page.id);
                               setOpenDrawer(true);

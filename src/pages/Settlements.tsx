@@ -13,15 +13,21 @@ declined
  */
 import { usePaymentsListhook } from "../hook/usePaymentsListhook";
 import { TransferField } from "../interface/payment";
+import Drawer from "../components/settlements/Drawer";
+import { usePaymentDetailsHook } from "../hook/usePaymentDetailsHook";
 
 const Settlements = () => {
   const { isLoggedIn } = useUserStore();
   const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [paymentId, setPaymentId] = useState<null | number>(null);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const { data: paymentsData } = usePaymentsListhook(1);
   const endIndex = paymentsData?.data.end_index;
+
+  const { data } = usePaymentDetailsHook(paymentId);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -31,6 +37,7 @@ const Settlements = () => {
 
   return (
     <section className="flex h-screen bg-[#f8f8f9]">
+      {openDrawer && <Drawer setOpenDrawer={setOpenDrawer} />}
       <Sidebar />
       <div className="p-10 space-y-6 w-full">
         <div className=" bg-white rounded-[12px] p-4 flex items-center gap-2">
@@ -54,7 +61,7 @@ const Settlements = () => {
                   <th>이체 상태</th>
                   <th>생성일</th>
                   <th>이체 완료일 </th>
-                  <th>이체 상태 변경</th>
+                  <th>상세정보</th>
                 </tr>
               </thead>
               <tbody className="">
@@ -63,7 +70,10 @@ const Settlements = () => {
                   paymentsData?.data.page_content.map(
                     (payment: TransferField) => {
                       return (
-                        <tr className="border-b border-gray-200 text-center text-[14px] hover:bg-gray-100 ">
+                        <tr
+                          key={payment.id}
+                          className="border-b border-gray-200 text-center text-[14px] hover:bg-gray-100 "
+                        >
                           {" "}
                           <td>{payment.id}</td>
                           <td>{payment.account_bank}</td>
@@ -79,11 +89,17 @@ const Settlements = () => {
                           <td>{payment.created_at.slice(0, 10)}</td>
                           <td>
                             {payment.transferred_at === null
-                              ? "미안료"
+                              ? "이체 내역 없음"
                               : payment.transferred_at}
                           </td>
                           <td>
-                            <PostAddIcon className="cursor-pointer" />
+                            <PostAddIcon
+                              onClick={() => {
+                                setOpenDrawer(true);
+                                setPaymentId(payment.id);
+                              }}
+                              className="cursor-pointer"
+                            />
                           </td>
                         </tr>
                       );
