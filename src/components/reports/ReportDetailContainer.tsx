@@ -9,7 +9,7 @@ const ReportDetailContainer = ({ gameDetailData }: ReportDetailProp) => {
     <div className="border border-gray-200 relative w-full min-h-[12rem] flex flex-col gap-4 px-4 py-6">
       <div className="flex  gap-1  bg-white absolute -top-5 left-2 w-30 h-10 border border-gray-200 p-2 rounded-sm items-center ">
         <PendingIcon />
-        <h1 className="text-sm font-bold">신고 정보</h1>
+        <h1 className="text-sm font-bold">신고 내용</h1>
       </div>
       <div className="w-full h-full   flex flex-col gap-4 text-sm">
         <div className="">

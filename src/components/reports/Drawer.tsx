@@ -47,7 +47,7 @@ const Drawer = ({
           </div>
         </div>
         {/* details */}
-        <div className="flex gap-4 px-6 py-2 w-full h-full">
+        <div className="flex gap-4 px-6 py-2 w-full  overflow-y-scroll">
           {/* left container */}
           <ReporteeDetails
             gameDetailData={gameDetailData}

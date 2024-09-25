@@ -8,9 +8,17 @@ export const reportsListData = async (page: number) => {
         throw new Error
     }
 };
-export const reportDetailData = async (reportId: number | null) => {
+export const reportDetailData = async (gameId: number | null, reportId: number | null) => {
     try {
-        const response = await axiosUrl.get(`/admin/reports/${reportId}`)
+        const response = await axiosUrl.get(`/admin/games/${gameId}/reports/${reportId}`)
+        return response.data
+    } catch {
+        throw new Error
+    }
+};
+export const reportersUsersList = async (reportId: number | null) => {
+    try {
+        const response = await axiosUrl.get(`/admin/games/${reportId}/reports`)
         return response.data
     } catch {
         throw new Error

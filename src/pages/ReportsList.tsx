@@ -5,23 +5,29 @@ import Sidebar from "../components/Sidebar";
 import { useReportsListHook } from "../hook/useReportsListHook";
 
 import FlagIcon from "@mui/icons-material/Flag";
+import GroupIcon from "@mui/icons-material/Group";
+import FindInPageIcon from "@mui/icons-material/FindInPage";
 
 import PaginationBtns from "../components/common/PaginationBtns";
 import { ReportField } from "../interface/reports";
 import Drawer from "../components/reports/Drawer";
 import { useReportDetailsHook } from "../hook/useReportDetailsHook";
-import FindInPageIcon from "@mui/icons-material/FindInPage";
+import { useReportersListHook } from "../hook/useReportersListHook";
+import UsersListModal from "../components/reports/UsersListModal";
 
-const ReportCategories = () => {
+const ReportsList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [gameId, setGameId] = useState<null | number>(null);
   const [reportId, setReportId] = useState<null | number>(null);
 
   const { isLoggedIn } = useUserStore();
   const navigate = useNavigate();
 
   const { data: reportsListData } = useReportsListHook(currentPage);
-  const { data: reportDetailsData } = useReportDetailsHook(reportId);
+  const { data: reportDetailsData } = useReportDetailsHook(gameId, reportId);
+  const { data: reportersListData } = useReportersListHook(reportId);
 
   const endIndex = reportsListData?.data.end_index;
 
@@ -33,10 +39,18 @@ const ReportCategories = () => {
 
   return (
     <section className="flex h-screen bg-[#f8f8f9] relative">
+      {/*  */}
       {openDrawer && (
         <Drawer
           setOpenDrawer={setOpenDrawer}
           reportDetailsData={reportDetailsData}
+        />
+      )}
+      {/*  */}
+      {openModal && (
+        <UsersListModal
+          setOpenModal={setOpenModal}
+          reportersListData={reportersListData}
         />
       )}
       <Sidebar />
@@ -55,13 +69,14 @@ const ReportCategories = () => {
             >
               <thead>
                 <tr className="">
-                  <th>사용자 ID</th>
-                  <th>신고자 ID</th>
+                  <th>신고 ID</th>
+                  <th>신고된 사용자 ID</th>
                   <th>경기 ID</th>
                   <th>카테고리</th>
                   <th>신고 상태</th>
                   <th>등록 시간</th>
-                  <th>상세</th>
+                  <th>신고 상세</th>
+                  <th>신고자 목록</th>
                 </tr>
               </thead>
               <tbody>
@@ -85,8 +100,19 @@ const ReportCategories = () => {
                           <FindInPageIcon
                             sx={{ color: "gray" }}
                             onClick={() => {
+                              setGameId(page.game);
                               setReportId(page.id);
                               setOpenDrawer(true);
+                            }}
+                            className="hover:cursor-pointer"
+                          />
+                        </td>
+                        <td>
+                          <GroupIcon
+                            sx={{ color: "gray" }}
+                            onClick={() => {
+                              setReportId(page.game);
+                              setOpenModal(true);
                             }}
                             className="hover:cursor-pointer"
                           />
@@ -109,4 +135,4 @@ const ReportCategories = () => {
   );
 };
 
-export default ReportCategories;
+export default ReportsList;

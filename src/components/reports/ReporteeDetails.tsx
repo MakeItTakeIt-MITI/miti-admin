@@ -22,7 +22,7 @@ const ReporteeDetails = ({
     <div className="w-[35%] flex flex-col gap-6  ">
       <div className="flex gap-2 items-center">
         <PersonIcon />
-        <h1 className="text-sm font-bold">신고자 정보</h1>
+        <h1 className="text-sm font-bold">신고된 사용자 정보</h1>
       </div>
       <div className="flex flex-col space-y-2 text-sm">
         <div className="space-y-1">

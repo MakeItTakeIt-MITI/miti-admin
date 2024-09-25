@@ -19,6 +19,7 @@ const Sidebar = () => {
       path: "/reports/category",
       icon: <FlagIcon />,
     },
+
     {
       title: "정산금 목록",
       path: "/settlements/list",
