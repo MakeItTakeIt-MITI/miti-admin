@@ -1,8 +1,8 @@
 import SportsBasketballIcon from "@mui/icons-material/SportsBasketball";
-import { ReportDetailField } from "../../interface/reports";
+import { ReportersListField } from "../../interface/reports";
 
 interface GameDetailProp {
-  gameDetailData: ReportDetailField;
+  gameDetailData: ReportersListField;
 }
 
 const GameDetails = ({ gameDetailData }: GameDetailProp) => {
@@ -16,47 +16,47 @@ const GameDetails = ({ gameDetailData }: GameDetailProp) => {
       <div className="flex items-center gap-10">
         <div className="flex flex-col  gap-1">
           <h2 className="text-gray-400">ID</h2>
-          <h3>{gameDetailData?.game.id} </h3>
+          <h3>{gameDetailData?.id} </h3>
         </div>
         <div className="flex flex-col   gap-1">
           <h2 className="text-gray-400">진행상황</h2>
-          <h3>{gameDetailData?.game.game_status} </h3>
+          <h3>{gameDetailData?.game_status} </h3>
         </div>
         <div className="flex flex-col   gap-1">
           <h2 className="text-gray-400">제목</h2>
-          <h3>{gameDetailData?.game.title} </h3>
+          <h3>{gameDetailData?.title} </h3>
         </div>
         <div className="flex flex-col   gap-1">
           <h2 className="text-gray-400">최소 인원</h2>
-          <h3>{gameDetailData?.game.min_invitation} </h3>
+          <h3>{gameDetailData?.min_invitation} </h3>
         </div>
         <div className="flex flex-col   gap-1">
           <h2 className="text-gray-400">최대 인원</h2>
-          <h3>{gameDetailData?.game.max_invitation} </h3>
+          <h3>{gameDetailData?.max_invitation} </h3>
         </div>
       </div>
       <div className="flex items-center gap-10">
         <div className="flex flex-col  gap-1">
           <h2 className="text-gray-400">시작</h2>
           <div className="">
-            <p> {gameDetailData?.game.startdate} </p>
-            <p>({gameDetailData?.game.starttime})</p>
+            <p> {gameDetailData?.startdate} </p>
+            <p>({gameDetailData?.starttime})</p>
           </div>
         </div>
         <div className="flex flex-col   gap-1">
           <h2 className="text-gray-400">종료</h2>
           <div className="">
-            <p> {gameDetailData?.game.enddate} </p>
-            <p>({gameDetailData?.game.endtime})</p>
+            <p> {gameDetailData?.enddate} </p>
+            <p>({gameDetailData?.endtime})</p>
           </div>
         </div>
         <div className="flex flex-col   gap-1">
           <h2 className="text-gray-400">참여비</h2>
-          <h3>{gameDetailData?.game.fee} </h3>
+          <h3>{gameDetailData?.fee} </h3>
         </div>
         <div className="flex flex-col   gap-1">
           <h2 className="text-gray-400">기타</h2>
-          <h3>{gameDetailData?.game.info} </h3>
+          <h3>{gameDetailData?.info} </h3>
         </div>
       </div>
     </div>

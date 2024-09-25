@@ -16,9 +16,9 @@ export const reportDetailData = async (gameId: number | null, reportId: number |
         throw new Error
     }
 };
-export const reportersUsersList = async (reportId: number | null) => {
+export const reportersUsersList = async (gameId: number | null) => {
     try {
-        const response = await axiosUrl.get(`/admin/games/${reportId}/reports`)
+        const response = await axiosUrl.get(`/admin/games/${gameId}/reports`)
         return response.data
     } catch {
         throw new Error

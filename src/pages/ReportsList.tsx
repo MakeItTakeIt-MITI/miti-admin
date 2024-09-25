@@ -5,29 +5,26 @@ import Sidebar from "../components/Sidebar";
 import { useReportsListHook } from "../hook/useReportsListHook";
 
 import FlagIcon from "@mui/icons-material/Flag";
-import GroupIcon from "@mui/icons-material/Group";
 import FindInPageIcon from "@mui/icons-material/FindInPage";
 
 import PaginationBtns from "../components/common/PaginationBtns";
 import { ReportField } from "../interface/reports";
 import Drawer from "../components/reports/Drawer";
-import { useReportDetailsHook } from "../hook/useReportDetailsHook";
 import { useReportersListHook } from "../hook/useReportersListHook";
-import UsersListModal from "../components/reports/UsersListModal";
 
 const ReportsList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [openDrawer, setOpenDrawer] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
   const [gameId, setGameId] = useState<null | number>(null);
   const [reportId, setReportId] = useState<null | number>(null);
+
+  console.log(reportId);
 
   const { isLoggedIn } = useUserStore();
   const navigate = useNavigate();
 
   const { data: reportsListData } = useReportsListHook(currentPage);
-  const { data: reportDetailsData } = useReportDetailsHook(gameId, reportId);
-  const { data: reportersListData } = useReportersListHook(reportId);
+  const { data: reportersListData } = useReportersListHook(gameId);
 
   const endIndex = reportsListData?.data.end_index;
 
@@ -43,16 +40,11 @@ const ReportsList = () => {
       {openDrawer && (
         <Drawer
           setOpenDrawer={setOpenDrawer}
-          reportDetailsData={reportDetailsData}
-        />
-      )}
-      {/*  */}
-      {openModal && (
-        <UsersListModal
-          setOpenModal={setOpenModal}
           reportersListData={reportersListData}
         />
       )}
+      {/*  */}
+
       <Sidebar />
       <div className="p-10 space-y-6 w-full">
         <div className=" bg-white rounded-[12px] p-4 flex items-center gap-2">
@@ -76,7 +68,6 @@ const ReportsList = () => {
                   <th>신고 상태</th>
                   <th>등록 시간</th>
                   <th>신고 상세</th>
-                  <th>신고자 목록</th>
                 </tr>
               </thead>
               <tbody>
@@ -103,16 +94,6 @@ const ReportsList = () => {
                               setGameId(page.game);
                               setReportId(page.id);
                               setOpenDrawer(true);
-                            }}
-                            className="hover:cursor-pointer"
-                          />
-                        </td>
-                        <td>
-                          <GroupIcon
-                            sx={{ color: "gray" }}
-                            onClick={() => {
-                              setReportId(page.game);
-                              setOpenModal(true);
                             }}
                             className="hover:cursor-pointer"
                           />
