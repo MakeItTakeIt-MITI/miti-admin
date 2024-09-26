@@ -17,6 +17,7 @@ const ReportsList = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [gameId, setGameId] = useState<null | number>(null);
   const [reportId, setReportId] = useState<null | number>(null);
+  const [reportStatus, setReportStatus] = useState("string");
 
   console.log(reportId);
 
@@ -41,6 +42,7 @@ const ReportsList = () => {
         <Drawer
           setOpenDrawer={setOpenDrawer}
           reportersListData={reportersListData}
+          reportStatus={reportStatus}
         />
       )}
       {/*  */}
@@ -71,7 +73,7 @@ const ReportsList = () => {
                 </tr>
               </thead>
               <tbody>
-                {reportsListData?.data.page_content.length >= 1 &&
+                {reportsListData?.data?.page_content.length >= 1 &&
                   reportsListData?.data?.page_content.map(
                     (page: ReportField) => (
                       <tr
@@ -94,6 +96,7 @@ const ReportsList = () => {
                               setGameId(page.game);
                               setReportId(page.id);
                               setOpenDrawer(true);
+                              setReportStatus(page.report_status);
                             }}
                             className="hover:cursor-pointer"
                           />

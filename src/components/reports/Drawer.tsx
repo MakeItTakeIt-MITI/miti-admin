@@ -7,11 +7,15 @@ import GameDetails from "./GameDetails";
 import CourtDetails from "./CourtDetails";
 import ReportersList from "./ReportersList";
 import { Button } from "@mui/material";
+import { useDismissUserReportHook } from "../../hook/useDismissUserReportHook";
+import { usePenalizeGameHook } from "../../hook/usePenalizeGameHook";
+import { useState } from "react";
 // https://cdn1.dronahq.com/wp-content/uploads/2023/08/Bill-Details-1024x512.png
 
 const Drawer = ({
   setOpenDrawer,
   reportersListData,
+  reportStatus,
 }: {
   setOpenDrawer: (arg: boolean) => void;
   reportersListData: {
@@ -19,9 +23,26 @@ const Drawer = ({
     message: string;
     data: ReportersListField;
   };
+  reportStatus: string;
 }) => {
+  const [suspendDays, setSuspendDays] = useState<null | number | string>(1);
   const gameDetailData = reportersListData?.data;
-  console.log("reporters list", reportersListData);
+
+  const { mutate } = useDismissUserReportHook();
+  const { mutate: penalizeGame } = usePenalizeGameHook();
+
+  const handleDismissReport = () => {
+    mutate(gameDetailData.id);
+  };
+
+  const handlePenalizeGame = (
+    type: "suspend" | "warning",
+    period: number | null
+  ) => {
+    const data = { penalty: type, duration: period };
+    penalizeGame({ gameId: gameDetailData.id, data });
+  };
+
   return (
     <aside
       onClick={() => setOpenDrawer(false)}
@@ -58,35 +79,76 @@ const Drawer = ({
           <hr className="w-[1px] h-screen bg-gray-200" />
           {/* right container */}
           <div className="flex flex-col gap-8 w-full py-3">
-            {/* <ReportDetailContainer gameDetailData={gameDetailData} /> */}
             {/* <hr /> */}
             <GameDetails gameDetailData={gameDetailData} />
             <CourtDetails gameDetailData={gameDetailData} />
 
-            <h2 className="text-md  font-bold">
-              *호스트에 대한 신고 내용을 충분히 확인하시고, 해당 호스트에 대한
-              신고를 인정 또는 기각해 주시기 바랍니다.
-            </h2>
-            <Button
-              variant="contained"
-              color="primary"
-              style={{
-                height: "50px",
-              }}
-              // onClick={handleDismissReport}
-            >
-              호스트에 대한 신고를 기각하겠습니다
-            </Button>
-            <Button
-              variant="contained"
-              color="error"
-              // onClick={handleDismissReport}
-              style={{
-                height: "50px",
-              }}
-            >
-              호스트에 대한 신고를 인정합니다
-            </Button>
+            {reportStatus === "concluded" ? (
+              <h1 className="text-center font-bold text-green-600 ">
+                신가처리가 이미 완료 되었어요.
+              </h1>
+            ) : (
+              <div className="flex flex-col gap-4">
+                <h2 className="text-md  font-bold ">
+                  *호스트에 대한 신고 내용을 충분히 확인하시고, 해당 호스트에
+                  대한 경고, 정지, 또는 기각 처리를 해주시기 바랍니다.
+                </h2>
+                <div className="flex flex-col items-center gap-6">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    style={{
+                      height: "50px",
+                      width: "50%",
+                    }}
+                    onClick={handleDismissReport}
+                  >
+                    호스트에 대한 신고를 기각합니다
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="warning"
+                    onClick={() => {
+                      handlePenalizeGame("warning", null);
+                    }}
+                    style={{
+                      height: "50px",
+                      width: "50%",
+                    }}
+                  >
+                    호스트에게 경고를 주겠습니다
+                  </Button>
+                  <div className="w-full flex flex-col items-center gap-2">
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={() => {
+                        const suspendDaysToNum = Number(suspendDays);
+                        handlePenalizeGame("suspend", suspendDaysToNum);
+                      }}
+                      style={{
+                        height: "50px",
+                        width: "50%",
+                      }}
+                    >
+                      호스트를 정지시키겠습니다
+                    </Button>
+
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        placeholder="0"
+                        onChange={(e) => setSuspendDays(e.target.value)}
+                        className="h-full w-[80px] flex items-center justify-center border border-gray-200 p-2 rounded-lg"
+                      />
+                      <p className="text-sm font-[500]">
+                        *정지 일수를 입력해 주세요.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>{" "}
         </div>
       </div>

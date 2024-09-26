@@ -8,14 +8,7 @@ export const reportsListData = async (page: number) => {
         throw new Error
     }
 };
-export const reportDetailData = async (gameId: number | null, reportId: number | null) => {
-    try {
-        const response = await axiosUrl.get(`/admin/games/${gameId}/reports/${reportId}`)
-        return response.data
-    } catch {
-        throw new Error
-    }
-};
+
 export const reportersUsersList = async (gameId: number | null) => {
     try {
         const response = await axiosUrl.get(`/admin/games/${gameId}/reports`)
@@ -25,11 +18,20 @@ export const reportersUsersList = async (gameId: number | null) => {
     }
 };
 
-export const dismissReport = async (reportId: number | null) => {
+export const dismissUserReport = async (reportedGameId: number | null) => {
     try {
-        const response = await axiosUrl.patch(`/admin/reports/${reportId}/dismiss`)
+        const response = await axiosUrl.post(`/admin/games/${reportedGameId}/reports/dismiss`)
         return response.data
     } catch {
         throw new Error
     }
-};
+}
+
+export const penalizeGame = async (gameId: number | null, data: { penalty: string, duration: number | null }) => {
+    try {
+        const response = await axiosUrl.post(`/admin/games/${gameId}/reports/dismiss`, data)
+        return response.data
+    } catch {
+        throw new Error
+    }
+}

@@ -32,13 +32,11 @@ const ReportersList = ({ gameDetailData }: ReporteeDetailProp) => {
                 </span>
               </div>
               <AccountBoxIcon fontSize="medium" />
-              <div className="flex flex-col text-sm w-full">
+              <div className="flex flex-col gap-2 text-sm w-full">
                 {" "}
                 {/* <span className="font-bold">ID</span> <span>{reporter.id}</span> */}
                 <h2>{reporter.category}</h2>
-                <div className="flex justify-between ">
-                  <h3>{reporter.report_status}</h3>
-                </div>
+                <h3>{reporter.report_status}</h3>
               </div>
 
               <p
