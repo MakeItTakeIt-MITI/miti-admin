@@ -43,6 +43,7 @@ const Settlements = () => {
       <div className="p-10 space-y-6 w-full">
         <div className=" bg-white rounded-[12px] p-4 flex items-center gap-2">
           <PaymentIcon fontSize="large" />
+
           <h1 className="font-bold text-[28px]">정산금 목록</h1>
         </div>
         <div className="bg-white rounded-[12px] p-4 min-h-[40rem] flex flex-col  justify-between ">
@@ -88,13 +89,25 @@ const Settlements = () => {
                           <td>{payment.account_number}1</td>
                           <td>
                             {payment?.transfer_status === "waiting" && (
-                              <Chip label="대기중" color="warning" />
+                              <Chip
+                                label="대기중"
+                                color="warning"
+                                style={{ width: "70px" }}
+                              />
                             )}
                             {payment?.transfer_status === "completed" && (
-                              <Chip label="완료" color="primary" />
+                              <Chip
+                                label="완료"
+                                color="primary"
+                                style={{ width: "70px" }}
+                              />
                             )}
                             {payment?.transfer_status === "declined" && (
-                              <Chip label="거부됨" color="error" />
+                              <Chip
+                                label="거부됨"
+                                color="error"
+                                style={{ width: "70px" }}
+                              />
                             )}
                           </td>
                           <td>{payment.created_at.slice(0, 10)}</td>
