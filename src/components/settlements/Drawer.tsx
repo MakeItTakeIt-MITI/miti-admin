@@ -68,7 +68,7 @@ const Drawer = ({ paymentDetailsData, setOpenDrawer }: DrawerProps) => {
               }}
             >
               {" "}
-              이체 상태를 변경하기
+              이체 상태 설정
             </InputLabel>
             <Select
               labelId="demo-simple-select-label"

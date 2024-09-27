@@ -11,6 +11,7 @@ import PaginationBtns from "../components/common/PaginationBtns";
 import { ReportField } from "../interface/reports";
 import Drawer from "../components/reports/Drawer";
 import { useReportersListHook } from "../hook/useReportersListHook";
+import { Chip } from "@mui/material";
 
 const ReportsList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -83,8 +84,53 @@ const ReportsList = () => {
                         <td>{page.id}</td>
                         <td>{page.reportee}</td>
                         <td>{page.game}</td>
-                        <td>{page.category}</td>
-                        <td>{page.report_status}</td>
+
+                        <td>
+                          {page.category === "intentional_cheating" &&
+                            "허위 경기 운영 "}
+                          {page.category === "incorrect_information" &&
+                            "정확한 경기 정보"}
+                          {page.category === "etc" && "기타 신고 사유"}
+                          {/* {page.category === "game" && "경기"}
+                          {page.category === "settlement" && "정산"}
+                          {page.category === "review" && "리뷰"}
+                          {page.category === "report" && "신고"}
+                          {page.category === "etc" && "기타"} */}
+                        </td>
+                        <td>
+                          {page.report_status === "waiting" && (
+                            <Chip
+                              label="대기중"
+                              color="warning"
+                              style={{ width: "150px" }}
+                            />
+                          )}
+
+                          {page.report_status === "evidence_requested" && (
+                            <Chip
+                              label="관련 자료 요청 상태"
+                              color="secondary"
+                              style={{ width: "150px" }}
+                            />
+                          )}
+
+                          {page.report_status ===
+                            "investigation_in_progress" && (
+                            <Chip
+                              label="신고 처리중"
+                              color="success"
+                              style={{ width: "150px" }}
+                            />
+                          )}
+
+                          {page.report_status === "concluded" && (
+                            <Chip
+                              label="신고 처리 완료"
+                              color="primary"
+                              style={{ width: "150px" }}
+                            />
+                          )}
+                        </td>
                         <td>
                           {page.created_at.slice(0, 10)} (
                           {page.created_at.slice(11, 16)})
