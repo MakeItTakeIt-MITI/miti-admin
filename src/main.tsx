@@ -11,6 +11,8 @@ import UserList from "./pages/UserList.tsx";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Settlements from "./pages/Settlements.tsx";
 import ReportsList from "./pages/ReportsList.tsx";
+import GamesList from "./pages/GamesList.tsx";
+import UserQuestions from "./pages/UserQuestions.tsx";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +31,14 @@ const router = createBrowserRouter([
       {
         path: "settlements",
         children: [{ path: "list", element: <Settlements /> }],
+      },
+      {
+        path: "games",
+        children: [{ path: "list", element: <GamesList /> }],
+      },
+      {
+        path: "support",
+        children: [{ path: "list", element: <UserQuestions /> }],
       },
     ],
   },

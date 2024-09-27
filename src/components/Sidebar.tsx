@@ -4,6 +4,9 @@ import GroupIcon from "@mui/icons-material/Group";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FlagIcon from "@mui/icons-material/Flag";
 import PaymentIcon from "@mui/icons-material/Payment";
+import SportsBasketballIcon from "@mui/icons-material/SportsBasketball";
+import SupportAgentIcon from "@mui/icons-material/SupportAgent";
+
 import logo from "../assets/logo.svg";
 const Sidebar = () => {
   const location = useLocation();
@@ -24,6 +27,16 @@ const Sidebar = () => {
       title: "정산금 목록",
       path: "/settlements/list",
       icon: <PaymentIcon />,
+    },
+    {
+      title: "경기 목록",
+      path: "/games/list",
+      icon: <SportsBasketballIcon />,
+    },
+    {
+      title: "문의 목록",
+      path: "/support/list",
+      icon: <SupportAgentIcon />,
     },
   ];
 
