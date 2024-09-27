@@ -1,13 +1,42 @@
-import { Button } from "@mui/material";
+import { Button, FormControl, InputLabel, MenuItem } from "@mui/material";
 import TransactionDetails from "./TransactionDetails";
 import UserDetails from "./UserDetails";
 import DrawerHeader from "../common/DrawerHeader";
+import { TransferField } from "../../interface/payment";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { useState } from "react";
+import { usePaymentStatusHook } from "../../hook/usePaymentStatusHook";
 
 interface DrawerProps {
+  paymentDetailsData: {
+    status_code: number;
+    message: string;
+    data: TransferField;
+  };
   setOpenDrawer: (arg: boolean) => void;
 }
 
-const Drawer = ({ setOpenDrawer }: DrawerProps) => {
+const Drawer = ({ paymentDetailsData, setOpenDrawer }: DrawerProps) => {
+  const [transferStatus, setTransferStatus] = useState("");
+
+  const { mutate: paymentStatusMutate } = usePaymentStatusHook();
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setTransferStatus(event.target.value as string);
+  };
+
+  const handleChangePaymentStatus = () => {
+    paymentStatusMutate({
+      transferId: paymentDetailsData?.data.id,
+      data: {
+        transfer_status:
+          transferStatus === ""
+            ? paymentDetailsData?.data.transfer_status
+            : transferStatus,
+      },
+    });
+    setOpenDrawer(false);
+  };
   return (
     <aside
       onClick={() => setOpenDrawer(false)}
@@ -25,11 +54,57 @@ const Drawer = ({ setOpenDrawer }: DrawerProps) => {
           <DrawerHeader setOpenDrawer={setOpenDrawer} />
           <div className="px-[2rem] space-y-8">
             <UserDetails />
-            <TransactionDetails />
+            <TransactionDetails paymentDetailsData={paymentDetailsData?.data} />
           </div>
         </div>
         {/* button */}
-        <div className="w-full p-4 ">
+        <div className="w-full p-4 space-y-4 ">
+          <FormControl fullWidth>
+            <InputLabel
+              style={{
+                backgroundColor: "#fff",
+                paddingRight: "4px",
+                paddingLeft: " 4px",
+              }}
+            >
+              {" "}
+              이체 상태를 변경하기
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={transferStatus}
+              onChange={handleChange}
+              style={{
+                border: "none",
+              }}
+            >
+              <MenuItem
+                value="completed"
+                disabled={
+                  paymentDetailsData?.data.transfer_status === "completed"
+                }
+              >
+                이체 완료
+              </MenuItem>
+              <MenuItem
+                value="waiting"
+                disabled={
+                  paymentDetailsData?.data.transfer_status === "waiting"
+                }
+              >
+                이체 대기중
+              </MenuItem>
+              <MenuItem
+                value="declined"
+                disabled={
+                  paymentDetailsData?.data.transfer_status === "declined"
+                }
+              >
+                이체 거부됨
+              </MenuItem>
+            </Select>
+          </FormControl>
           <Button
             style={{
               height: "52px",
@@ -38,6 +113,7 @@ const Drawer = ({ setOpenDrawer }: DrawerProps) => {
               fontWeight: 500,
             }}
             variant="contained"
+            onClick={handleChangePaymentStatus}
           >
             저장하기
           </Button>

@@ -20,7 +20,8 @@ export const useUserStore = create<UserStore>()(
             isLoggedIn: false,
             user: null,
             login: () => {
-                const userLocalStorage = localStorage.getItem('accessToken');
+                // const userLocalStorage = localStorage.getItem('accessToken');
+                const userLocalStorage = sessionStorage.getItem('accessToken');
                 if (userLocalStorage) {
                     set({ isLoggedIn: true })
 
@@ -28,7 +29,8 @@ export const useUserStore = create<UserStore>()(
             },
             logout: () => {
                 set({ isLoggedIn: false });
-                localStorage.removeItem('accessToken');
+                sessionStorage.removeItem('accessToken');
+                // localStorage.removeItem('accessToken');
 
             },
         }),

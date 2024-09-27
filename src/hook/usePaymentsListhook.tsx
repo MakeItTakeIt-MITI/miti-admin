@@ -3,7 +3,7 @@ import { paymentsListData } from "../api/payments";
 
 export const usePaymentsListhook = (page: number) => {
   return useQuery({
-    queryKey: ["Payments list", page],
+    queryKey: ["Payments List", page],
     queryFn: () => paymentsListData(page),
   });
 };

@@ -10,6 +10,7 @@ import { usePaymentsListhook } from "../hook/usePaymentsListhook";
 import { TransferField } from "../interface/payment";
 import Drawer from "../components/settlements/Drawer";
 import { usePaymentDetailsHook } from "../hook/usePaymentDetailsHook";
+import { Chip } from "@mui/material";
 
 const Settlements = () => {
   const { isLoggedIn } = useUserStore();
@@ -22,8 +23,7 @@ const Settlements = () => {
   const { data: paymentsData } = usePaymentsListhook(1);
   const endIndex = paymentsData?.data.end_index;
 
-  const { data } = usePaymentDetailsHook(paymentId);
-  console.log(data);
+  const { data: paymentDetailsData } = usePaymentDetailsHook(paymentId);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -33,7 +33,12 @@ const Settlements = () => {
 
   return (
     <section className="flex h-screen bg-[#f8f8f9]">
-      {openDrawer && <Drawer setOpenDrawer={setOpenDrawer} />}
+      {openDrawer && (
+        <Drawer
+          paymentDetailsData={paymentDetailsData}
+          setOpenDrawer={setOpenDrawer}
+        />
+      )}
       <Sidebar />
       <div className="p-10 space-y-6 w-full">
         <div className=" bg-white rounded-[12px] p-4 flex items-center gap-2">
@@ -81,12 +86,26 @@ const Settlements = () => {
                             })}
                           </td>
                           <td>{payment.account_number}1</td>
-                          <td>{payment.transfer_status}</td>
+                          <td>
+                            {payment?.transfer_status === "waiting" && (
+                              <Chip label="대기중" color="warning" />
+                            )}
+                            {payment?.transfer_status === "completed" && (
+                              <Chip label="완료" color="primary" />
+                            )}
+                            {payment?.transfer_status === "declined" && (
+                              <Chip label="거부됨" color="error" />
+                            )}
+                          </td>
                           <td>{payment.created_at.slice(0, 10)}</td>
                           <td>
                             {payment.transferred_at === null
                               ? "이체 내역 없음"
-                              : payment.transferred_at}
+                              : `${
+                                  payment.transferred_at.slice(0, 10) +
+                                  " " +
+                                  payment.transferred_at.slice(11, 16)
+                                }`}
                           </td>
                           <td>
                             <PostAddIcon

@@ -84,9 +84,14 @@ const Drawer = ({
             <CourtDetails gameDetailData={gameDetailData} />
 
             {reportStatus === "concluded" ? (
-              <h1 className="text-center font-bold text-green-600 ">
-                신가처리가 이미 완료 되었어요.
-              </h1>
+              <Button
+                disabled
+                variant="contained"
+                color="success"
+                className="text-center font-bold text-green-600 "
+              >
+                신고 처리가 완료되었습니다.
+              </Button>
             ) : (
               <div className="flex flex-col gap-4">
                 <h2 className="text-md  font-bold ">

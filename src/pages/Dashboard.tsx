@@ -12,6 +12,7 @@ const Dashboard = () => {
       navigate("/");
     }
   }, [navigate, isLoggedIn]);
+
   return (
     <div className="flex h-screen bg-[#f8f8f9]">
       <Sidebar />
