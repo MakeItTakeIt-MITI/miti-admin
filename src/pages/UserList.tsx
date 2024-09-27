@@ -71,17 +71,15 @@ const UserList = () => {
                       <td>{user.signup_method}</td>
                       <td>
                         {user.suspended_until === null ? (
-                          <div
+                          <span
                             onClick={() => {
                               setUserId(user.id);
                               setOpen(true);
                             }}
-                            className="flex justify-center"
+                            className="text-white bg-red-400 border-2 py-1 px-2 border-red-400 cursor-pointer rounded-lg "
                           >
-                            <p className="bg-[#dd0000b1] text-[12px] text-white font-bold py-1 border-2  rounded-lg w-20 hover:opacity-85 cursor-pointer">
-                              사용자 정지
-                            </p>
-                          </div>
+                            정지하기
+                          </span>
                         ) : (
                           <Button disabled>{user.suspended_until} 만료</Button>
                         )}
