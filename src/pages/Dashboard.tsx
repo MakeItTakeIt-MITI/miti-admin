@@ -7,14 +7,20 @@ import SportsBasketballIcon from "@mui/icons-material/SportsBasketball";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 
 const Dashboard = () => {
-  const { isLoggedIn } = useUserStore();
+  const { isLoggedIn, logout } = useUserStore();
   const navigate = useNavigate();
+
+  const userSessionStorage = sessionStorage.getItem("accessToken");
 
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/");
     }
-  }, [navigate, isLoggedIn]);
+
+    if (!userSessionStorage) {
+      logout();
+    }
+  }, [navigate, isLoggedIn, logout, userSessionStorage]);
 
   return (
     <div className="flex h-screen bg-[#f8f8f9]">

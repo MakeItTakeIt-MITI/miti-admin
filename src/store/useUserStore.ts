@@ -21,10 +21,11 @@ export const useUserStore = create<UserStore>()(
             user: null,
             login: () => {
                 // const userLocalStorage = localStorage.getItem('accessToken');
-                const userLocalStorage = sessionStorage.getItem('accessToken');
-                if (userLocalStorage) {
+                const userSessionStorage = sessionStorage.getItem('accessToken');
+                if (userSessionStorage) {
                     set({ isLoggedIn: true })
-
+                } else if (!userSessionStorage) {
+                    set({ isLoggedIn: false })
                 }
             },
             logout: () => {

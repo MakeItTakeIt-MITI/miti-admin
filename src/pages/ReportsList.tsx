@@ -11,7 +11,6 @@ import PaginationBtns from "../components/common/PaginationBtns";
 import { ReportField } from "../interface/reports";
 import Drawer from "../components/reports/Drawer";
 import { useReportersListHook } from "../hook/useReportersListHook";
-import { Chip } from "@mui/material";
 
 const ReportsList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -22,7 +21,7 @@ const ReportsList = () => {
 
   console.log(reportId);
 
-  const { isLoggedIn } = useUserStore();
+  const { isLoggedIn, logout } = useUserStore();
   const navigate = useNavigate();
 
   const { data: reportsListData } = useReportsListHook(currentPage);
@@ -30,11 +29,17 @@ const ReportsList = () => {
 
   const endIndex = reportsListData?.data.end_index;
 
+  const userSessionStorage = sessionStorage.getItem("accessToken");
+
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/");
     }
-  }, [navigate, isLoggedIn]);
+
+    if (!userSessionStorage) {
+      logout();
+    }
+  }, [navigate, isLoggedIn, logout, userSessionStorage]);
 
   return (
     <section className="flex h-screen bg-[#f8f8f9] relative">
@@ -55,11 +60,11 @@ const ReportsList = () => {
           <h1 className="font-bold text-[28px]">신고 목록</h1>
         </div>
 
-        <div className="bg-white rounded-[12px] p-4 min-h-[40rem] flex flex-col  justify-between ">
+        <div className="bg-white rounded-[12px] p-4 min-h-[50rem] flex flex-col  justify-between ">
           <>
             <table
               style={{ tableLayout: "fixed" }}
-              cellPadding="10"
+              cellPadding="12"
               className="w-full h-full"
             >
               <thead>
@@ -98,38 +103,16 @@ const ReportsList = () => {
                           {page.category === "etc" && "기타"} */}
                         </td>
                         <td>
-                          {page.report_status === "waiting" && (
-                            <Chip
-                              label="대기중"
-                              color="warning"
-                              style={{ width: "150px" }}
-                            />
-                          )}
+                          {page.report_status === "waiting" && "대기중"}
 
-                          {page.report_status === "evidence_requested" && (
-                            <Chip
-                              label="관련 자료 요청 상태"
-                              color="secondary"
-                              style={{ width: "150px" }}
-                            />
-                          )}
+                          {page.report_status === "evidence_requested" &&
+                            "관련 자료 요청 상태"}
 
-                          {page.report_status ===
-                            "investigation_in_progress" && (
-                            <Chip
-                              label="신고 처리중"
-                              color="success"
-                              style={{ width: "150px" }}
-                            />
-                          )}
+                          {page.report_status === "investigation_in_progress" &&
+                            "신고 처리중"}
 
-                          {page.report_status === "concluded" && (
-                            <Chip
-                              label="신고 처리 완료"
-                              color="primary"
-                              style={{ width: "150px" }}
-                            />
-                          )}
+                          {page.report_status === "concluded" &&
+                            "신고 처리 완료"}
                         </td>
                         <td>
                           {page.created_at.slice(0, 10)} (

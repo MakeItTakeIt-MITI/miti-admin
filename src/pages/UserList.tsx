@@ -14,20 +14,25 @@ const UserList = () => {
   const [userId, setUserId] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const { isLoggedIn } = useUserStore();
+  const { isLoggedIn, logout } = useUserStore();
   const navigate = useNavigate();
 
   const { data } = useUsersListHook(currentPage);
-  console.log(data);
+
   const endIndex = data?.data.end_index;
   const userData = data?.data.page_content;
 
-  // console.lodata);
+  const userSessionStorage = sessionStorage.getItem("accessToken");
+
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/");
     }
-  }, [navigate, isLoggedIn]);
+
+    if (!userSessionStorage) {
+      logout();
+    }
+  }, [navigate, isLoggedIn, logout, userSessionStorage]);
 
   return (
     <section className="flex h-screen bg-[#f8f8f9] relative">

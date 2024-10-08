@@ -34,7 +34,7 @@ const Sidebar = () => {
       icon: <SportsBasketballIcon />,
     },
     {
-      title: "문의 목록",
+      title: "익명 문의 목록",
       path: "/support/list",
       icon: <SupportAgentIcon />,
     },

@@ -10,10 +10,9 @@ import { usePaymentsListhook } from "../hook/usePaymentsListhook";
 import { TransferField } from "../interface/payment";
 import Drawer from "../components/settlements/Drawer";
 import { usePaymentDetailsHook } from "../hook/usePaymentDetailsHook";
-import { Chip } from "@mui/material";
 
 const Settlements = () => {
-  const { isLoggedIn } = useUserStore();
+  const { isLoggedIn, logout } = useUserStore();
   const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -25,11 +24,17 @@ const Settlements = () => {
 
   const { data: paymentDetailsData } = usePaymentDetailsHook(paymentId);
 
+  const userSessionStorage = sessionStorage.getItem("accessToken");
+
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/");
     }
-  }, [navigate, isLoggedIn]);
+
+    if (!userSessionStorage) {
+      logout();
+    }
+  }, [navigate, isLoggedIn, logout, userSessionStorage]);
 
   return (
     <section className="flex h-screen bg-[#f8f8f9]">
@@ -88,26 +93,10 @@ const Settlements = () => {
                           </td>
                           <td>{payment.account_number}1</td>
                           <td>
-                            {payment?.transfer_status === "waiting" && (
-                              <Chip
-                                label="대기중"
-                                color="warning"
-                                style={{ width: "70px" }}
-                              />
-                            )}
-                            {payment?.transfer_status === "completed" && (
-                              <Chip
-                                label="완료"
-                                color="primary"
-                                style={{ width: "70px" }}
-                              />
-                            )}
+                            {payment?.transfer_status === "waiting" && "대기중"}
+                            {payment?.transfer_status === "completed" && "완료"}
                             {payment?.transfer_status === "declined" && (
-                              <Chip
-                                label="거부됨"
-                                color="error"
-                                style={{ width: "70px" }}
-                              />
+                              <span className="text-red-500">거부됨</span>
                             )}
                           </td>
                           <td>{payment.created_at.slice(0, 10)}</td>
