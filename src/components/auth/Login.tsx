@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+// import { Input } from "../ui/input";
+
 import { useLoginHook } from "../../hook/useLoginHook";
 import { useUserStore } from "../../store/useUserStore";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { Button } from "@mui/material";
 
 type Inputs = {
   email: string;
@@ -31,40 +32,55 @@ const Login = () => {
     }
   }, [isLoggedIn, navigate]);
   return (
-    <section className="w-[40%] h-full flex flex-col gap-4 items-center justify-center px-[8rem]">
-      <h1 className=" font-bold text-2xl text-white">관리자 로그인</h1>
+    <div className="bg-white   w-[70rem] h-full flex flex-col gap-12 items-center justify-center px-[8rem]">
+      <h1 className=" font-bold text-3xl ">관리자 로그인</h1>
 
-      <form className="space-y-4 w-full" onSubmit={handleSubmit(onSubmit)}>
-        <Input
+      <form
+        className="flex flex-col gap-6 w-full"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <input
           {...register("email")}
           value={email}
           placeholder="이메일"
           type="email"
-          autoComplete="false"
-          className="bg-white"
+          autoComplete="email"
+          className="bg-white px-3 py-2 text-sm rounded-lg border border-gray-200"
         />
 
-        <Input
+        <input
           {...register("password")}
           value={password}
           placeholder="비밀번호"
           type="password"
-          autoComplete="false"
-          className="bg-white"
+          autoComplete="off"
+          className="bg-white px-3 py-2 text-sm rounded-lg border border-gray-200"
         />
-        <Button className="w-full">로그인</Button>
+        <Button type="submit" variant="contained" className="w-full">
+          로그인
+        </Button>
+        <div className="text-sm text-center text-[#999] font-[500]">
+          <span>회원이 아니신가요? </span>{" "}
+          <a
+            href="https://www.makeittakeit.kr/support/inquiries/new"
+            className="underline text-[#999]"
+            target="_blank"
+          >
+            문의하기
+          </a>
+        </div>
+        {statusCode === 403 && errorCode == 140 && (
+          <p className="text-red-500 font-[400] text-center text-[13px]">
+            해당 이메일은 관리자 권한이 없습니다.
+          </p>
+        )}
+        {statusCode === 401 && errorCode == 140 && (
+          <p className="text-red-500 font-[400] text-center text-[13px]">
+            해당 이메일로 등록된 회원이 없습니다.
+          </p>
+        )}
       </form>
-      {statusCode === 403 && errorCode == 140 && (
-        <p className="text-red-500 font-[400] text-[13px]">
-          해당 이메일은 관리자 권한이 없습니다.
-        </p>
-      )}
-      {statusCode === 401 && errorCode == 140 && (
-        <p className="text-red-500 font-[400] text-[13px]">
-          해당 이메일로 등록된 회원이 없습니다.
-        </p>
-      )}
-    </section>
+    </div>
   );
 };
 
