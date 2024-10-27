@@ -6,7 +6,7 @@ const GameDetails = () => {
   const gameId = Number(id);
   const { data } = useGameDetailsDataHook(gameId);
   console.log(data);
-  return <div>{id}</div>;
+  return <section></section>;
 };
 
 export default GameDetails;

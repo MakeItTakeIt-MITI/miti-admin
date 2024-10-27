@@ -8,16 +8,6 @@ const Logout = () => {
   const router = useNavigate();
 
   return (
-    // <button
-    //   type="button"
-    //   onClick={() => {
-    //     logout();
-    //     router("/");
-    //   }}
-    //   className="hover:opacity-90 text-[12px]  text-white   w-full rounded-lg  font-semibold"
-    // >
-    //   로그아웃
-    // </button>
     <Button
       onClick={() => {
         logout();

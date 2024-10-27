@@ -32,7 +32,7 @@ const Login = () => {
     }
   }, [isLoggedIn, navigate]);
   return (
-    <div className="bg-white   w-[70rem] h-full flex flex-col gap-12 items-center justify-center px-[8rem]">
+    <div className="bg-white min-h-screen   w-[70rem]  flex flex-col gap-12 items-center justify-center px-[8rem]">
       <h1 className=" font-bold text-3xl ">관리자 로그인</h1>
 
       <form
