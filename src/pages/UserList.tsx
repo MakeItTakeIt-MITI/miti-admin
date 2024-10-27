@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import { useUserStore } from "../store/useUserStore";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
 import { useUsersListHook } from "../hook/useUsersListHook";
 import PaginationBtns from "../components/common/PaginationBtns";
 import { UserField } from "../interface/users";
-import { Button } from "@mui/material";
 import SuspendModal from "../components/common/SuspendModal";
-import GroupIcon from "@mui/icons-material/Group";
 
 const UserList = () => {
   const [open, setOpen] = useState(false);
@@ -35,21 +32,20 @@ const UserList = () => {
   }, [navigate, isLoggedIn, logout, userSessionStorage]);
 
   return (
-    <section className="flex h-screen bg-[#f8f8f9] relative">
+    <section className="min-h-screen bg-[#e6e5e5] pt-[6rem] py-[4rem]">
       {open && <SuspendModal setOpen={setOpen} open={open} userId={userId} />}
-      <Sidebar />
-      <div className="p-10 space-y-6 w-full">
-        <div className=" bg-white rounded-[12px] p-4 flex items-center gap-2">
-          <GroupIcon fontSize="large" />
-          <h1 className="font-bold text-[28px]">회원 관리</h1>
-        </div>
 
-        <div className="bg-white rounded-[12px] p-4 min-h-[30rem]  space-y-6  ">
+      <div className="w-full px-[8rem] space-y-8  ">
+        <h1 className="font-bold text-xl bg-[#fdfdfd] h-[4rem] flex items-center py-2 px-4 rounded-xl">
+          회원 정보 및 정지상태 관리
+        </h1>
+
+        <div className="bg-white rounded-[12px] px-4 py-6 min-h-[50rem]  flex flex-col justify-between ">
           {userData?.length >= 1 ? (
             <>
               <table
                 style={{ tableLayout: "fixed" }}
-                cellPadding="10"
+                cellPadding="19"
                 className="w-full h-full"
               >
                 <thead>
@@ -86,7 +82,7 @@ const UserList = () => {
                             정지하기
                           </span>
                         ) : (
-                          <Button disabled>{user.suspended_until} 만료</Button>
+                          <span>{user.suspended_until} 만료</span>
                         )}
                       </td>
                     </tr>

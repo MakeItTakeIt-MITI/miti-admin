@@ -106,7 +106,9 @@ const Navbar = () => {
           <CloseIcon />
         )}
       </button>
-      <h1 className="font-bold text-3xl">MITI</h1>
+      <h1 className="font-bold text-2xl">
+        {location.pathname === "/dashboard/main" && "MITI"}
+      </h1>
 
       <div className="space-x-4">
         <NotificationsIcon />

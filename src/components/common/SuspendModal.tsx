@@ -48,21 +48,13 @@ const SuspendModal = ({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          {/* <FormLabel
-            style={{
-              fontSize: " 14px",
-              fontWeight: "bold",
-            }}
-          >
-            정지 기간을 숫자로 입력해주세요.
-          </FormLabel> */}
           <TextField
             type="number"
             style={{
               width: "100%",
             }}
             id="outlined-basic"
-            label="   정지 기간을 입력해주세요."
+            label="정지 기간을 입력해주세요."
             variant="outlined"
             onChange={(e) => setInput(e.target.value)}
           />
