@@ -97,7 +97,7 @@ const Navbar = () => {
         location.pathname === "/" || location.pathname === "/auth"
           ? "hidden"
           : "block"
-      } fixed h-[4rem] bg-[#fdfdfd] w-full flex items-center justify-between px-[1rem] `}
+      } fixed h-[4rem] bg-[#fdfdfd] w-full flex items-center justify-between px-[1rem]  drop-b-shadow-sm border`}
     >
       <button onClick={handleToggleSidebar}>
         {!displaySideBar ? (
@@ -121,7 +121,7 @@ const Navbar = () => {
           onClick={(e) => {
             e.stopPropagation();
           }}
-          className="p-4 absolute min-h-screen w-[20rem] left-0 top-full bottom-0 bg-[#fdfdfd] drop-r-shadow-sm border	"
+          className="p-4 absolute min-h-screen w-[20rem] left-0 top-full bottom-0 bg-[#fdfdfd] drop-l-shadow-sm border	"
         >
           <ul className="flex flex-col gap-3 font-[500] text-[14px]">
             {NAVIGATION.map((nav, index) => (

@@ -35,7 +35,7 @@ const UserList = () => {
     <section className="min-h-screen bg-[#e6e5e5] pt-[6rem] py-[4rem]">
       {open && <SuspendModal setOpen={setOpen} open={open} userId={userId} />}
 
-      <div className="w-full px-[8rem] space-y-8  ">
+      <div className="w-[82rem]  mx-auto px-[8rem] space-y-8  ">
         <h1 className="font-bold text-xl bg-[#fdfdfd] h-[4rem] flex items-center py-2 px-4 rounded-xl">
           회원 정보 및 정지상태 관리
         </h1>

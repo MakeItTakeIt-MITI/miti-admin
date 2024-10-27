@@ -14,6 +14,7 @@ import ReportsList from "./pages/ReportsList.tsx";
 import GamesList from "./pages/GamesList.tsx";
 import PrivateInquiriesList from "./pages/PrivateInquiriesList.tsx";
 import GameDetails from "./pages/GameDetails.tsx";
+import ReportDetails from "./pages/ReportDetails.tsx";
 
 const queryClient = new QueryClient();
 
@@ -27,7 +28,10 @@ const router = createBrowserRouter([
       { element: <UserList />, path: "/users/list" },
       {
         path: "/reports",
-        children: [{ path: "category", element: <ReportsList /> }],
+        children: [
+          { path: "category", element: <ReportsList /> },
+          { path: "category/:id", element: <ReportDetails /> },
+        ],
       },
       {
         path: "settlements",
