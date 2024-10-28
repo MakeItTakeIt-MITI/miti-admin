@@ -35,26 +35,28 @@ const PrivateInquiriesList = () => {
   }, [navigate, isLoggedIn, logout, userSessionStorage]);
 
   return (
-    <section className="flex h-screen bg-[#f8f8f9] relative">
+    <section className="min-h-screen bg-[#e6e5e5] pt-[6rem] py-[4rem]">
       {displayModal && (
         <InquiryDetail
           setDisplayModal={setDisplayModal}
           inquiryId={inquiryId}
         />
       )}
-      <Sidebar />
-      <div className="p-10 space-y-6 w-full">
-        <div className=" bg-white rounded-[12px] p-4 flex items-center gap-2">
+      {/* <Sidebar /> */}
+      <div className="w-[82rem]  mx-auto px-[8rem] space-y-8  ">
+        {/* <div className=" bg-white rounded-[12px] p-4 flex items-center gap-2">
           <SupportAgentIcon fontSize="large" />
           <h1 className="font-bold text-[28px]">익명 문의 목록</h1>
-        </div>
-
-        <div className="bg-white rounded-[12px] p-4 min-h-[40rem]  flex flex-col justify-between  ">
+        </div> */}
+        <h1 className="font-bold text-xl bg-[#fdfdfd] h-[4rem] flex items-center py-2 px-4 rounded-xl">
+          익명 문의 목록
+        </h1>
+        <div className="bg-white rounded-[12px] p-4 min-h-[50rem]  flex flex-col justify-between  ">
           {privateInquriyData?.length >= 1 ? (
             <>
               <table
                 style={{ tableLayout: "fixed" }}
-                cellPadding="10"
+                cellPadding="16"
                 className="w-full h-full"
               >
                 <thead>

@@ -7,23 +7,23 @@ import FindInPageIcon from "@mui/icons-material/FindInPage";
 
 import PaginationBtns from "../components/common/PaginationBtns";
 import { ReportField } from "../interface/reports";
-import Drawer from "../components/reports/Drawer";
-import { useReportersListHook } from "../hook/useReportersListHook";
+// import Drawer from "../components/reports/Drawer";
+// import { useReportersListHook } from "../hook/useReportersListHook";
 
 const ReportsList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [openDrawer, setOpenDrawer] = useState(false);
-  const [gameId, setGameId] = useState<null | number>(null);
-  const [reportId, setReportId] = useState<null | number>(null);
-  const [reportStatus, setReportStatus] = useState("string");
+  // const [openDrawer, setOpenDrawer] = useState(false);
+  // const [gameId, setGameId] = useState<null | number>(null);
+  // const [reportId, setReportId] = useState<null | number>(null);
+  // const [reportStatus, setReportStatus] = useState("string");
 
-  console.log(reportId);
+  // console.log(reportId);
 
   const { isLoggedIn, logout } = useUserStore();
   const navigate = useNavigate();
 
   const { data: reportsListData } = useReportsListHook(currentPage);
-  const { data: reportersListData } = useReportersListHook(gameId);
+  // const { data: reportersListData } = useReportersListHook(gameId);
 
   const endIndex = reportsListData?.data.end_index;
 
@@ -42,13 +42,13 @@ const ReportsList = () => {
   return (
     <section className="min-h-screen bg-[#e6e5e5] pt-[6rem] py-[4rem]">
       {/*  */}
-      {openDrawer && (
+      {/* {openDrawer && (
         <Drawer
           setOpenDrawer={setOpenDrawer}
           reportersListData={reportersListData}
           reportStatus={reportStatus}
         />
-      )}
+      )} */}
       {/*  */}
 
       <div className="w-[82rem]  mx-auto px-[8rem] space-y-8  ">
@@ -122,7 +122,7 @@ const ReportsList = () => {
                           {page.created_at.slice(11, 16)})
                         </td>
                         <td>
-                          <Link to={`${page.game}`}>
+                          <Link to={`${page.game}/${page.id}`}>
                             <FindInPageIcon
                               sx={{ color: "gray" }}
                               className="hover:cursor-pointer"

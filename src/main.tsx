@@ -30,7 +30,10 @@ const router = createBrowserRouter([
         path: "/reports",
         children: [
           { path: "category", element: <ReportsList /> },
-          { path: "category/:id", element: <ReportDetails /> },
+          {
+            path: "category/:reported_game_id/:report_id",
+            element: <ReportDetails />,
+          },
         ],
       },
       {

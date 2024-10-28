@@ -10,7 +10,11 @@ export const usePenalizeGameHook = () => {
       data,
     }: {
       gameId: number | null;
-      data: { penalty: string; duration: number | null };
+      data: {
+        penalty: string;
+        duration: number | null;
+        refund_participation_payment: boolean | undefined;
+      };
     }) => penalizeGame(gameId, data),
     onSuccess: () => {
       //   queryClient.invalidateQueries("Users");

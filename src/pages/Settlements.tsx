@@ -37,21 +37,24 @@ const Settlements = () => {
   }, [navigate, isLoggedIn, logout, userSessionStorage]);
 
   return (
-    <section className="flex h-screen bg-[#f8f8f9]">
+    <section className="min-h-screen bg-[#e6e5e5] pt-[6rem] py-[4rem]">
       {openDrawer && (
         <Drawer
           paymentDetailsData={paymentDetailsData}
           setOpenDrawer={setOpenDrawer}
         />
       )}
-      <Sidebar />
-      <div className="p-10 space-y-6 w-full">
-        <div className=" bg-white rounded-[12px] p-4 flex items-center gap-2">
+      {/* <Sidebar /> */}
+      <div className="w-[82rem]  mx-auto px-[8rem] space-y-8  ">
+        <h1 className="font-bold text-xl bg-[#fdfdfd] h-[4rem] flex items-center py-2 px-4 rounded-xl">
+          정산금 목록
+        </h1>
+        {/* <div className=" bg-white rounded-[12px] p-4 flex items-center gap-2">
           <PaymentIcon fontSize="large" />
 
           <h1 className="font-bold text-[28px]">정산금 목록</h1>
-        </div>
-        <div className="bg-white rounded-[12px] p-4 min-h-[40rem] flex flex-col  justify-between ">
+        </div> */}
+        <div className="bg-white rounded-[12px] p-4 min-h-[50rem] flex flex-col  justify-between ">
           <>
             <table
               style={{ tableLayout: "fixed" }}

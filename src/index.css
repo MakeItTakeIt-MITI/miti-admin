@@ -17,6 +17,7 @@
   -moz-osx-font-smoothing: grayscale;
 } */
 html {
+  scrollbar-width: "thin";
 }
 
 body {

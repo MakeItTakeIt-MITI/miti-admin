@@ -97,7 +97,7 @@ const Navbar = () => {
         location.pathname === "/" || location.pathname === "/auth"
           ? "hidden"
           : "block"
-      } fixed h-[4rem] bg-[#fdfdfd] w-full flex items-center justify-between px-[1rem]  drop-b-shadow-sm border`}
+      } fixed h-[4rem] bg-[#fdfdfd] w-full flex items-center justify-between px-[1rem]  drop-b-shadow-sm border z-[9999]`}
     >
       <button onClick={handleToggleSidebar}>
         {!displaySideBar ? (
