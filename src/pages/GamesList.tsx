@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useUserStore } from "../store/useUserStore";
 import { Link, useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
+// import Sidebar from "../components/Sidebar";
 import PaginationBtns from "../components/common/PaginationBtns";
-import SportsBasketballIcon from "@mui/icons-material/SportsBasketball";
+// import SportsBasketballIcon from "@mui/icons-material/SportsBasketball";
 import { useGamesListHook } from "../hook/useGamesListHook";
 import FeedIcon from "@mui/icons-material/Feed";
 import { Game } from "../interface/game";

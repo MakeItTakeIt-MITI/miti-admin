@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useUserStore } from "../store/useUserStore";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
-import PaymentIcon from "@mui/icons-material/Payment";
+// import Sidebar from "../components/Sidebar";
+// import PaymentIcon from "@mui/icons-material/Payment";
 import PaginationBtns from "../components/common/PaginationBtns";
 
 import PostAddIcon from "@mui/icons-material/PostAdd";
@@ -19,7 +19,7 @@ const Settlements = () => {
   const [paymentId, setPaymentId] = useState<null | number>(null);
   const [openDrawer, setOpenDrawer] = useState(false);
 
-  const { data: paymentsData } = usePaymentsListhook(1);
+  const { data: paymentsData } = usePaymentsListhook(currentPage);
   const endIndex = paymentsData?.data.end_index;
 
   const { data: paymentDetailsData } = usePaymentDetailsHook(paymentId);

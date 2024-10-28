@@ -215,7 +215,7 @@ const ReportDetails = () => {
             경고, 정지, 또는 기각 처리를 해주시기 바랍니다.
           </p>
           <p className="text-sm text-gray-500">
-            "신고 처리가 완료된 경기는 수정이 불가능합니다."
+            *신고 처리가 완료된 경기는 수정이 불가능합니다.
           </p>
         </div>
         <div className=" bg-[#fdfdfd] h-[6rem] py-4 px-4 rounded-xl flex items-center justify-center gap-3">

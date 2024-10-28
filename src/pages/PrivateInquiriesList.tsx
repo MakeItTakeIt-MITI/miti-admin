@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useUserStore } from "../store/useUserStore";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
+// import Sidebar from "../components/Sidebar";
 import PaginationBtns from "../components/common/PaginationBtns";
-import SupportAgentIcon from "@mui/icons-material/SupportAgent";
+// import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import { usePrivateInquiriesHook } from "../hook/usePrivateInquiriesHook";
 import { PrivateInquiryField } from "../interface/support";
 import FeedIcon from "@mui/icons-material/Feed";
