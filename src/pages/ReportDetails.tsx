@@ -24,7 +24,7 @@ const ReportDetails = () => {
   const [displayReportBox, setDisplayReportBox] = useState(false);
   const [reportType, setReportType] = useState("");
   const [refundPayment, setRefundPayment] = useState<boolean | undefined>(
-    undefined
+    false
   );
   const [suspendDays, setSuspendDays] = useState<null | number>(null);
 
@@ -51,7 +51,6 @@ const ReportDetails = () => {
     } else if (reportType === "warning") {
       const data = {
         penalty: "warning",
-        duration: null,
         refund_participation_payment: refundPayment,
       };
 
@@ -60,9 +59,8 @@ const ReportDetails = () => {
       console.log("경고");
     } else if (reportType === "suspend") {
       const data = {
-        penalty: "suspend",
+        penalty: "suspension",
         duration: suspendDays,
-        refund_participation_payment: undefined,
       };
 
       mutatePenalize({ gameId: reportDetailsData?.data.game.id, data });

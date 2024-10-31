@@ -36,9 +36,9 @@ export const dismissUserReport = async (reportedGameId: number | null) => {
     }
 }
 
-export const penalizeGame = async (gameId: number | null, data: { penalty: string, duration: number | null, refund_participation_payment: boolean | undefined }) => {
+export const penalizeGame = async (gameId: number | null, data: { penalty: string, duration?: number | null, refund_participation_payment?: boolean | undefined }) => {
     try {
-        const response = await axiosUrl.post(`/admin/games/${gameId}/reports/dismiss`, data)
+        const response = await axiosUrl.post(`/admin/games/${gameId}/reports/penalize`, data)
         return response.data
     } catch {
         throw new Error
