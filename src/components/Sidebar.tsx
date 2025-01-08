@@ -6,6 +6,7 @@ import FlagIcon from "@mui/icons-material/Flag";
 import PaymentIcon from "@mui/icons-material/Payment";
 import SportsBasketballIcon from "@mui/icons-material/SportsBasketball";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
+import ReceiptIcon from "@mui/icons-material/Receipt";
 
 import logo from "../assets/logo.svg";
 const Sidebar = () => {
@@ -37,6 +38,11 @@ const Sidebar = () => {
       title: "익명 문의 목록",
       path: "/support/list",
       icon: <SupportAgentIcon />,
+    },
+    {
+      title: "결제완료 목록",
+      path: "payments/list",
+      icon: <ReceiptIcon />,
     },
   ];
 

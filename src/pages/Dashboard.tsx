@@ -7,6 +7,7 @@ import FlagIcon from "@mui/icons-material/Flag";
 import PaymentIcon from "@mui/icons-material/Payment";
 import SportsBasketballIcon from "@mui/icons-material/SportsBasketball";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
+import ReceiptIcon from "@mui/icons-material/Receipt";
 
 const Dashboard = () => {
   const { isLoggedIn, logout } = useUserStore();
@@ -33,45 +34,44 @@ const Dashboard = () => {
 
   return (
     <section className="min-h-screen bg-[#e6e5e5] pt-[6rem] py-[4rem]">
-      <div className="max-w-[52rem]  mx-auto space-y-4 ">
+      <div className="max-w-[62rem]  mx-auto space-y-4 ">
         <h1 className="font-bold text-3xl">바로가기</h1>
         <div className="flex gap-4 ">
-          <div className="bg-[#fdfdfd] w-[15rem] h-[6rem] rounded-xl p-3 flex  items-center  justify-center drop-shadow-sm">
-            <Link to="/users/list" className="flex flex-col gap-1 items-center">
+          <div className="bg-[#fdfdfd]  w-[15rem] h-[6rem] rounded-xl p-3 flex  items-center  justify-center drop-shadow-sm">
+            <Link to="/users" className="flex flex-col gap-1 items-center">
               {" "}
               <GroupIcon />
               <span>회원</span>
             </Link>
           </div>
           <div className="bg-[#fdfdfd] w-[15rem] h-[6rem] rounded-xl p-3 flex  items-center  justify-center drop-shadow-sm">
-            <Link
-              to="/reports/category"
-              className="flex flex-col gap-1 items-center"
-            >
+            <Link to="/reports" className="flex flex-col gap-1 items-center">
               <FlagIcon /> <span> 신고</span>
             </Link>
           </div>
           <div className="bg-[#fdfdfd] w-[15rem] h-[6rem] rounded-xl p-3 flex  items-center  justify-center drop-shadow-sm">
             <Link
-              to="/settlements/list"
+              to="/settlements"
               className="flex flex-col gap-1 items-center"
             >
               <PaymentIcon /> <span> 정산</span>
             </Link>
           </div>
-        </div>
-        <div className="flex gap-4 ">
           <div className="bg-[#fdfdfd] w-[15rem] h-[6rem] rounded-xl p-3 flex  items-center  justify-center drop-shadow-sm">
-            <Link to="/games/list" className="flex flex-col gap-1 items-center">
+            <Link to="/games" className="flex flex-col gap-1 items-center">
               <SportsBasketballIcon /> <span> 경기</span>
             </Link>
           </div>
+        </div>
+        <div className="flex gap-4 ">
           <div className="bg-[#fdfdfd] w-[15rem] h-[6rem] rounded-xl p-3 flex  items-center justify-center drop-shadow-sm">
-            <Link
-              to="/support/list"
-              className="flex flex-col gap-1 items-center"
-            >
+            <Link to="/support" className="flex flex-col gap-1 items-center">
               <SupportAgentIcon /> <span>문의</span>
+            </Link>
+          </div>
+          <div className="bg-[#fdfdfd] w-[15rem] h-[6rem] rounded-xl p-3 flex  items-center justify-center drop-shadow-sm">
+            <Link to="/payments" className="flex flex-col gap-1 items-center">
+              <ReceiptIcon /> <span>결제</span>
             </Link>
           </div>
         </div>

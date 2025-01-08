@@ -11,6 +11,7 @@ import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import CloseIcon from "@mui/icons-material/Close";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import ReceiptIcon from "@mui/icons-material/Receipt";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -50,37 +51,42 @@ const Navbar = () => {
   const NAVIGATION = [
     {
       title: "대시보드",
-      path: "/dashboard/main",
+      path: "/dashboard",
       icon: <DashboardIcon />,
     },
-    { title: "회원 관리", path: "/users/list", icon: <GroupIcon /> },
+    { title: "회원 관리", path: "/users", icon: <GroupIcon /> },
     {
       title: "신고 목록",
-      path: "/reports/category",
+      path: "/reports",
       icon: <FlagIcon />,
     },
 
     {
-      title: "정산금 목록",
-      path: "/settlements/list",
+      title: "정산금 요청 목록",
+      path: "/settlements",
       icon: <PaymentIcon />,
     },
     {
       title: "경기 목록",
-      path: "/games/list",
+      path: "/games",
       icon: <SportsBasketballIcon />,
     },
     {
       title: "익명 문의 목록",
-      path: "/support/list",
+      path: "/support",
       icon: <SupportAgentIcon />,
+    },
+    {
+      title: "결제완료 목록",
+      path: "payments",
+      icon: <ReceiptIcon />,
     },
   ];
 
   const PROFILE = [
     {
       title: "프로필",
-      path: "/dashboard/main",
+      path: "/dashboard",
       icon: <AccountBoxIcon />,
     },
 

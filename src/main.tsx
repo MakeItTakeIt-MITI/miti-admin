@@ -15,6 +15,8 @@ import GamesList from "./pages/GamesList.tsx";
 import PrivateInquiriesList from "./pages/PrivateInquiriesList.tsx";
 import GameDetails from "./pages/GameDetails.tsx";
 import ReportDetails from "./pages/ReportDetails.tsx";
+import NotFound from "./pages/NotFound.tsx";
+import GamePayments from "./pages/GamePayments.tsx";
 
 const queryClient = new QueryClient();
 
@@ -24,33 +26,35 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { element: <Auth />, path: "/" },
-      { element: <Dashboard />, path: "/dashboard/main" },
-      { element: <UserList />, path: "/users/list" },
+      { element: <Dashboard />, path: "/dashboard" },
+      { element: <UserList />, path: "/users" },
       {
         path: "/reports",
         children: [
-          { path: "category", element: <ReportsList /> },
+          { path: "", element: <ReportsList /> },
           {
-            path: "category/:reported_game_id/:report_id",
+            path: ":reported_game_id/:report_id",
             element: <ReportDetails />,
           },
         ],
       },
       {
         path: "settlements",
-        children: [{ path: "list", element: <Settlements /> }],
+        children: [{ path: "", element: <Settlements /> }],
       },
       {
         path: "games",
         children: [
-          { path: "list", element: <GamesList /> },
+          { path: "", element: <GamesList /> },
           { path: ":id", element: <GameDetails /> },
         ],
       },
       {
         path: "support",
-        children: [{ path: "list", element: <PrivateInquiriesList /> }],
+        children: [{ path: "", element: <PrivateInquiriesList /> }],
       },
+      { path: "payments", element: <GamePayments /> },
+      { path: "*", element: <NotFound /> },
     ],
   },
 ]);
