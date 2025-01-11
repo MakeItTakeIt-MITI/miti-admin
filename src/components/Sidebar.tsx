@@ -6,6 +6,7 @@ import FlagIcon from "@mui/icons-material/Flag";
 import PaymentIcon from "@mui/icons-material/Payment";
 import SportsBasketballIcon from "@mui/icons-material/SportsBasketball";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
+import ReceiptIcon from "@mui/icons-material/Receipt";
 
 import logo from "../assets/logo.svg";
 const Sidebar = () => {
@@ -13,7 +14,7 @@ const Sidebar = () => {
   const NAVITEMS = [
     {
       title: "대시보드",
-      path: "/dashboard/main",
+      path: "/dashboard",
       icon: <DashboardIcon />,
     },
     { title: "회원 관리", path: "/users/list", icon: <GroupIcon /> },
@@ -38,10 +39,15 @@ const Sidebar = () => {
       path: "/support/list",
       icon: <SupportAgentIcon />,
     },
+    {
+      title: "결제완료 목록",
+      path: "payments/list",
+      icon: <ReceiptIcon />,
+    },
   ];
 
   return (
-    <aside className="w-[300px] h-full bg-[#fff] text-[#000] flex flex-col">
+    <aside className="w-[300px] min-h-screen  bg-[#fff] text-[#000] flex flex-col">
       <div className="flex items-center justify-center h-[10rem] w-full bg-black ">
         <img src={logo} alt="logo" />
       </div>

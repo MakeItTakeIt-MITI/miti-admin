@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useUserStore } from "../store/useUserStore";
 import { Link, useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
+// import Sidebar from "../components/Sidebar";
 import PaginationBtns from "../components/common/PaginationBtns";
-import SportsBasketballIcon from "@mui/icons-material/SportsBasketball";
+// import SportsBasketballIcon from "@mui/icons-material/SportsBasketball";
 import { useGamesListHook } from "../hook/useGamesListHook";
 import FeedIcon from "@mui/icons-material/Feed";
 import { Game } from "../interface/game";
@@ -32,20 +32,23 @@ const GamesList = () => {
   }, [navigate, isLoggedIn, logout, userSessionStorage]);
 
   return (
-    <section className="flex h-screen bg-[#f8f8f9] relative">
-      <Sidebar />
-      <div className="p-10 space-y-6 w-full">
-        <div className=" bg-white rounded-[12px] p-4 flex items-center gap-2">
+    <section className="min-h-screen bg-[#e6e5e5] pt-[6rem] py-[4rem]">
+      {/* <Sidebar /> */}
+      <div className="w-[82rem]  mx-auto px-[8rem] space-y-8  ">
+        <h1 className="font-bold text-xl bg-[#fdfdfd] h-[4rem] flex items-center py-2 px-4 rounded-xl">
+          경기 목록
+        </h1>
+        {/* <div className=" bg-white rounded-[12px] p-4 flex items-center gap-2">
           <SportsBasketballIcon fontSize="large" />
           <h1 className="font-bold text-[28px]">경기 목록</h1>
-        </div>
+        </div> */}
 
         <div className="bg-white rounded-[12px] p-4 min-h-[50rem] flex flex-col justify-between  space-y-6  ">
           {gameData?.length >= 1 ? (
             <>
               <table
                 style={{ tableLayout: "fixed" }}
-                cellPadding="14"
+                cellPadding="16"
                 className="w-full h-full"
               >
                 <thead>
