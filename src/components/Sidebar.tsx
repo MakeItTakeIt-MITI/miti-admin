@@ -14,7 +14,7 @@ const Sidebar = () => {
   const NAVITEMS = [
     {
       title: "대시보드",
-      path: "/dashboard/main",
+      path: "/dashboard",
       icon: <DashboardIcon />,
     },
     { title: "회원 관리", path: "/users/list", icon: <GroupIcon /> },

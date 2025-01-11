@@ -29,3 +29,13 @@ export const paymentStatusChange = async (transferId: number | null, data: {
         throw new Error
     }
 };
+
+
+export const gamePayments = async (page: number | null | undefined, year: number | null | undefined, month: number | null | undefined) => {
+    try {
+        const response = await axiosUrl.get(`/admin/payment-list?page=${page}&year=${year}&month=${month}`)
+        return response.data
+    } catch (error) {
+        console.log(error)
+    }
+}

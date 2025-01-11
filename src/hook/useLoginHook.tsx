@@ -16,7 +16,7 @@ export const useLoginHook = () => {
         sessionStorage.setItem("accessToken", access);
         sessionStorage.setItem("refreshToken", refresh);
         login(response.data);
-        navigate("/dashboard/main");
+        navigate("/dashboard");
       }
     },
   });
