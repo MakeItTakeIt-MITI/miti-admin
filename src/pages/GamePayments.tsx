@@ -3,18 +3,18 @@ import { useState } from "react";
 
 import PaginationBtns from "../components/common/PaginationBtns";
 import { useGamePaymentsListHook } from "../hook/useReceiptListHook";
-import { Link } from "react-router-dom";
-import DateBox from "../components/common/DateBox";
+// import { Link } from "react-router-dom";
+// import DateBox from "../components/common/DateBox";
 
 const GamePayments = () => {
-  const [displayFilter, setDisplayFilter] = useState(false);
+  // const [setDisplayFilter] = useState(false);
 
   const date = new Date();
   const thisMonth = date.getMonth() + 1;
   const thisYear = date.getFullYear();
 
-  const [year, setYear] = useState(thisYear);
-  const [month, setMonth] = useState(thisMonth);
+  const [year, _setYear] = useState(thisYear);
+  const [month, _setMonth] = useState(thisMonth);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const { data } = useGamePaymentsListHook(currentPage, year, month);
@@ -22,7 +22,7 @@ const GamePayments = () => {
   const monthlyPayment = data?.data?.monthly_payment;
   const paymentList = data?.data?.page_content;
 
-  const handleDisplayFilter = () => setDisplayFilter(true);
+  // const handleDisplayFilter = () => setDisplayFilter(true);
 
   return (
     <section className="min-h-screen bg-[#e6e5e5] pt-[6rem] py-[4rem] overflow-hidden">
@@ -33,7 +33,10 @@ const GamePayments = () => {
         <div className=" bg-[#fdfdfd] h-[4rem] flex items-center justify-between py-2 px-8 rounded-xl">
           <h1 className="text-xl font-bold "> 결제완료 목록</h1>
           <div className="flex items-center gap-[5px] text-md font-semibold">
-            <button type="button" onClick={handleDisplayFilter}>
+            <button
+              type="button"
+              // onClick={handleDisplayFilter}
+            >
               {" "}
               <EditCalendarIcon fontSize="medium" />
             </button>
@@ -119,7 +122,7 @@ const GamePayments = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {paymentList?.map((payment) => (
+                  {paymentList?.map((payment: any) => (
                     <tr
                       key={payment?.id}
                       className=" border-b border-gray-200 text-center text-[14px] hover:bg-gray-100"
@@ -151,11 +154,7 @@ const GamePayments = () => {
                 </tbody>
               </table>
             </>
-          ) : (
-            <h1 className="flex items-center justify-center font-bold text-xl">
-              경기 목록이 없습니다.
-            </h1>
-          )}
+          ) : null}
         </div>
         <PaginationBtns
           spacing={2}
