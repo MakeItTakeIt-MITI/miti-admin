@@ -13,14 +13,19 @@ const GamePayments = () => {
   const thisMonth = date.getMonth() + 1;
   const thisYear = date.getFullYear();
 
-  const [year, _setYear] = useState(thisYear);
-  const [month, _setMonth] = useState(thisMonth);
+  const [year, setYear] = useState(thisYear);
+  const [month, setMonth] = useState(thisMonth);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const { data } = useGamePaymentsListHook(currentPage, year, month);
 
   const monthlyPayment = data?.data?.monthly_payment;
   const paymentList = data?.data?.page_content;
+
+  const handleSetDate = (year, month) => {
+    setYear(year);
+    setMonth(month);
+  };
 
   // const handleDisplayFilter = () => setDisplayFilter(true);
 
@@ -29,7 +34,7 @@ const GamePayments = () => {
       {/* {displayFilter && (
         <DateBox setOpen={handleDisplayFilter} open={true} userId={1} />
       )} */}
-      <div className="w-[120rem]  mx-auto px-[10rem] space-y-8  ">
+      <div className="w-full  mx-auto px-[10rem] space-y-8  ">
         <div className=" bg-[#fdfdfd] h-[4rem] flex items-center justify-between py-2 px-8 rounded-xl">
           <h1 className="text-xl font-bold "> 결제완료 목록</h1>
           <div className="flex items-center gap-[5px] text-md font-semibold">
