@@ -22,7 +22,7 @@ const GamePayments = () => {
   const monthlyPayment = data?.data?.monthly_payment;
   const paymentList = data?.data?.page_content;
 
-  const handleSetDate = (year, month) => {
+  const handleSetDate = () => {
     setYear(year);
     setMonth(month);
   };
@@ -38,10 +38,7 @@ const GamePayments = () => {
         <div className=" bg-[#fdfdfd] h-[4rem] flex items-center justify-between py-2 px-8 rounded-xl">
           <h1 className="text-xl font-bold "> 결제완료 목록</h1>
           <div className="flex items-center gap-[5px] text-md font-semibold">
-            <button
-              type="button"
-              // onClick={handleDisplayFilter}
-            >
+            <button type="button" onClick={handleSetDate}>
               {" "}
               <EditCalendarIcon fontSize="medium" />
             </button>
