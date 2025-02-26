@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Auth from "./pages/Auth.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
-import UserList from "./pages/UserList.tsx";
+import UserList from "./pages/users/UserList.tsx";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Settlements from "./pages/Settlements.tsx";
@@ -17,6 +17,7 @@ import GameDetails from "./pages/GameDetails.tsx";
 import ReportDetails from "./pages/ReportDetails.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import GamePayments from "./pages/GamePayments.tsx";
+import { UserDetails } from "./pages/users/UserDetails.tsx";
 
 const queryClient = new QueryClient();
 
@@ -27,7 +28,13 @@ const router = createBrowserRouter([
     children: [
       { element: <Auth />, path: "/" },
       { element: <Dashboard />, path: "/dashboard" },
-      { element: <UserList />, path: "/users" },
+      {
+        path: "/users",
+        children: [
+          { path: "", element: <UserList /> },
+          { path: ":userId", element: <UserDetails /> },
+        ],
+      },
       {
         path: "/reports",
         children: [
