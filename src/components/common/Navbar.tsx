@@ -1,49 +1,23 @@
-import MenuIcon from "@mui/icons-material/Menu";
-import { useState } from "react";
+// import MenuIcon from "@mui/icons-material/Menu";
 
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import GroupIcon from "@mui/icons-material/Group";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FlagIcon from "@mui/icons-material/Flag";
 import PaymentIcon from "@mui/icons-material/Payment";
 import SportsBasketballIcon from "@mui/icons-material/SportsBasketball";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import CloseIcon from "@mui/icons-material/Close";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ReceiptIcon from "@mui/icons-material/Receipt";
-
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
 import { useUserStore } from "../../store/useUserStore";
 
 const Navbar = () => {
-  const [displaySideBar, setDisplaySideBar] = useState(false);
-  const [displayProfileTab, setDisplayProfileTab] = useState(false);
-
   const { logout } = useUserStore();
 
   const router = useNavigate();
 
-  const handleCloseAllSidebars = () => {
-    setDisplaySideBar(false);
-    setDisplayProfileTab(false);
-  };
-
   const handleLogout = () => {
     logout();
     router("/");
-    handleCloseAllSidebars();
-  };
-
-  const handleToggleSidebar = () => {
-    setDisplayProfileTab(false);
-    setDisplaySideBar(!displaySideBar);
-  };
-
-  const handleToggleProfileTab = () => {
-    setDisplaySideBar(false);
-    setDisplayProfileTab(!displayProfileTab);
   };
 
   const location = useLocation();
@@ -54,7 +28,7 @@ const Navbar = () => {
       path: "/dashboard",
       icon: <DashboardIcon />,
     },
-    { title: "회원 관리", path: "/users", icon: <GroupIcon /> },
+    { title: "회원 목록", path: "/users", icon: <GroupIcon /> },
     {
       title: "신고 목록",
       path: "/reports",
@@ -78,22 +52,8 @@ const Navbar = () => {
     },
     {
       title: "결제완료 목록",
-      path: "payments",
+      path: "/payments",
       icon: <ReceiptIcon />,
-    },
-  ];
-
-  const PROFILE = [
-    {
-      title: "프로필",
-      path: "/dashboard",
-      icon: <AccountBoxIcon />,
-    },
-
-    {
-      title: "로그아웃",
-      path: "/",
-      icon: <ExitToAppIcon />,
     },
   ];
 
@@ -103,83 +63,30 @@ const Navbar = () => {
         location.pathname === "/" || location.pathname === "/auth"
           ? "hidden"
           : "block"
-      } fixed h-[4rem] bg-[#fdfdfd] w-full flex items-center justify-between px-[1rem]  drop-b-shadow-sm border z-[9999]`}
+      }  h-[4rem] bg-[#000] text-white w-full flex items-center justify-between px-[1rem]  drop-b-shadow-sm  z-[9999]`}
     >
-      <button onClick={handleToggleSidebar}>
-        {!displaySideBar ? (
-          <MenuIcon fontSize="medium" sx={{ color: "black" }} />
-        ) : (
-          <CloseIcon />
-        )}
-      </button>
-      <h1 className="font-bold text-2xl">
-        {location.pathname === "/dashboard/main" && "MITI"}
-      </h1>
-
-      <div className="space-x-4">
-        <NotificationsIcon />
-        <button onClick={handleToggleProfileTab}>
-          {displayProfileTab ? <CloseIcon /> : <AccountBoxIcon />}
-        </button>
+      <div className="flex items-center gap-6">
+        <h1 className="font-bold text-2xl">MITI</h1>
+        <ul className="flex items-center  gap-4 font-[400] ">
+          {NAVIGATION.map((nav, index) => (
+            <li key={index}>
+              <Link
+                className=" text-[16px] font-semibold "
+                to={nav.path}
+                style={{
+                  color: location.pathname === nav.path ? "#fff" : "#717171",
+                }}
+              >
+                {nav.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
-      {displaySideBar && (
-        <aside
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-          className="p-4 absolute min-h-screen w-[20rem] left-0 top-full bottom-0 bg-[#fdfdfd] drop-l-shadow-sm border	"
-        >
-          <ul className="flex flex-col gap-3 font-[500] text-[14px]">
-            {NAVIGATION.map((nav, index) => (
-              <li key={index}>
-                <Link
-                  className="  h-[2.5rem] rounded-lg px-2 py-1 flex items-center "
-                  to={nav.path}
-                  onClick={handleCloseAllSidebars}
-                  style={{
-                    borderRadius: "4px",
-                    color: location.pathname === nav.path ? "#0048d7" : "000",
-                  }}
-                >
-                  <div className="flex items-center gap-3 ">
-                    <div> {nav.icon}</div>
-                    <h2> {nav.title}</h2>
-                    {location.pathname !== nav.path &&
-                      index !== NAVIGATION.length - 1 && <hr />}
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </aside>
-      )}
-      {displayProfileTab && (
-        <aside
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-          className="p-4 absolute min-h-screen w-[20rem] right-0 top-full bottom-0 bg-[#fdfdfd] drop-r-shadow-sm border	"
-        >
-          <ul className="flex flex-col gap-3 font-[500] text-[14px]">
-            {PROFILE.map((nav, index) => (
-              <li key={index}>
-                <Link
-                  className="  h-[2.5rem] rounded-lg px-2 py-1 flex items-center"
-                  to={nav.path}
-                  onClick={nav.title === "로그아웃" ? handleLogout : undefined}
-                >
-                  <div className="flex items-center  gap-3 ">
-                    <div> {nav.icon}</div>
-                    <h2> {nav.title}</h2>
-                    {location.pathname !== nav.path &&
-                      index !== NAVIGATION.length - 1 && <hr />}
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </aside>
-      )}
+
+      <button type="button" className="hover:font-bold" onClick={handleLogout}>
+        로그아웃
+      </button>
     </nav>
   );
 };
