@@ -66,14 +66,16 @@ const UserList = () => {
 
                     <li className="w-[10%] text-center  ">1996.05.19</li>
                     <li className="w-[20%] text-center  ">010-2584-0519</li>
-                    <Link
-                      to="123"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-[10%] text-center"
-                    >
-                      <PersonSearchIcon />
-                    </Link>
+                    <button type="button">
+                      <Link
+                        to="123"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-[10%] text-center"
+                      >
+                        <PersonSearchIcon />
+                      </Link>
+                    </button>
                   </ul>
                 );
               }
