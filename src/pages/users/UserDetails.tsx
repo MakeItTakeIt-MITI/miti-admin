@@ -1,6 +1,8 @@
 import { PageLayout } from "../../features/common/PageLayout";
 import { useGetUserDetails } from "../../features/users/hooks/useGetUserDetails";
 import { useParams } from "react-router-dom";
+import { useSuspendUser } from "../../features/users/hooks/useSuspendUser";
+import { useState } from "react";
 /**
  * 
  * 렌더링 정보 : id, 이메일, 닉네임, 이름, 생년월일, 가입수단, 연락처, 프로필 이미지, 가입일시, 
@@ -9,10 +11,23 @@ import { useParams } from "react-router-dom";
 회원 정지
  */
 export const UserDetails = () => {
+  const [suspendDays, setSuspendDays] = useState(0);
   const { userId } = useParams();
-  console.log(userId);
-  const { data } = useGetUserDetails(Number(userId));
 
+  const { data } = useGetUserDetails(Number(userId));
+  const { mutate } = useSuspendUser(Number(userId), suspendDays);
+
+  const handleSuspendDays = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSuspendDays(Number(e.target.value));
+  };
+
+  const handleSuspendUser = () => {
+    if (suspendDays <= 0) {
+      alert("정지 기간을 입력해주세요.");
+      return;
+    }
+    mutate();
+  };
   const userData = data?.data;
   return (
     <PageLayout>
@@ -55,12 +70,22 @@ export const UserDetails = () => {
           </ul>
         </div>
       </div>
-      <button
-        className="w-[20rem] h-[3rem] bg-red-600 text-white  rounded-lg  hover:brightness-110 mx-auto "
-        type="button"
-      >
-        사용자 정지
-      </button>
+      <div className="flex flex-col gap-4 items-center justify-center">
+        <input
+          type="number"
+          value={suspendDays}
+          onChange={handleSuspendDays}
+          placeholder="정지 기간을 입력해주세요."
+          className="text-sm px-2 h-[3rem] rounded-lg w-[20rem] border border-gray-200"
+        />
+        <button
+          className="w-[20rem] h-[3rem] bg-red-600 text-white rounded-lg hover:brightness-110 mx-auto"
+          type="button"
+          onClick={handleSuspendUser}
+        >
+          사용자 정지
+        </button>
+      </div>
     </PageLayout>
   );
 };
