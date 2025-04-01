@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Button } from "@mui/material";
 import { useUserStore } from "../store/useUserStore";
-import { useLoginHook } from "../hook/useLoginHook";
+import { useLoginHook } from "../features/auth/hooks/useLoginHook";
 
 type Inputs = {
   email: string;

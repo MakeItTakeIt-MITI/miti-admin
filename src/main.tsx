@@ -11,13 +11,14 @@ import UserList from "./pages/users/UserList.tsx";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Settlements from "./pages/Settlements.tsx";
 import ReportsList from "./pages/ReportsList.tsx";
-import GamesList from "./pages/GamesList.tsx";
-import PrivateInquiriesList from "./pages/PrivateInquiriesList.tsx";
+import GamesList from "./pages/games/GamesList.tsx";
+import PrivateInquiriesList from "./pages/inquiries/PrivateInquiriesList.tsx";
 import GameDetails from "./pages/GameDetails.tsx";
 import ReportDetails from "./pages/ReportDetails.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import GamePayments from "./pages/GamePayments.tsx";
 import { UserDetails } from "./pages/users/UserDetails.tsx";
+import { Details } from "./pages/inquiries/Details.tsx";
 
 const queryClient = new QueryClient();
 
@@ -40,7 +41,7 @@ const router = createBrowserRouter([
         children: [
           { path: "", element: <ReportsList /> },
           {
-            path: ":reported_game_id/:report_id",
+            path: ":reportId",
             element: <ReportDetails />,
           },
         ],
@@ -58,7 +59,10 @@ const router = createBrowserRouter([
       },
       {
         path: "support",
-        children: [{ path: "", element: <PrivateInquiriesList /> }],
+        children: [
+          { path: "", element: <PrivateInquiriesList /> },
+          { path: ":id", element: <Details /> },
+        ],
       },
       { path: "payments", element: <GamePayments /> },
       { path: "*", element: <NotFound /> },

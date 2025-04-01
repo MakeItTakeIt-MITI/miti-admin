@@ -213,73 +213,79 @@ const GameDetails = () => {
                 </ul>{" "}
               </div>{" "}
               <div className="space-y-2  ">
-                {gameParticipantsData?.data.map(
-                  (participant: ParticipationStatus) => (
-                    <div key={participant.id} className="w-full border">
-                      <ul
-                        className={`bg-white  flex w-full h-[42px] items-center  text-sm     transition-all duration-300 
+                {gameParticipantsData?.data.length === 0 ? (
+                  <h1 className="flex justify-center items-center">
+                    경기에 참여자가 없습니다.
+                  </h1>
+                ) : (
+                  gameParticipantsData?.data.map(
+                    (participant: ParticipationStatus) => (
+                      <div key={participant.id} className="w-full border">
+                        <ul
+                          className={`bg-white  flex w-full h-[42px] items-center  text-sm     transition-all duration-300 
 
                    `}
-                      >
-                        <li className="w-[10%] text-center">
-                          {participant.participation_status}
-                        </li>
+                        >
+                          <li className="w-[10%] text-center">
+                            {participant.participation_status}
+                          </li>
 
-                        <li className="w-[10%] text-center">
-                          {participant.user.id}
-                        </li>
-                        <li className="w-[15%] text-center truncate">
-                          {participant.user.nickname}
-                        </li>
-                        <li className="w-[25%] text-center truncate">
-                          {participant.user.email}
-                        </li>
-                        <li className="w-[10%] text-center">
-                          {participant.user.birthday}
-                        </li>
-                        <li className="w-[20%] text-center">
-                          {participant.user.phone}
-                        </li>
-                        <li className="w-[10%] text-center">
-                          <Link to={`/users/${participant.user.id}`}>
-                            <FeedIcon />
-                          </Link>
-                        </li>
-                      </ul>
-                      {/* 성별, 체중, 신장, 포지션, 역할 */}
+                          <li className="w-[10%] text-center">
+                            {participant.user.id}
+                          </li>
+                          <li className="w-[15%] text-center truncate">
+                            {participant.user.nickname}
+                          </li>
+                          <li className="w-[25%] text-center truncate">
+                            {participant.user.email}
+                          </li>
+                          <li className="w-[10%] text-center">
+                            {participant.user.birthday}
+                          </li>
+                          <li className="w-[20%] text-center">
+                            {participant.user.phone}
+                          </li>
+                          <li className="w-[10%] text-center">
+                            <Link to={`/users/${participant.user.id}`}>
+                              <FeedIcon />
+                            </Link>
+                          </li>
+                        </ul>
+                        {/* 성별, 체중, 신장, 포지션, 역할 */}
 
-                      <div className="bg-white h-[62px] flex items-center gap-12 underline px-6  text-sm">
-                        {/* <p className="font-bold text-lg">🏀 프로필 정보</p> */}
-                        <div>
-                          <span className="">nickname </span>:{" "}
-                          {participant.user.nickname}
-                        </div>
-                        <div>
-                          체중:{" "}
-                          {participant.user.player_profile.weight === null
-                            ? "비공개"
-                            : participant.user.player_profile.weight}
-                        </div>
-                        <div>
-                          신장:{" "}
-                          {participant.user.player_profile.height === null
-                            ? "비공개"
-                            : participant.user.player_profile.height}
-                        </div>
-                        <div>
-                          포지션:{" "}
-                          {participant.user.player_profile.position === null
-                            ? "비공개"
-                            : participant.user.player_profile.position}
-                        </div>
-                        <div>
-                          역할:{" "}
-                          {participant.user.player_profile.role === null
-                            ? "비공개"
-                            : participant.user.player_profile.role}
+                        <div className="bg-white h-[62px] flex items-center gap-12 underline px-6  text-sm">
+                          {/* <p className="font-bold text-lg">🏀 프로필 정보</p> */}
+                          <div>
+                            <span className="">nickname </span>:{" "}
+                            {participant.user.nickname}
+                          </div>
+                          <div>
+                            체중:{" "}
+                            {participant.user.player_profile.weight === null
+                              ? "비공개"
+                              : participant.user.player_profile.weight}
+                          </div>
+                          <div>
+                            신장:{" "}
+                            {participant.user.player_profile.height === null
+                              ? "비공개"
+                              : participant.user.player_profile.height}
+                          </div>
+                          <div>
+                            포지션:{" "}
+                            {participant.user.player_profile.position === null
+                              ? "비공개"
+                              : participant.user.player_profile.position}
+                          </div>
+                          <div>
+                            역할:{" "}
+                            {participant.user.player_profile.role === null
+                              ? "비공개"
+                              : participant.user.player_profile.role}
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )
                   )
                 )}
               </div>

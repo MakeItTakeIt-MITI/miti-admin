@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import { useUserStore } from "../store/useUserStore";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 // import Sidebar from "../components/Sidebar";
 // import PaymentIcon from "@mui/icons-material/Payment";
 import PaginationBtns from "../components/common/PaginationBtns";
@@ -12,9 +10,6 @@ import Drawer from "../components/settlements/Drawer";
 import { usePaymentDetailsHook } from "../hook/usePaymentDetailsHook";
 
 const Settlements = () => {
-  const { isLoggedIn, logout } = useUserStore();
-  const navigate = useNavigate();
-
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [paymentId, setPaymentId] = useState<null | number>(null);
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -23,18 +18,6 @@ const Settlements = () => {
   const endIndex = paymentsData?.data.end_index;
 
   const { data: paymentDetailsData } = usePaymentDetailsHook(paymentId);
-
-  const userSessionStorage = sessionStorage.getItem("accessToken");
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/");
-    }
-
-    if (!userSessionStorage) {
-      logout();
-    }
-  }, [navigate, isLoggedIn, logout, userSessionStorage]);
 
   return (
     <section className="min-h-screen bg-[#e6e5e5] pt-[6rem] py-[4rem]">
@@ -76,7 +59,7 @@ const Settlements = () => {
               </thead>
               <tbody className="">
                 {/* {reportsListData?.data.page_content.map((page: ReportField) => ( */}
-                {paymentsData?.data.page_content.length >= 1 &&
+                {paymentsData?.data.page_content?.length >= 1 &&
                   paymentsData?.data.page_content.map(
                     (payment: TransferField) => {
                       return (

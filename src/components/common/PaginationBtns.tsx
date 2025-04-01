@@ -16,14 +16,15 @@ const PaginationBtns = ({
     setCurrentPage(value);
   };
 
-  console.log(currentPage);
-
   return (
     <div className="flex justify-center">
       <Stack spacing={spacing}>
         <Pagination
           count={count}
-          color="primary"
+          // color="#000"
+          style={{
+            color: "#000",
+          }}
           page={currentPage}
           onChange={handlePageChange}
           disabled={count === 0}

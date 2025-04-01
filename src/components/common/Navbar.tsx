@@ -30,6 +30,11 @@ const Navbar = () => {
     },
     { title: "회원 목록", path: "/users", icon: <GroupIcon /> },
     {
+      title: "경기 목록",
+      path: "/games",
+      icon: <SportsBasketballIcon />,
+    },
+    {
       title: "신고 목록",
       path: "/reports",
       icon: <FlagIcon />,
@@ -40,11 +45,7 @@ const Navbar = () => {
       path: "/settlements",
       icon: <PaymentIcon />,
     },
-    {
-      title: "경기 목록",
-      path: "/games",
-      icon: <SportsBasketballIcon />,
-    },
+
     {
       title: "익명 문의 목록",
       path: "/support",
@@ -74,7 +75,9 @@ const Navbar = () => {
                 className=" text-[16px] font-semibold "
                 to={nav.path}
                 style={{
-                  color: location.pathname === nav.path ? "#fff" : "#717171",
+                  color: location.pathname.includes(nav.path)
+                    ? "#fff"
+                    : "#717171",
                 }}
               >
                 {nav.title}

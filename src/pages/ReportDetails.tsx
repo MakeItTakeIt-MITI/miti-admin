@@ -1,484 +1,285 @@
-import { useParams } from "react-router-dom";
-import { useReportersListHook } from "../hook/useReportersListHook";
 import { useState } from "react";
-import { useReportDetailsHook } from "../hook/useReportDetailsHook";
-import { Button } from "@mui/material";
-import MessageIcon from "@mui/icons-material/Message";
-import { useDismissUserReportHook } from "../hook/useDismissUserReportHook";
-import { usePenalizeGameHook } from "../hook/usePenalizeGameHook";
+import { PageHeader } from "../features/common/PageHeader";
+import { PageLayout } from "../features/common/PageLayout";
 
 const ReportDetails = () => {
-  const { reported_game_id, report_id } = useParams();
-  const gameId = Number(reported_game_id);
-  const reportId = Number(report_id);
+  const [activeTab, setActiveTab] = useState<"game" | "reporters">("game");
 
-  const { data } = useReportersListHook(gameId);
-  const { data: reportDetailsData } = useReportDetailsHook(gameId, reportId);
-  const { mutate: mutateDismiss } = useDismissUserReportHook();
-  const { mutate: mutatePenalize } = usePenalizeGameHook();
-
-  const [displayContext, setDisplayContext] = useState(false);
-  const [displayTab, setDisplayTab] = useState(false);
-  const [context, setContext] = useState("");
-  //   const reportType = ["기각", "정지", "경고"];
-  const [list, setList] = useState(false);
-  const [displayReportBox, setDisplayReportBox] = useState(false);
-  const [reportType, setReportType] = useState("");
-  const [refundPayment, setRefundPayment] = useState<boolean | undefined>(
-    false
-  );
-  const [suspendDays, setSuspendDays] = useState<null | number>(null);
-
-  const handleToggleList = () => setList(!list);
-
-  const handleDisplayContext = (input: string) => {
-    setDisplayContext(true);
-    setContext(input);
+  const data = {
+    status_code: 200,
+    message: "OK",
+    data: {
+      id: 2,
+      reportee: {
+        id: 148,
+        email: "xmzcwvh87k@privaterelay.appleid.com",
+        nickname: "김미티",
+        name: "전재완",
+        signup_method: "apple",
+        suspended_until: null,
+      },
+      game: {
+        id: 28526,
+        game_status: "completed",
+        title: "테스트 경기",
+        startdate: "2024-09-14",
+        starttime: "18:50:00",
+        enddate: "2024-09-14",
+        endtime: "19:00:00",
+        max_invitation: 5,
+        min_invitation: 1,
+        fee: 10000,
+        info: "테스트 경기입니다.",
+        court: {
+          id: 1,
+          address: "경기 오산시 동부대로 568번길",
+          address_detail: "87-15",
+          latitude: "37.1529123326082",
+          longitude: "127.088354885662",
+        },
+      },
+      category: "intentional_cheating",
+      content: "테스트용 신고입니다.",
+      report_status: "evidence_requested",
+      created_at: "2024-09-14T18:59:51.355420+09:00",
+    },
   };
+  const reportees = [
+    {
+      id: 8,
+      reportee: 148,
+      game: 31380,
+      category: "intentional_cheating",
+      content: "테스트용 신고입니다.",
+      report_status: "concluded",
+      created_at: "2024-09-24T15:45:41.601262+09:00",
+    },
+    {
+      id: 9,
+      reportee: 148,
+      game: 31380,
+      category: "intentional_cheating",
+      content: "테스트용 신고입니다.",
+      report_status: "concluded",
+      created_at: "2024-09-24T15:45:46.289863+09:00",
+    },
+    {
+      id: 10,
+      reportee: 148,
+      game: 31380,
+      category: "intentional_cheating",
+      content: "테스트용 신고입니다.",
+      report_status: "concluded",
+      created_at: "2024-09-24T15:45:51.959569+09:00",
+    },
+  ];
+  const handleChangeTab = (select: "game" | "reporters") =>
+    setActiveTab(select);
 
-  const handleCloseDisplayText = () => setDisplayContext(false);
-
-  const handleDisplayReportBox = (type: string) => {
-    setReportType(type);
-    setDisplayReportBox(true);
-  };
-  const handleCloseReportBox = () => setDisplayReportBox(false);
-
-  const handleSubmitReport = () => {
-    if (reportType === "dismiss") {
-      mutateDismiss(reportDetailsData?.data.game.id);
-      handleCloseReportBox();
-      console.log("기각");
-    } else if (reportType === "warning") {
-      const data = {
-        penalty: "warning",
-        refund_participation_payment: refundPayment,
-      };
-
-      mutatePenalize({ gameId: reportDetailsData?.data.game.id, data });
-      handleCloseReportBox();
-      console.log("경고");
-    } else if (reportType === "suspend") {
-      const data = {
-        penalty: "suspension",
-        duration: suspendDays,
-      };
-
-      mutatePenalize({ gameId: reportDetailsData?.data.game.id, data });
-      handleCloseReportBox();
-      console.log("정지");
-    }
-  };
-
-  const handleDisplayTab = () => {
-    setDisplayTab(true);
-  };
-
-  const handleHideTab = () => {
-    setDisplayTab(false);
-  };
   return (
-    <section className=" min-h-screen bg-[#e6e5e5] pt-[6rem] py-[4rem]">
-      {/*  신고 내용 */}
-      {displayContext && (
-        <aside
-          onClick={handleCloseDisplayText}
-          className="z-[999]  fixed right-0 top-0 bottom-0 left-0 h-full w-full bg-gray-800 bg-opacity-70  flex items-center justify-center"
-        >
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-            className="rounded-xl bg-white w-[40rem] h-[30rem] border-2 p-6 text-sm flex flex-col justify-between gap-4"
-          >
-            <p className="overflow-y-auto"> {context}</p>
-            <Button
-              type="button"
-              onClick={handleCloseDisplayText}
-              variant="contained"
-              color="primary"
-            >
-              닫기
-            </Button>
-          </div>
-        </aside>
-      )}
-      {/* 신고처리 모달 */}
-      {displayReportBox && (
-        <aside className="z-[999999]  fixed right-0 top-0 bottom-0 left-0 h-full w-full bg-gray-800 bg-opacity-70  flex items-center justify-center">
-          {" "}
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-            className="rounded-xl bg-white w-[20rem] min-h-[10rem] border-2 p-6 text-sm flex flex-col justify-between gap-4"
-          >
-            <p className="font-bold">
-              {reportType === "dismiss"
-                ? "신고를 기각하시겠습니까?"
-                : reportType === "warning"
-                ? "호스트에게 경고를 보내시겠습니까?"
-                : "호스트를 정지하시겠습니까?"}
-            </p>
-            {/* 정지 시, 기간 설정 */}
-            {reportType === "suspend" && (
-              <input
-                type="number"
-                placeholder="정지 일수를 입력해 주세요."
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setSuspendDays(value ? Number(value) : null);
-                }}
-                className="h-full w-full flex items-center justify-center border border-gray-200 p-2 rounded-lg"
-              />
-            )}
-            {/* 경고 시, 환불 여부 */}
-            {reportType === "warning" && (
-              <div className="space-y-2 w-full">
-                <h2 className="font-medium text-gray-700 underline">
-                  환불 여부
-                </h2>
-                <select
-                  className="p-1 h-[2rem] w-full text-sm border border-gray-200 cursor-pointer"
-                  value={refundPayment ? "yes" : "no"}
-                  onChange={(e) => {
-                    const selectedValue = e.target.value;
-                    setRefundPayment(selectedValue === "yes");
-                  }}
-                >
-                  <option value="yes">환불 해드리겠습니다</option>
-                  <option value="no">환불 안하겠습니다</option>
-                </select>
-              </div>
-            )}
-            <div className="flex items-center justify-center gap-2">
-              <Button
-                type="button"
-                onClick={handleSubmitReport}
-                variant="contained"
-                color="error"
-              >
-                확인
-              </Button>
-              <Button
-                type="button"
-                onClick={handleCloseReportBox}
-                variant="contained"
-                color="primary"
-              >
-                닫기
-              </Button>
-            </div>
-          </div>
-        </aside>
-      )}
-
-      {/* tabs */}
-      <div className="w-[82rem] pb-8  mx-auto ">
-        <ul className=" flex gap-[2px] border-b border-gray-300 font-semibold  ">
-          <li
-            onClick={handleHideTab}
-            style={{
-              backgroundColor: !displayTab ? "#4b5563" : "#fff",
-              color: !displayTab ? "#fff" : "#4b5563",
-            }}
-            className="cursor-pointer rounded-tr-2xl w-[18rem] px-6 py-3  hover:bg-gray-600  shadow  text-white  transition-colors duration-300;"
-          >
-            신고 정보
-          </li>
-          <li
-            onClick={handleDisplayTab}
-            style={{
-              backgroundColor: displayTab ? "#4b5563" : "#fff",
-              color: displayTab ? "#fff" : "#4b5563",
-            }}
-            className="cursor-pointer rounded-tr-2xl w-[18rem] px-6 py-3 bg-white  shadow hover:bg-gray-600 hover:text-white  transition-colors duration-300;"
-          >
-            경기/코트 정보
-          </li>
-        </ul>
-      </div>
-
-      <div className="w-[82rem] py-2 px-2  mx-auto space-y-8  ">
-        {!displayTab && (
-          <>
-            <div className="text-xl font-bold space-y-4 ">
-              <span> 신고 상태 </span>
-              <span className="text-sm text-bold text-gray-500">
-                ({" "}
-                {reportDetailsData?.data.report_status === "waiting" &&
-                  "대기중"}
-                {reportDetailsData?.data.report_status ===
-                  "evidence_requested" && "관련 자료 요청 상태"}
-                {reportDetailsData?.data.report_status ===
-                  "investigation_in_progress" && "신고 처리중"}
-                {reportDetailsData?.data.report_status === "concluded" &&
-                  "신고 처리 완료"}
-                )
-              </span>
-              <p className="text-sm text-gray-500">
-                *호스트에 대한 신고 내용을 충분히 확인하시고, 해당 호스트에 대한
-                경고, 정지, 또는 기각 처리를 해주시기 바랍니다.
-              </p>
-              <p className="text-sm text-gray-500">
-                *신고 처리가 완료된 경기는 수정이 불가능합니다.
-              </p>
-            </div>
-            <div className=" bg-[#fdfdfd] h-[6rem] py-4 px-4 rounded-xl flex items-center justify-center gap-3">
-              {" "}
-              <Button
-                variant="contained"
-                color="primary"
-                style={{
-                  height: "50px",
-                  width: "50%",
-                }}
-                disabled={
-                  reportDetailsData?.data.report_status === "concluded"
-                    ? true
-                    : false
-                }
-                onClick={() => handleDisplayReportBox("dismiss")}
-              >
-                호스트에 대한 신고를 기각합니다
-              </Button>{" "}
-              <Button
-                variant="contained"
-                color="warning"
-                style={{
-                  height: "50px",
-                  width: "50%",
-                  zIndex: "0",
-                }}
-                disabled={
-                  reportDetailsData?.data.report_status === "concluded"
-                    ? true
-                    : false
-                }
-                onClick={() => handleDisplayReportBox("warning")}
-              >
-                호스트에게 경고를 주겠습니다{" "}
-              </Button>{" "}
-              <Button
-                variant="contained"
-                color="error"
-                style={{
-                  height: "50px",
-                  width: "50%",
-                }}
-                disabled={
-                  reportDetailsData?.data.report_status === "concluded"
-                    ? true
-                    : false
-                }
-                onClick={() => handleDisplayReportBox("suspend")}
-              >
-                호스트를 정지시키겠습니다
-              </Button>{" "}
-            </div>
-            {/* host */}
-            <h2 className="text-xl font-bold">신고된 호스트의 정보</h2>
-            <div className="border-[4px] border-t-red-600 bg-[#fdfdfd] h-[6rem] py-4 px-4 rounded-xl flex items-center justify-between">
-              <table
-                style={{ tableLayout: "fixed" }}
-                cellPadding="0"
-                className="w-full h-full "
-              >
-                <thead>
-                  <tr className="text-sm">
-                    <th className="py-2 text-left">아이디</th>
-                    <th className="py-2 text-left w-[250px]">이메일</th>
-                    <th className="py-2 text-left">닉네임</th>
-                    <th className="py-2 text-left">이름</th>
-                    <th className="py-2 text-left">정지기간</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="text-sm">
-                    <td>{reportDetailsData?.data.reportee.id}</td>
-                    <td className="truncate">
-                      {reportDetailsData?.data.reportee.email}
-                    </td>
-                    <td>{reportDetailsData?.data.reportee.nickname} </td>
-                    <td>{reportDetailsData?.data.reportee.name}</td>
-                    <td>{reportDetailsData?.data.reportee.suspended_until}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            {/* 신고자 목록 */}
-            <h2 className="text-xl font-bold">
-              신고자 목록 ({data?.data.reports.length})
-            </h2>
-            <div
+    <>
+      {/* 게스트 신고 상세 조회 페이지
+      
+      사용 API
+경기 정보 : 관리자 - 경기 정보 상세 조회 API
+참가 정보 : 관리자 - 참가 상세 조회 API
+해당 참여 전체 신고 목록 정보 : 관리자 - 참가 신고 목록 조회 API*/}
+      <PageHeader title="신고 상세" />
+      <PageLayout>
+        <div className="flex flex-col gap-4 ">
+          <ul className="flex items-center justify-start gap-1 ">
+            <li
+              onClick={() => handleChangeTab("game")}
               style={{
-                scrollbarWidth: "thin",
+                backgroundColor: activeTab === "game" ? "#fff" : "#f5f5f5",
               }}
-              className="border-[4px] border-t-blue-600 bg-[#fdfdfd] h-[40rem] overflow-y-auto py-4 px-4 rounded-xl"
+              className="cursor-pointer w-[170px] h-10 border border-gray-300 flex items-center  py-2 px-2 text-md rounded-tr-2xl font-semibold"
             >
-              <table
-                style={{ tableLayout: "fixed" }}
-                cellPadding="6"
-                className="w-full "
-              >
-                {data?.data.reports.map(
-                  (report: {
-                    id: number;
-                    reportee: string;
-                    category: string;
-                    report_status: string;
-                    created_at: string;
-                    content: string;
-                  }) => {
-                    return (
-                      <>
-                        <thead className="h-[3rem]">
-                          <tr className="text-sm py-4 border-b border-gray-200">
-                            <th className="">신고 ID</th>
-                            <th className=" ">신고자 ID</th>
-                            <th className=" ">신고 주제</th>
-                            <th className=" ">신고 상태</th>
-                            <th className=" ">등록일</th>
-                            <th className=" ">신고 내용</th>
-                          </tr>
-                        </thead>
+              경기/참여 정보
+            </li>
+            <li
+              onClick={() => handleChangeTab("reporters")}
+              style={{
+                backgroundColor: activeTab === "reporters" ? "#fff" : "#f5f5f5",
+              }}
+              className="cursor-pointer w-[170px] h-10 border border-gray-300 bg-white flex items-center  py-2 px-2 text-md rounded-tr-2xl font-semibold"
+            >
+              신고 참가자 목록
+            </li>
+          </ul>
 
-                        <tbody className="space-y-2 ">
-                          <tr className="text-sm text-center border-b border-gray-200">
-                            <td className="">{report.id}</td>
-                            <td>{report.reportee}</td>
-
-                            <td>
-                              <td>{report.category}</td>
-                            </td>
-                            <td>{report.report_status}</td>
-                            <td>{report.created_at.slice(0, 10)}</td>
-                            <td>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  handleDisplayContext(report.content);
-                                }}
-                              >
-                                <MessageIcon />
-                              </button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </>
-                    );
-                  }
-                )}
-              </table>
-            </div>
-          </>
-        )}
-        {displayTab && (
-          <>
-            {/* 경기 정ㅂ */}
-            <h2 className="text-xl font-bold">경기 정보</h2>
-            <div className=" bg-[#fdfdfd] py-4 px-4 rounded-xl flex items-center justify-between">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <h1 className="font-bold text-lg ">{data?.data.title}</h1>
-                  <h1 className="font-semibold text-sm ">
-                    ({" "}
-                    {data?.data.game_status === "canceled" && (
-                      <span className="text-red-500 font-[500]">취소</span>
-                    )}{" "}
-                    {data?.data.game_status === "open" && "모집중"}{" "}
-                    {data?.data.game_status === "closed" && "모집 마감"}{" "}
-                    {data?.data.game_status === "completed" && "진행 완료"} )
+          {activeTab === "game" && (
+            <>
+              <div className="flex items-center justify-between px-6 py-2 h-[8rem] bg-white">
+                <div className="space-y-2">
+                  <h1 className="text-2xl font-semibold ">
+                    [5:5]미티 픽업게임 3파전 토요일
                   </h1>
                 </div>
+                <h2 className=" text-red-600 text-xl font-bold  ">경기 취소</h2>
               </div>
-              <div className=" flex flex-col gap-2">
-                <button
-                  onClick={handleToggleList}
-                  type="button"
-                  className="relative"
-                ></button>
-              </div>
-            </div>
-            {/* second */}
-            <div className="bg-[#fdfdfd] py-4 px-4 rounded-xl">
-              <table
-                style={{ tableLayout: "fixed" }}
-                cellPadding="0"
-                className="w-full h-full"
-              >
-                <thead>
-                  <tr className="text-sm">
-                    <th className="py-2 text-left">아이디</th>
-                    <th className="py-2 text-left">시작</th>
-                    <th className="py-2 text-left">종료</th>
-                    <th className="py-2 text-left">최소 인원</th>
-                    <th className="py-2 text-left">최대 인원</th>
-                    <th className="py-2 text-left">참여비</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="text-sm">
-                    <td>{data?.data.id}</td>
-                    <td>
-                      {data?.data.startdate} ({data?.data.starttime.slice(0, 5)}
-                      ){" "}
-                    </td>
-                    <td>
-                      {data?.data.enddate} ({data?.data.endtime.slice(0, 5)}){" "}
-                    </td>
-                    <td>{data?.data.min_invitation}</td>
-                    <td>{data?.data.max_invitation}</td>
-                    <td>{data?.data.fee}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div
-              style={{
-                scrollbarWidth: "thin",
-              }}
-              className="bg-[#fdfdfd] h-[20rem] overflow-y-auto py-4 px-4 rounded-xl space-y-2"
-            >
-              <h1 className="font-bold ">기타 정보</h1>
-              <p className="text-md"> {data?.data.info} </p>
-            </div>
-            {/* 코트 정보 */}
-            <h2 className="text-xl font-bold">코트 정보</h2>
-            <div className="bg-[#fdfdfd] py-4 px-4 rounded-xl">
-              <table
-                style={{ tableLayout: "fixed" }}
-                cellPadding="0"
-                className="w-full h-full"
-              >
-                <thead>
-                  <tr className="text-sm">
-                    <th className="py-2 text-left">아이디</th>
-                    <th className="py-2 text-left w-[300px]">주소</th>
-                    <th className="py-2 text-left">경도</th>
-                    <th className="py-2 text-left">위도</th>
-                    <th className="py-2 text-left">코트 이름</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="text-sm">
-                    <td>{data?.data.court.id}</td>
-                    <td>
-                      {data?.data.court.address}{" "}
-                      {data?.data.court.address_detail}
-                    </td>
 
-                    <td>{data?.data.court.latitude}</td>
-                    <td>{data?.data.court.longitude}</td>
-                    <td>{data?.data.court.name}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </>
-        )}
-      </div>
-    </section>
+              <hr className="bg-gray-400 rounded-xl" />
+
+              {/* 경기 정보 : id, 경기 상태, 제목, 참가비, 시작 일시, 종료 일시, 최소 모집 인원, 최대 모집 인원, 현재 모집 인원, 참가비, 모집 정보, 생성 일시 */}
+
+              <div className="space-y-8 py-2 px-4 bg-white flex items-center h-[6rem] rounded-md">
+                <div className="flex items-center flex-wrap gap-10 ">
+                  <div className="flex flex-col gap-1">
+                    <h4 className="font-bold">경기 ID </h4>
+                    <p className="text-gray-500">215215</p>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h4 className="font-bold">경기 시작</h4>
+                    <p className="text-gray-500">2024.11.05 (16:00)</p>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h4 className="font-bold">경기 종료</h4>
+                    <p className="text-gray-500">2024.12.12 (18:00)</p>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h4 className="font-bold">경기 상태</h4>
+                    <p className="text-gray-500">취소</p>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h4 className="font-bold">참가비</h4>
+                    <p className="text-gray-500">10,000</p>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h4 className="font-bold">최소 인원</h4>
+                    <p className="text-gray-500">12</p>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h4 className="font-bold">최대 인원</h4>
+                    <p className="text-gray-500">18</p>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h4 className="font-bold">현재 모집 인원</h4>
+                    <p className="text-gray-500">14</p>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h4 className="font-bold">경기 생성일</h4>
+                    <p className="text-gray-500">2024.15.22</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 코트 정보 */}
+              <div className="space-y-8 py-2 px-4 bg-white flex items-center h-[6rem] rounded-md">
+                <div className="flex items-center flex-wrap gap-10 ">
+                  <div className="flex flex-col gap-1">
+                    <h4 className="font-bold">코트 ID </h4>
+                    <p className="text-gray-500">215215</p>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h4 className="font-bold">주소</h4>
+                    <p className="text-gray-500">
+                      울 동대문구 경희대로 1 (회기동)
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h4 className="font-bold">상세 주소</h4>
+                    <p className="text-gray-500">miti at ku</p>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h4 className="font-bold">latitude</h4>
+                    <p className="text-gray-500">37.51252152151</p>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h4 className="font-bold">longitude</h4>
+                    <p className="text-gray-500">127.241512515</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 모집 정보 */}
+              <p
+                style={{ scrollbarWidth: "thin" }}
+                className="flex justify-between px-4 py-2 bg-white h-[20rem] overflow-y-auto"
+              >
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Eveniet, eos? Deserunt facilis suscipit, delectus numquam beatae
+                harum quaerat, dolor eos esse ratione ad quam at, ducimus culpa
+                assumenda rerum blanditiis! Lorem ipsum dolor, sit amet
+                consectetur adipisicing elit. Laborum, adipisci. lorem100
+              </p>
+            </>
+          )}
+
+          {activeTab === "reporters" && (
+            <>
+              <div className="flex flex-col gap-2  bg-white">
+                <ul className="flex w-full  items-center  py-4">
+                  <li className="font-bold  w-[10%] text-center ">신고 ID</li>
+                  <li className="font-bold  w-[10%] text-center ">신고자 ID</li>
+                  {/* <li className="font-bold  w-[15%] text-center ">피신고자</li> */}
+                  <li className="font-bold  w-[20%] text-center ">경기 ID</li>
+                  <li className="font-bold  w-[10%] text-center ">
+                    신고 카테고리
+                  </li>
+                  <li className="font-bold  w-[10%] text-center ">신고 내용</li>
+                  <li className="font-bold  w-[10%] text-center ">신고 상태</li>
+                  <li className="font-bold  w-[15%] text-center ">신고 일시</li>
+                </ul>{" "}
+              </div>{" "}
+              <div className="flex flex-col gap-2 py-4 bg-white">
+                {reportees.map((participant, index) => (
+                  <div key={participant.id} className="w-full">
+                    <ul className="flex w-full  text-sm  transition-all duration-300 ">
+                      <li className="w-[10%] text-center">{participant.id}</li>
+                      <li className="w-[10%] text-center">
+                        {participant.reportee}
+                      </li>
+                      <li className="w-[15%] text-center truncate">
+                        {participant.game}
+                      </li>
+                      <li className="w-[20%] text-center truncate">
+                        {participant.category}
+                      </li>
+                      <li className="w-[10%] text-center">
+                        {participant.content}
+                      </li>
+                      <li className="w-[10%] text-center">
+                        {participant.report_status}
+                      </li>
+                      <li className="w-[10%] text-center">
+                        {participant.created_at}
+                      </li>{" "}
+                      {/* <li className="w-[15%] text-center">
+                        {participant.created_at}
+                      </li> */}
+                      {/* <li className="w-[10%] text-center">
+                        <button onClick={() => toggleExpand(index)}>
+                          <KeyboardDoubleArrowDownIcon
+                            className={`transition-transform duration-300 ${
+                              expandedItems[index] ? "rotate-180" : ""
+                            }`}
+                          />
+                        </button>
+                      </li> */}
+                    </ul>
+                    {/* 성별, 체중, 신장, 포지션, 역할 */}
+                    {/* {expandedItems[index] && (
+                      <>
+                        <div className="p-4 my-2 bg-white w-[800px] mx-auto flex flex-col justify-center items-center">
+                          <p className="font-bold text-lg">🏀 프로필 정보</p>
+                          <div>성별: {participant.nickname}</div>
+                          <div>체중: 86kg</div>
+                          <div>신장: 188cm</div>
+                          <div>포지션: Position</div>
+                          <div>역할: Role</div>
+                        </div>
+                        <hr />
+                      </>
+                    )} */}
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      </PageLayout>
+    </>
   );
 };
 

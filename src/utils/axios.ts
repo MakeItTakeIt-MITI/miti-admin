@@ -14,7 +14,7 @@ const axiosUrl: AxiosInstance = axios.create({
 
 axiosUrl.interceptors.request.use((config) => {
 
-    const accessToken = sessionStorage.getItem("accessToken");
+    const accessToken = localStorage.getItem("accessToken");
     // const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
@@ -30,9 +30,12 @@ axiosUrl.interceptors.response.use(
         return response;
     },
     (error) => {
-        if (error.response) {
-            return error.response
-        }
+
+        const statusCode = error.response.data.status_code
+        const errorCode = error.response.data.error_code
+        console.log(errorCode)
+        console.log(statusCode)
+
         return Promise.reject(error);
     }
 );
