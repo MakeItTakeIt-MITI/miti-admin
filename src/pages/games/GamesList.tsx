@@ -1,79 +1,65 @@
-import { useEffect, useState } from "react";
-import { useUserStore } from "../../store/useUserStore";
-import { Link, useNavigate } from "react-router-dom";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from "react";
+import { Link } from "react-router-dom";
 // import Sidebar from "../components/Sidebar";
 import PaginationBtns from "../../components/common/PaginationBtns";
 // import SportsBasketballIcon from "@mui/icons-material/SportsBasketball";
 import { useGamesListHook } from "../../hook/useGamesListHook";
 import FeedIcon from "@mui/icons-material/Feed";
-import { Game } from "../../interface/game";
 import { PageLayout } from "../../features/common/PageLayout";
+import { PageHeader } from "../../features/common/PageHeader";
 
 const GamesList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
-
-  const { isLoggedIn, logout } = useUserStore();
-  const navigate = useNavigate();
 
   // const { data } = useUsersListHook(currentPage);
   const { data } = useGamesListHook(currentPage);
   const endIndex = data?.data.end_index;
   const gameData = data?.data.page_content;
 
-  const userSessionStorage = sessionStorage.getItem("accessToken");
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/");
-    }
-
-    if (!userSessionStorage) {
-      logout();
-    }
-  }, [navigate, isLoggedIn, logout, userSessionStorage]);
-
   return (
     <>
+      <PageHeader title="경기 목록" />
       <PageLayout>
-        <div className="flex flex-col gap-2">
-          <ul className="flex w-full  items-center  pt-2 pb-4">
+        <div className="flex flex-col gap-2 ">
+          <ul className="flex w-full  h-[4rem]  items-center    bg-white">
             <li className="font-bold  w-[10%] text-center ">ID</li>
-            <li className="font-bold  w-[35%] text-center ">제목</li>
+            <li className="font-bold  w-[25%] text-center ">제목</li>
             <li className="font-bold  w-[15%] text-center ">경기 상태</li>
-            <li className="font-bold  w-[15%] text-center ">시작일</li>
-            <li className="font-bold  w-[15%] text-center ">종료일</li>
+            <li className="font-bold  w-[20%] text-center ">시작일</li>
+            <li className="font-bold  w-[20%] text-center ">종료일</li>
             <li className="font-bold  w-[10%] text-center ">상세</li>
           </ul>
           <hr />
-          {gameData?.map((game) => {
-            return (
-              <ul className="flex w-full  items-center text-sm   hover:bg-gray-200 h-[60px] ">
-                <li className="font-semibold  w-[10%] text-center ">
-                  {game.id}
-                </li>
-                <li className="font-semibold  w-[35%] text-center ">
-                  {game.title}
-                </li>
-                <li className="font-semibold  w-[15%] text-center ">
-                  {game.game_status}
-                </li>
-                <li className="font-semibold  w-[15%] text-center ">
-                  {game.startdate.slice(0, 10)}
-                </li>
-                <li className="font-semibold  w-[15%] text-center ">
-                  {game.enddate.slice(0, 10)}
-                </li>
-                <Link
-                  to="123"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-semibold  w-[10%] text-center "
-                >
-                  <FeedIcon sx={{ color: "gray" }} />
-                </Link>
-              </ul>
-            );
-          })}
+          <div className="flex flex-col gap-2 py-4 bg-white">
+            {gameData?.map((game: any) => {
+              return (
+                <ul className="flex w-full  items-center text-sm   hover:bg-gray-200 h-[60px] ">
+                  <li className="font-semibold  w-[10%] text-center ">
+                    {game.id}
+                  </li>
+                  <li className="font-semibold truncate  w-[25%] text-center ">
+                    {game.title}
+                  </li>
+                  <li className="font-semibold  w-[15%] text-center ">
+                    {game.game_status}
+                  </li>
+                  <li className="font-semibold  w-[20%] text-center ">
+                    {game.startdate} {game.starttime}
+                  </li>
+                  <li className="font-semibold  w-[20%] text-center ">
+                    {game.enddate} {game.endtime}
+                  </li>
+                  <Link
+                    to={`${game.id}`}
+                    className="font-semibold  w-[10%] text-center "
+                  >
+                    <FeedIcon sx={{ color: "gray" }} />
+                  </Link>
+                </ul>
+              );
+            })}
+          </div>
         </div>
         <PaginationBtns
           spacing={2}
