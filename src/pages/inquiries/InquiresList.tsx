@@ -1,25 +1,20 @@
 import { useState } from "react";
 
-// import Sidebar from "../components/Sidebar";
 import PaginationBtns from "../../components/common/PaginationBtns";
-// import SupportAgentIcon from "@mui/icons-material/SupportAgent";
-import { usePrivateInquiriesHook } from "../../hook/usePrivateInquiriesHook";
-// import { PrivateInquiryField } from "../../interface/support";
-// import FeedIcon from "@mui/icons-material/Feed";
-// import InquiryDetail from "../../components/inquiries/InquiryDetail";
+import { useInquiriesListHook } from "../../features/inquries/hooks/useInquiriesListHook";
+import FeedIcon from "@mui/icons-material/Feed";
 import { PageLayout } from "../../features/common/PageLayout";
 import { PageHeader } from "../../features/common/PageHeader";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { InquiryDataField } from "../../features/inquries/interface/inquries";
 
-const PrivateInquiriesList = () => {
+const InquiresList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  // const [displayModal, setDisplayModal] = useState(false);
-  // const [inquiryId, setInquiryId] = useState<null | number>(null);
 
-  const { data } = usePrivateInquiriesHook(currentPage);
+  const { data } = useInquiriesListHook(currentPage);
 
   const endIndex = data?.data.end_index;
-  // const privateInquriyData = data?.data.page_content;
+  const privateInquriyData = data?.data.page_content;
 
   return (
     <>
@@ -30,41 +25,46 @@ const PrivateInquiriesList = () => {
           <ul className="flex w-full  h-[4rem]  items-center    bg-white">
             <li className="font-bold  w-[10%] text-center ">문의 ID</li>
             <li className="font-bold  w-[10%] text-center ">사용자 ID</li>
-            <li className="font-bold  w-[35%] text-center ">제목</li>
+            <li className="font-bold  w-[25%] text-center ">제목</li>
             <li className="font-bold  w-[15%] text-center ">답변 개수</li>
             <li className="font-bold  w-[20%] text-center ">생성 일시</li>
+            <li className="font-bold  w-[10%] text-center ">수정 일시</li>
             <li className="font-bold  w-[10%] text-center ">상세</li>
           </ul>
           <hr />
           <div className="flex flex-col gap-2 py-4 bg-white">
-            {/* {privateInquriyData?.map((game) => {
+            {privateInquriyData?.map((inquiry: InquiryDataField) => {
               return (
                 <ul className="flex w-full  items-center text-sm   hover:bg-gray-200 h-[60px] ">
                   <li className="font-semibold w-[10%] text-center ">
-                    {game.id}
+                    {inquiry.id}
                   </li>
                   <li className="font-semibold truncate  w-[10%] text-center ">
-                    {game.id}
+                    {inquiry.user}
                   </li>
-                  <li className="font-semibold  w-[35%] text-center truncate">
-                    {game.title}
+                  <li className="font-semibold  w-[25%] text-center truncate">
+                    {inquiry.title}
                   </li>
                   <li className="font-semibold  w-[15%] text-center ">
-                    {game.num_of_answers}
+                    {inquiry.num_of_answers}
                   </li>
                   <li className="font-semibold  w-[20%] text-center  truncate">
-                    {game.created_at.slice(0, 10)} (
-                    {game.created_at.slice(11, 16)})
+                    {inquiry.created_at.slice(0, 10)} (
+                    {inquiry.created_at.slice(11, 16)})
+                  </li>
+                  <li className="font-semibold truncate  w-[10%] text-center ">
+                    {inquiry.modified_at.slice(0, 10)} (
+                    {inquiry.modified_at.slice(11, 16)})
                   </li>
                   <li className="font-semibold  w-[10%] text-center ">
                     {" "}
-                    <Link to={`${game.id}`}>
+                    <Link to={`${inquiry.id}`}>
                       <FeedIcon sx={{ color: "gray" }} />
                     </Link>
                   </li>
                 </ul>
               );
-            })} */}
+            })}
           </div>
         </div>
         <PaginationBtns
@@ -78,4 +78,4 @@ const PrivateInquiriesList = () => {
   );
 };
 
-export default PrivateInquiriesList;
+export default InquiresList;
