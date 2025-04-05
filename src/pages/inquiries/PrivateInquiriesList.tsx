@@ -4,22 +4,22 @@ import { useState } from "react";
 import PaginationBtns from "../../components/common/PaginationBtns";
 // import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import { usePrivateInquiriesHook } from "../../hook/usePrivateInquiriesHook";
-import { PrivateInquiryField } from "../../interface/support";
-import FeedIcon from "@mui/icons-material/Feed";
-import InquiryDetail from "../../components/inquiries/InquiryDetail";
+// import { PrivateInquiryField } from "../../interface/support";
+// import FeedIcon from "@mui/icons-material/Feed";
+// import InquiryDetail from "../../components/inquiries/InquiryDetail";
 import { PageLayout } from "../../features/common/PageLayout";
 import { PageHeader } from "../../features/common/PageHeader";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 const PrivateInquiriesList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [displayModal, setDisplayModal] = useState(false);
-  const [inquiryId, setInquiryId] = useState<null | number>(null);
+  // const [displayModal, setDisplayModal] = useState(false);
+  // const [inquiryId, setInquiryId] = useState<null | number>(null);
 
   const { data } = usePrivateInquiriesHook(currentPage);
 
   const endIndex = data?.data.end_index;
-  const privateInquriyData = data?.data.page_content;
+  // const privateInquriyData = data?.data.page_content;
 
   return (
     <>
@@ -37,7 +37,7 @@ const PrivateInquiriesList = () => {
           </ul>
           <hr />
           <div className="flex flex-col gap-2 py-4 bg-white">
-            {privateInquriyData?.map((game) => {
+            {/* {privateInquriyData?.map((game) => {
               return (
                 <ul className="flex w-full  items-center text-sm   hover:bg-gray-200 h-[60px] ">
                   <li className="font-semibold w-[10%] text-center ">
@@ -64,7 +64,7 @@ const PrivateInquiriesList = () => {
                   </li>
                 </ul>
               );
-            })}
+            })} */}
           </div>
         </div>
         <PaginationBtns

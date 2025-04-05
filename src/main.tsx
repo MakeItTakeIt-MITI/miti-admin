@@ -10,7 +10,7 @@ import UserList from "./pages/users/UserList.tsx";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Settlements from "./pages/Settlements.tsx";
-import ReportsList from "./pages/ReportsList.tsx";
+import ReportsList from "./pages/reports/ReportsList.tsx";
 import GamesList from "./pages/games/GamesList.tsx";
 import PrivateInquiriesList from "./pages/inquiries/PrivateInquiriesList.tsx";
 import GameDetails from "./pages/GameDetails.tsx";

@@ -1,19 +1,22 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useReportsListHook } from "../hook/useReportsListHook";
+// import { useState } from "react";
+// import { Link } from "react-router-dom";
+// import { useReportsListHook } from "../hook/useReportsListHook";
 import FeedIcon from "@mui/icons-material/Feed";
 
-import FindInPageIcon from "@mui/icons-material/FindInPage";
+// import FindInPageIcon from "@mui/icons-material/FindInPage";
 
-import PaginationBtns from "../components/common/PaginationBtns";
-import { ReportField } from "../interface/reports";
-import { PageLayout } from "../features/common/PageLayout";
-import { PageHeader } from "../features/common/PageHeader";
+// import PaginationBtns from "../components/common/PaginationBtns";
+// import { ReportField } from "../interface/reports";
+import { PageLayout } from "../../features/common/PageLayout";
+import { PageHeader } from "../../features/common/PageHeader";
+import { useReportsListHook } from "../../features/reports/hook/useReportsListHook";
+import { Link } from "react-router-dom";
+import { ReportsField } from "../../features/reports/interface/reports";
 // import Drawer from "../components/reports/Drawer";
 // import { useReportersListHook } from "../hook/useReportersListHook";
 
 const ReportsList = () => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  // const [currentPage, setCurrentPage] = useState<number>(1);
   // const [openDrawer, setOpenDrawer] = useState(false);
   // const [gameId, setGameId] = useState<null | number>(null);
   // const [reportId, setReportId] = useState<null | number>(null);
@@ -21,31 +24,12 @@ const ReportsList = () => {
 
   // console.log(reportId);
 
-  const { data: reportsListData } = useReportsListHook(currentPage);
+  // const { data: reportsListData } = useReportsListHook(currentPage);
   // const { data: reportersListData } = useReportersListHook(gameId);
 
-  const endIndex = reportsListData?.data.end_index;
+  // const endIndex = reportsListData?.data.end_index;
 
-  const fakeGameData = [
-    {
-      participantId: "P12345",
-      gameId: "G98765",
-      gameStatus: "진행 중",
-      title: "[5대5] 신안은핼ㅇ 농구 친선 경기",
-      startDate: "2025-03-10",
-      reportedUser: "김철수",
-      reportedUserContact: "010-1234-5678",
-    },
-    {
-      participantId: "P67890",
-      gameId: "G54321",
-      gameStatus: "완료",
-      title: "스트릿 농구 대회",
-      startDate: "2025-03-05",
-      reportedUser: "이영희",
-      reportedUserContact: "010-9876-5432",
-    },
-  ];
+  const { data: reportsData } = useReportsListHook();
 
   return (
     <>
@@ -54,45 +38,46 @@ const ReportsList = () => {
         {/* 조회 정보(렌더링 정보)
         신고 관련 요약 정보 - 참가 고유 번호, 경기 고유 번호, 경기 상태, 경기 제목, 시작일, 경기 시작 시간, 피신고자 이름, 피신고자 연락처 */}
 
-        <div className="flex flex-col gap-2 ">
-          <ul className="flex w-full  h-[4rem]  items-center    bg-white">
-            <li className="font-bold w-[10%] text-center ">참가 ID</li>
-            <li className="font-bold  w-[10%]  text-center ">경기 ID</li>
-            <li className="font-bold w-[10%]  text-center ">경기 상태</li>
-            <li className="font-bold w-[20%]  text-center ">제목</li>
-            <li className="font-bold w-[15%]  text-center ">시작일</li>
-            <li className="font-bold  w-[10%]  text-center ">피신고자</li>
-            <li className="font-bold w-[10%]   text-center ">
-              피신고자 연락처
-            </li>
-            <li className="font-bold w-[10%]   text-center ">상세</li>
+        <div className="flex flex-col text-center gap-2 ">
+          <ul className="flex px-4 w-full  h-[4rem]  items-center    bg-white">
+            <li className="font-bold w-[10%]  ">신고 ID</li>
+            <li className="font-bold w-[10%]   ">reportee</li>
+            <li className="font-bold w-[10%]   ">game ID</li>
+            <li className="font-bold w-[20%]   ">category</li>
+            <li className="font-bold  w-[20%]   ">report status</li>
+            <li className="font-bold w-[20%]    ">created_at</li>
+            <li className="font-bold w-[10%]    ">상세</li>
           </ul>
 
           <div className="flex flex-col gap-2 py-4 bg-white">
-            {fakeGameData?.map((game) => {
+            {reportsData?.data.page_content.length === 0 && (
+              <div className="h-full flex items-center justify-center">
+                {" "}
+                <h1 className="font-bold">신고 내역이 없습니다!</h1>{" "}
+              </div>
+            )}
+            {reportsData?.data.page_content?.map((report: ReportsField) => {
               return (
-                <ul className="flex w-full  items-center text-sm   hover:bg-gray-200 h-[60px] ">
-                  <li className=" w-[10%] text-center ">
-                    {game.participantId}
+                <ul className="flex px-4   items-center text-sm   hover:bg-gray-200 h-[60px] ">
+                  <li className="font-bold w-[10%]  ">{report.id}</li>
+                  <li className="font-bold w-[10%]   ">{report.reportee}</li>
+                  <li className="font-bold w-[10%]   ">{report.game}</li>
+                  <li className="font-bold w-[20%]   truncate">
+                    {report.category}
                   </li>
-                  <li className="  w-[10%]  text-center ">{game.gameId}</li>
-                  <li className=" w-[10%]  text-center ">{game.gameStatus}</li>
-                  <li className=" w-[20%]  text-center truncate ">
-                    {game.title}
+                  <li className="font-bold  w-[20%]    truncate">
+                    {report.report_status}
                   </li>
-                  <li className=" w-[15%]  text-center ">{game.startDate}</li>
-                  <li className="  w-[10%]  text-center ">
-                    {game.reportedUser}
+                  <li className="font-bold w-[20%]    ">{report.created_at}</li>
+                  <li className="font-bold w-[10%]    ">
+                    {" "}
+                    <Link
+                      to={`${report.id}`}
+                      className="font-semibold  w-[10%]  "
+                    >
+                      <FeedIcon sx={{ color: "gray" }} />
+                    </Link>
                   </li>
-                  <li className=" w-[10%]   text-center ">
-                    {game.reportedUserContact}
-                  </li>
-                  <Link
-                    to="123"
-                    className="font-semibold  w-[10%] text-center "
-                  >
-                    <FeedIcon sx={{ color: "gray" }} />
-                  </Link>
                 </ul>
               );
             })}

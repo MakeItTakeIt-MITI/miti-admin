@@ -5,74 +5,6 @@ import { PageLayout } from "../features/common/PageLayout";
 const ReportDetails = () => {
   const [activeTab, setActiveTab] = useState<"game" | "reporters">("game");
 
-  const data = {
-    status_code: 200,
-    message: "OK",
-    data: {
-      id: 2,
-      reportee: {
-        id: 148,
-        email: "xmzcwvh87k@privaterelay.appleid.com",
-        nickname: "김미티",
-        name: "전재완",
-        signup_method: "apple",
-        suspended_until: null,
-      },
-      game: {
-        id: 28526,
-        game_status: "completed",
-        title: "테스트 경기",
-        startdate: "2024-09-14",
-        starttime: "18:50:00",
-        enddate: "2024-09-14",
-        endtime: "19:00:00",
-        max_invitation: 5,
-        min_invitation: 1,
-        fee: 10000,
-        info: "테스트 경기입니다.",
-        court: {
-          id: 1,
-          address: "경기 오산시 동부대로 568번길",
-          address_detail: "87-15",
-          latitude: "37.1529123326082",
-          longitude: "127.088354885662",
-        },
-      },
-      category: "intentional_cheating",
-      content: "테스트용 신고입니다.",
-      report_status: "evidence_requested",
-      created_at: "2024-09-14T18:59:51.355420+09:00",
-    },
-  };
-  const reportees = [
-    {
-      id: 8,
-      reportee: 148,
-      game: 31380,
-      category: "intentional_cheating",
-      content: "테스트용 신고입니다.",
-      report_status: "concluded",
-      created_at: "2024-09-24T15:45:41.601262+09:00",
-    },
-    {
-      id: 9,
-      reportee: 148,
-      game: 31380,
-      category: "intentional_cheating",
-      content: "테스트용 신고입니다.",
-      report_status: "concluded",
-      created_at: "2024-09-24T15:45:46.289863+09:00",
-    },
-    {
-      id: 10,
-      reportee: 148,
-      game: 31380,
-      category: "intentional_cheating",
-      content: "테스트용 신고입니다.",
-      report_status: "concluded",
-      created_at: "2024-09-24T15:45:51.959569+09:00",
-    },
-  ];
   const handleChangeTab = (select: "game" | "reporters") =>
     setActiveTab(select);
 
@@ -223,7 +155,7 @@ const ReportDetails = () => {
                 </ul>{" "}
               </div>{" "}
               <div className="flex flex-col gap-2 py-4 bg-white">
-                {reportees.map((participant, index) => (
+                {/* {reportees.map((participant, index) => (
                   <div key={participant.id} className="w-full">
                     <ul className="flex w-full  text-sm  transition-all duration-300 ">
                       <li className="w-[10%] text-center">{participant.id}</li>
@@ -244,11 +176,11 @@ const ReportDetails = () => {
                       </li>
                       <li className="w-[10%] text-center">
                         {participant.created_at}
-                      </li>{" "}
-                      {/* <li className="w-[15%] text-center">
+                      </li>{" "} */}
+                {/* <li className="w-[15%] text-center">
                         {participant.created_at}
                       </li> */}
-                      {/* <li className="w-[10%] text-center">
+                {/* <li className="w-[10%] text-center">
                         <button onClick={() => toggleExpand(index)}>
                           <KeyboardDoubleArrowDownIcon
                             className={`transition-transform duration-300 ${
@@ -257,9 +189,9 @@ const ReportDetails = () => {
                           />
                         </button>
                       </li> */}
-                    </ul>
-                    {/* 성별, 체중, 신장, 포지션, 역할 */}
-                    {/* {expandedItems[index] && (
+                {/* </ul> */}
+                {/* 성별, 체중, 신장, 포지션, 역할 */}
+                {/* {expandedItems[index] && (
                       <>
                         <div className="p-4 my-2 bg-white w-[800px] mx-auto flex flex-col justify-center items-center">
                           <p className="font-bold text-lg">🏀 프로필 정보</p>
@@ -272,8 +204,8 @@ const ReportDetails = () => {
                         <hr />
                       </>
                     )} */}
-                  </div>
-                ))}
+                {/* </div>
+                ))} */}
               </div>
             </>
           )}

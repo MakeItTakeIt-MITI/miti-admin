@@ -3,10 +3,10 @@
 import GroupIcon from "@mui/icons-material/Group";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FlagIcon from "@mui/icons-material/Flag";
-import PaymentIcon from "@mui/icons-material/Payment";
+// import PaymentIcon from "@mui/icons-material/Payment";
 import SportsBasketballIcon from "@mui/icons-material/SportsBasketball";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
-import ReceiptIcon from "@mui/icons-material/Receipt";
+// import ReceiptIcon from "@mui/icons-material/Receipt";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useUserStore } from "../../store/useUserStore";
 
@@ -40,22 +40,22 @@ const Navbar = () => {
       icon: <FlagIcon />,
     },
 
-    {
-      title: "정산금 요청 목록",
-      path: "/settlements",
-      icon: <PaymentIcon />,
-    },
+    // {
+    //   title: "정산금 요청 목록",
+    //   path: "/settlements",
+    //   icon: <PaymentIcon />,
+    // },
 
     {
       title: "익명 문의 목록",
       path: "/support",
       icon: <SupportAgentIcon />,
     },
-    {
-      title: "결제완료 목록",
-      path: "/payments",
-      icon: <ReceiptIcon />,
-    },
+    // {
+    //   title: "결제완료 목록",
+    //   path: "/payments",
+    //   icon: <ReceiptIcon />,
+    // },
   ];
 
   return (
