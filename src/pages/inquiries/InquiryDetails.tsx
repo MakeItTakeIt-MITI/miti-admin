@@ -1,11 +1,22 @@
 import { useParams } from "react-router-dom";
 import { useInquiryDetailsHook } from "../../features/inquries/hooks/useInquiryDetailsHook";
+import { useInquiryReplyHook } from "../../features/inquries/hooks/useInquiryReplyHook";
+import { useState } from "react";
 
 export const InquiryDetails = () => {
+  const [replyContent, setReplyContent] = useState("");
   const { id } = useParams();
   const idNumber = Number(id);
 
   const { data: inquiryDetails } = useInquiryDetailsHook(idNumber);
+  const { mutate: replyToInquiry } = useInquiryReplyHook();
+
+  const handleSubmitReply = () => {
+    replyToInquiry({
+      questionId: inquiryDetails?.data.id,
+      content: replyContent,
+    });
+  };
 
   const headers = [
     "id",
@@ -106,9 +117,16 @@ export const InquiryDetails = () => {
               )}
             </div>
             <div className="bg-white h-[28%] p-4">
-              <textarea className="w-full h-full border border-gray-400 p-2 resize-none" />
+              <textarea
+                onChange={(e) => setReplyContent(e.target.value)}
+                className="w-full h-full border border-gray-400 p-2 resize-none"
+              />
             </div>
-            <button className="bg-blue-600 h-[5%] rounded-lg text-white hover:brightness-105">
+            <button
+              type="button"
+              onClick={handleSubmitReply}
+              className="bg-blue-600 h-[5%] rounded-lg text-white hover:brightness-105"
+            >
               답변하기
             </button>
           </div>
