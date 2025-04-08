@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useInquiryDetailsHook } from "../../features/inquries/hooks/useInquiryDetailsHook";
 import { useInquiryReplyHook } from "../../features/inquries/hooks/useInquiryReplyHook";
 import { useState } from "react";
+import { InquiryAnswerField } from "../../features/inquries/interface/inquries";
 
 export const InquiryDetails = () => {
   const [replyContent, setReplyContent] = useState("");
@@ -108,13 +109,27 @@ export const InquiryDetails = () => {
             <p className="p-2">{inquiryDetails?.data.content}</p>
           </div>
           <div className="w-[38%]  flex flex-col justify-between ">
-            <div className="bg-white h-[60%] p-4">
+            <div
+              style={{
+                scrollbarWidth: "thin",
+              }}
+              className="bg-white h-[60%] overflow-y-auto  p-4"
+            >
               {inquiryDetails?.data.num_of_answers === 0 && (
                 <h1 className="flex items-center justify-center w-full h-full font-bold">
                   {" "}
                   아직 관리자 답변이 없습니다!
                 </h1>
               )}
+              <ul className="space-y-4 ">
+                {inquiryDetails?.data.answers.map(
+                  (answer: InquiryAnswerField) => (
+                    <li className="border border-gray-200 rounded-md p-4 text-sm">
+                      [{answer.created_at}] {answer.content}
+                    </li>
+                  )
+                )}
+              </ul>
             </div>
             <div className="bg-white h-[28%] p-4">
               <textarea
