@@ -34,3 +34,9 @@ export interface GameField {
 
 }
 
+
+export interface GameEditField {
+    min_invitation: number;
+    max_invitation: number;
+    info: string;
+}
