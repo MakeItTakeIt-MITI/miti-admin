@@ -1,4 +1,10 @@
-export const HostInfo = ({ data }) => {
+import { HostInfoField } from "../interface/host_info";
+
+interface HostInfoProps {
+  data: HostInfoField;
+}
+
+export const HostInfo = ({ data }: HostInfoProps) => {
   const headers = ["ID", "이름", "닉네임", "이메일", "생년월일", "연락처"];
 
   return (
