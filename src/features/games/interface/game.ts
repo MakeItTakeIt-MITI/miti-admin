@@ -33,3 +33,4 @@ export interface GameField {
     endtime: string;
 
 }
+

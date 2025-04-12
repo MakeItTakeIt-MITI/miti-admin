@@ -9,6 +9,8 @@ import { useGameParticipantsHook } from "../../features/games/hooks/useGameParti
 import { ParticipationStatus } from "../../features/games/interface/game";
 import FeedIcon from "@mui/icons-material/Feed";
 import { useHostReportDetailsHook } from "../../features/games/hooks/useHostReportDetailsHook";
+import { HostInfo } from "../../features/games/components/HostInfo";
+import { Reports } from "../../features/games/components/Reports";
 
 /**
  * 
@@ -31,7 +33,7 @@ const GameDetails = () => {
   const gameId = Number(id);
   const { data } = useGameDetailsDataHook(gameId);
   const { data: gameParticipantsData } = useGameParticipantsHook(gameId);
-  const { data: hostReportData } = useHostReportDetailsHook(gameId);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const [activeTab, setActiveTab] = useState<
     "game" | "host" | "participants" | "reports"
@@ -86,7 +88,16 @@ const GameDetails = () => {
               }}
               className="cursor-pointer w-[170px] h-10 border border-gray-300 bg-white flex items-center  py-2 px-2 text-md rounded-tr-2xl font-semibold"
             >
-              호스트/신고 정보
+              호스트 정보
+            </li>
+            <li
+              onClick={() => handleChangeTab("reports")}
+              style={{
+                backgroundColor: activeTab === "reports" ? "#fff" : "#f5f5f5",
+              }}
+              className="cursor-pointer w-[170px] h-10 border border-gray-300 bg-white flex items-center  py-2 px-2 text-md rounded-tr-2xl font-semibold"
+            >
+              호스트 신고 정보
             </li>
           </ul>
           {activeTab === "game" && (
@@ -293,103 +304,8 @@ const GameDetails = () => {
             </>
           )}
 
-          {/* 호스트 정보 : id, 이메일, 닉네임, 이름, 연락처 */}
-          {activeTab === "host" && (
-            <>
-              <div className="flex flex-col gap-1  bg-white">
-                <ul className="flex w-full  items-center  py-4">
-                  <li className="font-bold  w-[10%] text-center ">호스트 ID</li>
-                  <li className="font-bold  w-[10%] text-center ">이름</li>
-                  <li className="font-bold  w-[15%] text-center ">닉네임</li>
-                  <li className="font-bold  w-[25%] text-center ">이메일</li>
-                  <li className="font-bold  w-[10%] text-center ">생년월일</li>
-                  <li className="font-bold  w-[20%] text-center ">연락처</li>
-                </ul>{" "}
-                <ul className="flex w-full  items-center text-sm   h-[60px] ">
-                  <li className="  w-[10%] text-center ">
-                    {data?.data.host.id}
-                  </li>
-                  <li className="  w-[10%] text-center ">
-                    {" "}
-                    {data?.data.host.name}
-                  </li>
-                  <li className="  w-[15%] text-center ">
-                    {" "}
-                    {data?.data.host.nickname}
-                  </li>
-                  <li className="  w-[25%] text-center ">
-                    {data?.data.host.email}
-                  </li>
-                  <li className="  w-[10%] text-center ">
-                    {" "}
-                    {data?.data.host.birthday}
-                  </li>
-                  <li className="  w-[20%] text-center ">
-                    {" "}
-                    {data?.data.host.phone}
-                  </li>
-                </ul>{" "}
-              </div>{" "}
-              {/* 호스트 신고 정보
-신고 정보 - 신고 고유 id,  신고 사유 id, 신고 상태
-신고자 정보 - id, 이메익, 닉네임, 이름, 연락처 */}
-              {/* <h1 className="flex flex-col items-center justify-center text-lg  h-[60px] font-bold  bg-white ">
-                🚨 호스트 신고 정보
-              </h1> */}
-              <div className="flex flex-col items-center justify-center gap-2  bg-white h-[140px]">
-                <h1 className="font-bold text-center text-lg">
-                  🚨 호스트 신고 정보
-                </h1>
-                <ul className="flex w-full  items-center  ">
-                  <li className="font-bold  w-[10%] text-center ">신고 ID</li>
-                  <li className="font-bold  w-[10%] text-center ">
-                    신고 사유 ID
-                  </li>
-                  <li className="font-bold  w-[15%] text-center ">신고 상태</li>
-                </ul>{" "}
-                <ul className="flex w-full  items-center  ">
-                  <li className="font-semibold text-sm  w-[10%] text-center ">
-                    -
-                  </li>
-                  <li className="font-semibold text-sm  w-[10%] text-center ">
-                    -
-                  </li>
-                  <li className="font-semibold text-sm  w-[15%] text-center ">
-                    -
-                  </li>
-                </ul>{" "}
-              </div>
-              {/* 신고자 정보  - id, 이메익, 닉네임, 이름, 연락처 */}
-              <div className="flex flex-col items-center justify-center gap-2  bg-white h-[80px]">
-                <ul className="flex w-full  items-center  ">
-                  <li className="font-bold  w-[10%] text-center ">신고자 ID</li>
-                  <li className="font-bold  w-[10%] text-center ">이름</li>
-                  <li className="font-bold  w-[15%] text-center ">닉네임</li>
-                  <li className="font-bold  w-[25%] text-center ">이메일</li>
-
-                  <li className="font-bold  w-[20%] text-center ">연락처</li>
-                </ul>{" "}
-                <ul className="flex w-full  items-center  ">
-                  <li className="font-semibold text-sm  w-[10%] text-center ">
-                    -
-                  </li>
-                  <li className="font-semibold text-sm  w-[10%] text-center ">
-                    -
-                  </li>
-                  <li className="font-semibold text-sm  w-[15%] text-center ">
-                    -
-                  </li>
-                  <li className="font-semibold text-sm  w-[25%] text-center ">
-                    -
-                  </li>
-
-                  <li className="font-semibold text-sm  w-[20%] text-center ">
-                    -
-                  </li>
-                </ul>{" "}
-              </div>
-            </>
-          )}
+          {activeTab === "host" && <HostInfo data={data?.data?.host} />}
+          {activeTab === "reports" && <Reports gameId={gameId} />}
         </div>
 
         {/* 
