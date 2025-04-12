@@ -1,4 +1,5 @@
 import { useHostReportDetailsHook } from "../hooks/useHostReportDetailsHook";
+import { HostReportField } from "../interface/host_reports";
 
 interface ReportsProps {
   gameId: number;
@@ -112,7 +113,7 @@ export const Reports = ({ gameId }: ReportsProps) => {
         </p>
       )}
       {hostReportList?.status_code === 200 &&
-        hostReportList?.data.map((hostReport) => (
+        hostReportList?.data.map((hostReport: HostReportField) => (
           <table
             key={hostReport.id}
             className="table-fixed w-full border-collapse mb-10  bg-white p-2 rounded-lg"
