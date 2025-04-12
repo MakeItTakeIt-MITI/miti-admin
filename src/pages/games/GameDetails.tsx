@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useGameParticipantsHook } from "../../features/games/hooks/useGameParticipantsHook";
 import { ParticipationStatus } from "../../features/games/interface/game";
 import FeedIcon from "@mui/icons-material/Feed";
+import { useHostReportDetailsHook } from "../../features/games/hooks/useHostReportDetailsHook";
 
 /**
  * 
@@ -30,7 +31,7 @@ const GameDetails = () => {
   const gameId = Number(id);
   const { data } = useGameDetailsDataHook(gameId);
   const { data: gameParticipantsData } = useGameParticipantsHook(gameId);
-  console.log(gameParticipantsData?.data);
+  const { data: hostReportData } = useHostReportDetailsHook(gameId);
 
   const [activeTab, setActiveTab] = useState<
     "game" | "host" | "participants" | "reports"

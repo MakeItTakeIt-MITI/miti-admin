@@ -8,3 +8,12 @@ export const fetchGameParticipants = async (game_id: number) => {
         console.log(error)
     }
 }
+
+export const fetchHostReportInfo = async (gameId: number) => {
+    try {
+        const response = await axiosUrl(`/admin/games/${gameId}/host-reports`)
+        return response.data
+    } catch (error) {
+        console.log(error)
+    }
+}
