@@ -1,10 +1,12 @@
 // import EditCalendarIcon from "@mui/icons-material/EditCalendar";
-import { useState } from "react";
+// import { useState } from "react";
 
 // import PaginationBtns from "../components/common/PaginationBtns";
 // import { useGamePaymentsListHook } from "../hook/useReceiptListHook";
 import { PageHeader } from "../features/common/PageHeader";
-import { PageLayout } from "../features/common/PageLayout";
+// import { PageLayout } from "../features/common/PageLayout";
+// import { TableLayout } from "../components/common/TableLayout";
+// import PaginationBtns from "../components/common/PaginationBtns";
 // import { Link } from "react-router-dom";
 // import DateBox from "../components/common/DateBox";
 
@@ -19,42 +21,67 @@ const GamePayments = () => {
   // const [month, setMonth] = useState(thisMonth);
   // const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const [displayList, setDisplayList] = useState(false);
+  // const [displayList, setDisplayList] = useState(false);
 
   // const { data } = useGamePaymentsListHook(currentPage, year, month);
 
   // const monthlyPayment = data?.data?.monthly_payment;
   // const paymentList = data?.data?.page_content;
+  // const endIndex = data?.data.end_index;
 
-  // const handleSetDate = () => {
-  //   setYear(year);
-  //   setMonth(month);
-  // };
+  // // const handleSetDate = () => {
+  // //   setYear(year);
+  // //   setMonth(month);
+  // // };
 
-  const handleDisplayList = () => setDisplayList(!displayList);
-  // const handleDisplayFilter = () => setDisplayFilter(true);
+  // const handleDisplayList = () => setDisplayList(!displayList);
+  // // const handleDisplayFilter = () => setDisplayFilter(true);
 
-  const currentYear = new Date().getFullYear();
-  const currentMonth = new Date().getMonth() + 1;
+  // const currentYear = new Date().getFullYear();
+  // const currentMonth = new Date().getMonth() + 1;
 
-  const months = [
-    "1월",
-    "2월",
-    "3월",
-    "4월",
-    "5월",
-    "6월",
-    "7월",
-    "8월",
-    "9월",
-    "10월",
-    "11월",
-    "12월",
-  ];
+  // const months = [
+  //   "1월",
+  //   "2월",
+  //   "3월",
+  //   "4월",
+  //   "5월",
+  //   "6월",
+  //   "7월",
+  //   "8월",
+  //   "9월",
+  //   "10월",
+  //   "11월",
+  //   "12월",
+  // ];
+
+  // const headers = [""];
   return (
     <>
       <PageHeader title="결제완료 목록" />
 
+      {/* <PageLayout>
+        <div className="flex flex-col gap-2 ">
+          {data?.status_code === 200 ? (
+            <TableLayout
+              headers={headers}
+              data={tableData}
+              context="신고 내역이 없습니다!"
+            />
+          ) : (
+            <h1 className="flex items-center justify-center font-bold">
+              오류 발생
+            </h1>
+          )}
+        </div>
+        <PaginationBtns
+          spacing={2}
+          count={endIndex}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      </PageLayout> */}
+      {/* 
       <PageLayout>
         <div className="flex justify-end w-full relative">
           <div
@@ -86,7 +113,7 @@ const GamePayments = () => {
             )}
           </div>
         </div>
-      </PageLayout>
+      </PageLayout> */}
     </>
     // <section className="min-h-screen bg-[#e6e5e5] pt-[6rem] py-[4rem] overflow-hidden">
     //   {/* {displayFilter && (

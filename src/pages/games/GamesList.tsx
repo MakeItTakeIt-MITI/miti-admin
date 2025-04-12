@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { Link } from "react-router-dom";
 // import Sidebar from "../components/Sidebar";
@@ -8,58 +7,47 @@ import { useGamesListHook } from "../../hook/useGamesListHook";
 import FeedIcon from "@mui/icons-material/Feed";
 import { PageLayout } from "../../features/common/PageLayout";
 import { PageHeader } from "../../features/common/PageHeader";
+import { TableLayout } from "../../components/common/TableLayout";
+import { GameField } from "../../features/games/interface/game";
 
 const GamesList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   // const { data } = useUsersListHook(currentPage);
-  const { data } = useGamesListHook(currentPage);
+  const { data, isLoading } = useGamesListHook(currentPage);
   const endIndex = data?.data.end_index;
   const gameData = data?.data.page_content;
+  const headers = ["ID", "제목", "경기 상태", "시작", "종료료", "상세"];
 
+  const tableData =
+    !isLoading && data?.status_code === 200
+      ? gameData.map((game: GameField) => [
+          game.id,
+          game.title,
+          game.game_status,
+          `${game.startdate} ${game.starttime}`,
+          `${game.enddate} ${game.endtime}`,
+          <Link to={`${game.id}`} className="inline-block w-full text-center">
+            <FeedIcon sx={{ color: "gray" }} />
+          </Link>,
+        ])
+      : [];
   return (
     <>
       <PageHeader title="경기 목록" />
       <PageLayout>
         <div className="flex flex-col gap-2 ">
-          <ul className="flex w-full  h-[4rem]  items-center    bg-white">
-            <li className="font-bold  w-[10%] text-center ">ID</li>
-            <li className="font-bold  w-[25%] text-center ">제목</li>
-            <li className="font-bold  w-[15%] text-center ">경기 상태</li>
-            <li className="font-bold  w-[20%] text-center ">시작일</li>
-            <li className="font-bold  w-[20%] text-center ">종료일</li>
-            <li className="font-bold  w-[10%] text-center ">상세</li>
-          </ul>
-          <hr />
-          <div className="flex flex-col gap-2 py-4 bg-white">
-            {gameData?.map((game: any) => {
-              return (
-                <ul className="flex w-full  items-center text-sm   hover:bg-gray-200 h-[60px] ">
-                  <li className="font-semibold  w-[10%] text-center ">
-                    {game.id}
-                  </li>
-                  <li className="font-semibold truncate  w-[25%] text-center ">
-                    {game.title}
-                  </li>
-                  <li className="font-semibold  w-[15%] text-center ">
-                    {game.game_status}
-                  </li>
-                  <li className="font-semibold  w-[20%] text-center ">
-                    {game.startdate} {game.starttime}
-                  </li>
-                  <li className="font-semibold  w-[20%] text-center ">
-                    {game.enddate} {game.endtime}
-                  </li>
-                  <Link
-                    to={`${game.id}`}
-                    className="font-semibold  w-[10%] text-center "
-                  >
-                    <FeedIcon sx={{ color: "gray" }} />
-                  </Link>
-                </ul>
-              );
-            })}
-          </div>
+          {data?.status_code === 200 ? (
+            <TableLayout
+              headers={headers}
+              data={tableData}
+              context="경기 내역이 없습니다!"
+            />
+          ) : (
+            <h1 className="flex items-center justify-center font-bold">
+              오류 발생
+            </h1>
+          )}
         </div>
         <PaginationBtns
           spacing={2}
@@ -68,74 +56,6 @@ const GamesList = () => {
           setCurrentPage={setCurrentPage}
         />
       </PageLayout>
-      {/* <section className="min-h-screen bg-[#e6e5e5] pt-[6rem] py-[4rem]">
-        <div className="w-[82rem]  mx-auto px-[8rem] space-y-8  ">
-          <h1 className="font-semibold text-xl bg-[#fdfdfd] h-[4rem] flex items-center py-2 px-4 rounded-xl">
-            경기 목록
-          </h1>
-
-          <div className="bg-white rounded-[12px] p-4 min-h-[50rem] flex flex-col justify-between  space-y-6  ">
-            {gameData?.length >= 1 ? (
-              <>
-                <table
-                  style={{ tableLayout: "fixed" }}
-                  cellPadding="16"
-                  className="w-full h-full"
-                >
-                  <thead>
-                    <tr className="">
-                      <th>ID</th>
-                      <th>상태</th>
-                      <th>제목</th>
-                      <th>시작</th>
-                      <th>종료</th>
-                      <th>상세</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {gameData?.map((game: Game) => (
-                      <tr
-                        key={game.id}
-                        className=" border-b border-gray-200 text-center text-[14px] hover:bg-gray-100"
-                      >
-                        <td>{game.id}</td>
-                        <td>
-                          {game.game_status === "canceled" && (
-                            <span className="text-red-500 font-[500]">
-                              취소
-                            </span>
-                          )}{" "}
-                          {game.game_status === "open" && "모집중"}{" "}
-                          {game.game_status === "closed" && "모집 마감"}{" "}
-                          {game.game_status === "completed" && "진행 완료"}{" "}
-                        </td>
-                        <td>{game.title}</td>
-                        <td>{game.startdate.slice(0, 10)}</td>
-                        <td>{game.enddate.slice(0, 10)}</td>
-                        <td>
-                          <Link target="_blank" to={`/games/${game.id}`}>
-                            <FeedIcon sx={{ color: "gray" }} />
-                          </Link>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <PaginationBtns
-                  spacing={2}
-                  count={endIndex}
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
-                />
-              </>
-            ) : (
-              <h1 className="flex items-center justify-center font-bold text-xl">
-                경기 목록이 없습니다.
-              </h1>
-            )}
-          </div>
-        </div>
-      </section> */}
     </>
   );
 };

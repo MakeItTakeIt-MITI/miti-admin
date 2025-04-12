@@ -11,33 +11,65 @@ import { PageLayout } from "../../features/common/PageLayout";
 import { PageHeader } from "../../features/common/PageHeader";
 import { useReportsListHook } from "../../features/reports/hook/useReportsListHook";
 import { Link } from "react-router-dom";
-import { ReportsField } from "../../features/reports/interface/reports";
-// import Drawer from "../components/reports/Drawer";
-// import { useReportersListHook } from "../hook/useReportersListHook";
+import { TableLayout } from "../../components/common/TableLayout";
+import { useState } from "react";
+import PaginationBtns from "../../components/common/PaginationBtns";
 
 const ReportsList = () => {
-  // const [currentPage, setCurrentPage] = useState<number>(1);
-  // const [openDrawer, setOpenDrawer] = useState(false);
-  // const [gameId, setGameId] = useState<null | number>(null);
-  // const [reportId, setReportId] = useState<null | number>(null);
-  // const [reportStatus, setReportStatus] = useState("string");
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  // console.log(reportId);
-
-  // const { data: reportsListData } = useReportsListHook(currentPage);
-  // const { data: reportersListData } = useReportersListHook(gameId);
-
-  // const endIndex = reportsListData?.data.end_index;
-
-  const { data: reportsData } = useReportsListHook();
+  const { data, isLoading } = useReportsListHook();
+  const endIndex = data?.data.end_index;
+  const reportList = data?.data.page_content;
+  const headers = [
+    "신고 ID",
+    "reportee",
+    "경기 ID",
+    // "카테고리",
+    "신고 상태",
+    "접수일",
+    "상세",
+  ];
+  const tableData =
+    !isLoading && reportList?.status_code === 200
+      ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        reportList.map((report: any) => [
+          report.id,
+          report.reportee.nickname,
+          report.game,
+          report.report_status,
+          report.created_at,
+          <Link to={`${report.id}`} className="inline-block w-full text-center">
+            <FeedIcon sx={{ color: "gray" }} />
+          </Link>,
+        ])
+      : [];
 
   return (
     <>
       <PageHeader title="신고 목록" />
       <PageLayout>
-        {/* 조회 정보(렌더링 정보)
-        신고 관련 요약 정보 - 참가 고유 번호, 경기 고유 번호, 경기 상태, 경기 제목, 시작일, 경기 시작 시간, 피신고자 이름, 피신고자 연락처 */}
-
+        <div className="flex flex-col gap-2 ">
+          {data?.status_code === 200 ? (
+            <TableLayout
+              headers={headers}
+              data={tableData}
+              context="문의 내역이 없습니다!"
+            />
+          ) : (
+            <h1 className="flex items-center justify-center font-bold">
+              오류 발생
+            </h1>
+          )}
+        </div>
+        <PaginationBtns
+          spacing={2}
+          count={endIndex}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      </PageLayout>
+      {/* <PageLayout>
         <div className="flex flex-col text-center gap-2 ">
           <ul className="flex px-4 w-full  h-[4rem]  items-center    bg-white">
             <li className="font-bold w-[10%]  ">신고 ID</li>
@@ -83,7 +115,7 @@ const ReportsList = () => {
             })}
           </div>
         </div>
-      </PageLayout>
+      </PageLayout> */}
     </>
 
     // <section className="min-h-screen bg-[#e6e5e5] pt-[6rem] py-[4rem]">

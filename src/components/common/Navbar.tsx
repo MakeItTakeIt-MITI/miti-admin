@@ -6,7 +6,7 @@ import FlagIcon from "@mui/icons-material/Flag";
 import PaymentIcon from "@mui/icons-material/Payment";
 import SportsBasketballIcon from "@mui/icons-material/SportsBasketball";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
-// import ReceiptIcon from "@mui/icons-material/Receipt";
+import ReceiptIcon from "@mui/icons-material/Receipt";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useUserStore } from "../../store/useUserStore";
 
@@ -51,11 +51,11 @@ const Navbar = () => {
       path: "/support",
       icon: <SupportAgentIcon />,
     },
-    // {
-    //   title: "결제완료 목록",
-    //   path: "/payments",
-    //   icon: <ReceiptIcon />,
-    // },
+    {
+      title: "결제완료 목록",
+      path: "/payments",
+      icon: <ReceiptIcon />,
+    },
   ];
 
   return (

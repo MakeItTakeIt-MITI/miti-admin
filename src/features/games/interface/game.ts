@@ -22,3 +22,14 @@ export interface ParticipationStatus {
     participation_status: string;
     user: User;
 }
+
+export interface GameField {
+    id: number;
+    title: string;
+    game_status: string;
+    startdate: string;
+    starttime: string;
+    enddate: string;
+    endtime: string;
+
+}
