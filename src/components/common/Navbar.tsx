@@ -64,7 +64,7 @@ const Navbar = () => {
         location.pathname === "/" || location.pathname === "/auth"
           ? "hidden"
           : "block"
-      }  h-[4rem] bg-[#000] text-white w-full flex items-center justify-between px-[1rem]  drop-b-shadow-sm  z-[9999]`}
+      }  h-[4rem] bg-[#000] text-white w-full flex items-center justify-between px-[2rem]  drop-b-shadow-sm  z-[9999]`}
     >
       <div className="flex items-center gap-6">
         <h1 className="font-bold text-2xl">MITI</h1>
