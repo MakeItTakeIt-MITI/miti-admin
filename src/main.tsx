@@ -51,7 +51,7 @@ const router = createBrowserRouter([
         path: "settlements",
         children: [
           { path: "", element: <Settlements /> },
-          { path: ":settlementId", element: <SettlementDetail /> },
+          { path: ":requestId", element: <SettlementDetail /> },
         ],
       },
       {

@@ -78,59 +78,6 @@ const Settlements = () => {
           setCurrentPage={setCurrentPage}
         />
       </PageLayout>
-      {/* <PageLayout>
-        <section className="pt-[2rem]   h-[18rem]  px-[2rem] w-full   bg-[#fff] ">
-          <div className="flex items-center gap-4 ">
-            <table className="border-collapse     w-full ">
-              <thead>
-                <tr>
-                  {headers.map((header, i) => (
-                    <th key={i} className="  w-[120px]  ">
-                      {header}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              {paymentsData?.data.page_content.map((page: SettlementsField) => (
-                <tbody>
-                  <td className="w-[120px] text-center px-4 py-1">
-                    {page?.id}
-                  </td>
-                  <td className="w-[120px] text-center px-4 py-1">
-                    {page?.account}
-                  </td>
-                  <td className="w-[120px] text-center px-4 py-1">
-                    {page?.transfer_status}
-                  </td>
-                  <td className="w-[120px] text-center px-4 py-1">
-                    {page?.amount}
-                  </td>
-                  <td className="w-[120px] text-center px-4 py-1">
-                    {page?.account_bank}
-                  </td>
-                  <td className="w-[120px] text-center px-4 py-1">
-                    {page?.account_number}
-                  </td>
-                  <td className="w-[120px] text-center px-4 py-1">
-                    {page?.account_holder}
-                  </td>{" "}
-                  <td className="w-[120px] text-center px-4 py-1">
-                    {page?.created_at.slice(0, 10)}
-                  </td>
-                  <td className="w-[120px] text-center px-4 py-1">
-                    <Link
-                      to={`${page.id}`}
-                      className="font-semibold  w-[10%] text-center "
-                    >
-                      <FeedIcon sx={{ color: "gray" }} />
-                    </Link>
-                  </td>
-                </tbody>
-              ))}
-            </table>
-          </div>
-        </section>
-      </PageLayout> */}
     </>
   );
 };

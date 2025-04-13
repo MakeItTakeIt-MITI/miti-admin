@@ -8,3 +8,8 @@ export interface SettlementsField {
     account_number: string;
     created_at: string
 }
+
+export interface TransferField {
+    transfer_status: 'completed' | 'pending' | 'declined';
+
+}
