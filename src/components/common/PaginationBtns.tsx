@@ -21,7 +21,6 @@ const PaginationBtns = ({
       <Stack spacing={spacing}>
         <Pagination
           count={count}
-          // color="#000"
           style={{
             color: "#000",
           }}

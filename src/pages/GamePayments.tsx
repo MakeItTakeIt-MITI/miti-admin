@@ -3,7 +3,6 @@
 
 // import PaginationBtns from "../components/common/PaginationBtns";
 // import { useGamePaymentsListHook } from "../hook/useReceiptListHook";
-import { PageHeader } from "../features/common/PageHeader";
 // import { PageLayout } from "../features/common/PageLayout";
 // import { TableLayout } from "../components/common/TableLayout";
 // import PaginationBtns from "../components/common/PaginationBtns";
@@ -58,8 +57,6 @@ const GamePayments = () => {
   // const headers = [""];
   return (
     <>
-      <PageHeader title="결제완료 목록" />
-
       {/* <PageLayout>
         <div className="flex flex-col gap-2 ">
           {data?.status_code === 200 ? (

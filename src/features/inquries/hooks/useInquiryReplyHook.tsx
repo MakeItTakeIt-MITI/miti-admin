@@ -1,7 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addInquiryReply } from "../api/support";
 
 export const useInquiryReplyHook = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
       questionId,
@@ -10,5 +11,8 @@ export const useInquiryReplyHook = () => {
       questionId: number;
       content: string;
     }) => addInquiryReply(questionId, content),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["Inquiry Details"] });
+    },
   });
 };

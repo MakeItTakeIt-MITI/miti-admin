@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { PageHeader } from "../features/common/PageHeader";
 import { PageLayout } from "../features/common/PageLayout";
 
 const ReportDetails = () => {
@@ -16,7 +15,6 @@ const ReportDetails = () => {
 경기 정보 : 관리자 - 경기 정보 상세 조회 API
 참가 정보 : 관리자 - 참가 상세 조회 API
 해당 참여 전체 신고 목록 정보 : 관리자 - 참가 신고 목록 조회 API*/}
-      <PageHeader title="신고 상세" />
       <PageLayout>
         <div className="flex flex-col gap-4 ">
           <ul className="flex items-center justify-start gap-1 ">

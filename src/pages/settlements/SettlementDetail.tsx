@@ -19,10 +19,18 @@ export const SettlementDetail = () => {
   );
 
   const handleSubmitPaymentStatus = () => {
-    mutate({
-      transfer_status: statusValue,
+    const data = { transfer_status: statusValue };
+    mutate(data, {
+      onSuccess: () => {
+        alert("Payment status updated successfully!");
+      },
+      onError: (error) => {
+        console.error("Failed to update payment status:", error);
+        alert("Failed to update payment status.");
+      },
     });
   };
+
   const tableHeaders = [
     "ID", // id
     "계정", // account

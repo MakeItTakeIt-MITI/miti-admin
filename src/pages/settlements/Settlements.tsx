@@ -2,7 +2,6 @@
 // import PaymentIcon from "@mui/icons-material/Payment";
 
 import { Link } from "react-router-dom";
-import { PageHeader } from "../../features/common/PageHeader";
 import { PageLayout } from "../../features/common/PageLayout";
 import { usePaymentsHook } from "../../features/settlements/hooks/usePaymentsHook";
 // import { SettlementsField } from "../../features/settlements/interface/settlements";
@@ -56,7 +55,6 @@ const Settlements = () => {
 
   return (
     <>
-      <PageHeader title="정산 목록" />
       <PageLayout>
         <div className="flex flex-col gap-2 ">
           {data?.status_code === 200 ? (

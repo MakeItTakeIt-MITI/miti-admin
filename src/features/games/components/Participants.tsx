@@ -29,7 +29,7 @@ export const Participants = ({ gameId }: ParticipantsProps) => {
     gameParticipantsData?.status_code === 200
       ? gameParticipantsData?.data.map((player: ParticipationStatus) => [
           <Link
-            to={`/users/${player.id}`}
+            to={`/users/${player.user.id}`}
             className="inline-block w-full text-center"
           >
             <PersonSearchIcon />

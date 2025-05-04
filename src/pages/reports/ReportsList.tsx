@@ -8,7 +8,6 @@ import FeedIcon from "@mui/icons-material/Feed";
 // import PaginationBtns from "../components/common/PaginationBtns";
 // import { ReportField } from "../interface/reports";
 import { PageLayout } from "../../features/common/PageLayout";
-import { PageHeader } from "../../features/common/PageHeader";
 import { useReportsListHook } from "../../features/reports/hook/useReportsListHook";
 import { Link } from "react-router-dom";
 import { TableLayout } from "../../components/common/TableLayout";
@@ -47,7 +46,6 @@ const ReportsList = () => {
 
   return (
     <>
-      <PageHeader title="신고 목록" />
       <PageLayout>
         <div className="flex flex-col gap-2 ">
           {data?.status_code === 200 ? (

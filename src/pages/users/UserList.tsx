@@ -5,9 +5,9 @@ import PaginationBtns from "../../components/common/PaginationBtns";
 
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import { PageLayout } from "../../features/common/PageLayout";
-import { PageHeader } from "../../features/common/PageHeader";
 import { TableLayout } from "../../components/common/TableLayout";
 import { UsersField } from "../../features/users/interface/users";
+
 const UserList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
@@ -35,37 +35,34 @@ const UserList = () => {
           user.email,
           user.birthday,
           user.phone,
-          <Link to={`${user.id}`} className="inline-block w-full text-center">
+          <Link to={`${user.id}`}>
             <PersonSearchIcon />
           </Link>,
         ])
       : [];
 
   return (
-    <>
-      <PageHeader title="회원 목록" />
-      <PageLayout>
-        <div className="flex flex-col gap-2">
-          {data?.status_code === 200 ? (
-            <TableLayout
-              headers={headers}
-              data={tableData}
-              context="가입한 사용자가 없습니다!"
-            />
-          ) : (
-            <h1 className="flex items-center justify-center font-bold">
-              오류 발생
-            </h1>
-          )}
-        </div>
-        <PaginationBtns
-          spacing={2}
-          count={endIndex}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
-      </PageLayout>
-    </>
+    <PageLayout>
+      <div className="flex flex-col gap-2">
+        {data?.status_code === 200 ? (
+          <TableLayout
+            headers={headers}
+            data={tableData}
+            context="가입한 사용자가 없습니다!"
+          />
+        ) : (
+          <h1 className="flex items-center justify-center font-bold">
+            오류 발생
+          </h1>
+        )}
+      </div>
+      <PaginationBtns
+        spacing={2}
+        count={endIndex}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
+    </PageLayout>
   );
 };
 

@@ -11,5 +11,4 @@ export interface SettlementsField {
 
 export interface TransferField {
     transfer_status: 'completed' | 'pending' | 'declined';
-
 }

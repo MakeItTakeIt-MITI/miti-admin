@@ -4,7 +4,6 @@ import PaginationBtns from "../../components/common/PaginationBtns";
 import { useInquiriesListHook } from "../../features/inquries/hooks/useInquiriesListHook";
 import FeedIcon from "@mui/icons-material/Feed";
 import { PageLayout } from "../../features/common/PageLayout";
-import { PageHeader } from "../../features/common/PageHeader";
 import { Link } from "react-router-dom";
 import { InquiryDataField } from "../../features/inquries/interface/inquries";
 import { TableLayout } from "../../components/common/TableLayout";
@@ -46,7 +45,6 @@ const InquiresList = () => {
 
   return (
     <>
-      <PageHeader title="문의 목록" />
       <PageLayout>
         <div className="flex flex-col gap-2 ">
           {data?.status_code === 200 ? (

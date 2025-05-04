@@ -6,7 +6,6 @@ import PaginationBtns from "../../components/common/PaginationBtns";
 import { useGamesListHook } from "../../hook/useGamesListHook";
 import FeedIcon from "@mui/icons-material/Feed";
 import { PageLayout } from "../../features/common/PageLayout";
-import { PageHeader } from "../../features/common/PageHeader";
 import { TableLayout } from "../../components/common/TableLayout";
 import { GameField } from "../../features/games/interface/game";
 
@@ -34,7 +33,6 @@ const GamesList = () => {
       : [];
   return (
     <>
-      <PageHeader title="경기 목록" />
       <PageLayout>
         <div className="flex flex-col gap-2 ">
           {data?.status_code === 200 ? (
