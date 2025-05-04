@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useGameDetailsDataHook } from "../../features/games/hooks/useGameDetailsDataHook";
 import { PageLayout } from "../../features/common/PageLayout";
-import { PageHeader } from "../../features/common/PageHeader";
 import { useState } from "react";
 // import EditIcon from "@mui/icons-material/Edit";
 // import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
@@ -30,14 +29,6 @@ const GameDetails = () => {
   );
   const [gameInfo, setGameInfo] = useState(data?.data.info);
   const [showEditContainer, setShowEditContainer] = useState(false);
-
-  /**
- * mutate({
-  min_invitation: 5,
-  max_invitation: 10,
-  info: "Updated game info",
-});
- */
 
   const [activeTab, setActiveTab] = useState<
     "game" | "host" | "participants" | "reports"
@@ -140,8 +131,6 @@ const GameDetails = () => {
         </div>
       )}
 
-      <PageHeader title="경기 상세 정보 " />
-
       <PageLayout>
         <div className="flex flex-col gap-4 ">
           <ul className="flex items-center justify-start gap-1 ">
@@ -186,9 +175,7 @@ const GameDetails = () => {
           {activeTab === "game" && (
             <>
               <div className="flex items-center justify-between px-6 py-2 h-[8rem] bg-white">
-                <h1 className="text-2xl font-semibold ">
-                  [5:5]미티 픽업게임 3파전 토요일
-                </h1>
+                <h1 className="text-2xl font-semibold ">{data?.data.title}</h1>
                 <button
                   type="button"
                   onClick={handleDisplayEditContainer}
