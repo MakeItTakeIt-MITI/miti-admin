@@ -3,6 +3,8 @@ import { useInquiryDetailsHook } from "../../features/inquries/hooks/useInquiryD
 import { useInquiryReplyHook } from "../../features/inquries/hooks/useInquiryReplyHook";
 import { useState } from "react";
 import { InquiryAnswerField } from "../../features/inquries/interface/inquries";
+import { AvatarFallback, AvatarImage } from "../../components/ui/avatar";
+import { Avatar } from "@radix-ui/react-avatar";
 
 export const InquiryDetails = () => {
   const [replyContent, setReplyContent] = useState("");
@@ -32,20 +34,21 @@ export const InquiryDetails = () => {
 
   return (
     <>
-      <header className=" pt-[2rem] px-[2rem] w-full   bg-[#fff] ">
-        <div className="shadow-md border w-full min-h-[80px] mx-auto px-4 py-6 bg-[#f5f5f5]  flex flex-col justify-between rounded-md">
-          <h1 className="font-bold text-2xl">문의 상세</h1>
-        </div>
-      </header>
-
       {/* profile display */}
       <section className="pt-[2rem]   h-[18rem]  px-[2rem] w-full   bg-[#fff] ">
         <div className="shadow-md p-8 w-full h-full bg-[#f5f5f5]  flex justify-between rounded-md  ">
           <div className="flex items-center gap-4">
-            <img
-              src={inquiryDetails?.data.user.profile_image_url}
-              alt="user profile img"
-            />
+            <Avatar className=" w-[80px] h-[80px]">
+              <AvatarImage
+                src={
+                  inquiryDetails?.data.user.profile_image_url ||
+                  "https://github.com/shadcn.png"
+                }
+              />
+              <AvatarFallback>
+                {inquiryDetails?.data.user.nickname}
+              </AvatarFallback>
+            </Avatar>
 
             {/* info */}
 
@@ -124,8 +127,13 @@ export const InquiryDetails = () => {
               <ul className="space-y-4 ">
                 {inquiryDetails?.data.answers.map(
                   (answer: InquiryAnswerField) => (
-                    <li className="border border-gray-200 rounded-md p-4 text-sm">
-                      [{answer.created_at}] {answer.content}
+                    <li className="border border-gray-200 rounded-md p-4 text-sm flex flex-col gap-2">
+                      <span className="font-bold">
+                        [{answer.created_at.slice(0, 10)}{" "}
+                        {answer.created_at.slice(11, 16)}]
+                      </span>
+
+                      <span> {answer.content}</span>
                     </li>
                   )
                 )}
