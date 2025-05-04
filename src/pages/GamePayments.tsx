@@ -1,6 +1,8 @@
 // import EditCalendarIcon from "@mui/icons-material/EditCalendar";
 // import { useState } from "react";
 
+import { PageLayout } from "../features/common/PageLayout";
+
 // import PaginationBtns from "../components/common/PaginationBtns";
 // import { useGamePaymentsListHook } from "../hook/useReceiptListHook";
 // import { PageLayout } from "../features/common/PageLayout";
@@ -54,9 +56,11 @@ const GamePayments = () => {
   //   "12월",
   // ];
 
-  // const headers = [""];
   return (
     <>
+      <PageLayout>
+        <h1>API needed</h1>
+      </PageLayout>
       {/* <PageLayout>
         <div className="flex flex-col gap-2 ">
           {data?.status_code === 200 ? (
