@@ -12,29 +12,54 @@ const axiosUrl: AxiosInstance = axios.create({
 
 });
 
-axiosUrl.interceptors.request.use((config) => {
+const logoutUser = () => {
+    localStorage.removeItem("accessToken");
+    alert("Your session has expired. Please log in again.");
+    window.location.href = "/login";
+};
 
-    const accessToken = localStorage.getItem("accessToken");
-    // const accessToken = localStorage.getItem("accessToken");
-    if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`;
+const setLogoutTimer = () => {
+    const expirationTime = Date.now() + 2 * 60 * 60 * 1000;
+    localStorage.setItem("logoutExpiration", expirationTime.toString());
+
+    setTimeout(() => {
+        const storedExpiration = localStorage.getItem("logoutExpiration");
+        if (storedExpiration && Date.now() > Number(storedExpiration)) {
+            logoutUser();
+        }
+    }, 2 * 60 * 60 * 1000);
+};
+
+setLogoutTimer();
+
+axiosUrl.interceptors.request.use(
+    (config) => {
+        const accessToken = localStorage.getItem("accessToken");
+        if (accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
     }
-    return config;
-}, error => {
-    return Promise.reject(error);
-}
-
 );
+
+
 axiosUrl.interceptors.response.use(
     (response) => {
         return response;
     },
     (error) => {
+        const statusCode = error.response?.data?.status_code;
+        const errorCode = error.response?.data?.error_code;
 
-        const statusCode = error.response.data.status_code
-        const errorCode = error.response.data.error_code
-        console.log(errorCode)
-        console.log(statusCode)
+        console.log(errorCode);
+        console.log(statusCode);
+
+        if (statusCode === 401) {
+            logoutUser();
+        }
 
         return Promise.reject(error);
     }
