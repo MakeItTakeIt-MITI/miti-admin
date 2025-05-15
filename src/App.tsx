@@ -12,10 +12,10 @@ function App() {
     }
   }, [isLoggedIn, navigate]);
   return (
-    <>
-      <Navbar />
+    <div className="flex">
+      {isLoggedIn && <Navbar />}
       <Outlet />
-    </>
+    </div>
   );
 }
 
