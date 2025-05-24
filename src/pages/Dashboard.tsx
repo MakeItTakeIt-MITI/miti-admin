@@ -1,15 +1,83 @@
-import { Link } from "react-router-dom";
-
-import GroupIcon from "@mui/icons-material/Group";
-import FlagIcon from "@mui/icons-material/Flag";
-import PaymentIcon from "@mui/icons-material/Payment";
-import SportsBasketballIcon from "@mui/icons-material/SportsBasketball";
-import SupportAgentIcon from "@mui/icons-material/SupportAgent";
-import ReceiptIcon from "@mui/icons-material/Receipt";
+import { useEffect, useState } from "react";
+import { useUsersListHook } from "../hook/useUsersListHook";
 
 const Dashboard = () => {
+  const [usersPage, setUsersPage] = useState<number | null>(null);
+  const { data: usersData } = useUsersListHook(usersPage);
+  const usersEndIndex = usersData?.data.end_index;
+  console.log("data", usersEndIndex);
+
+  useEffect(() => {
+    setUsersPage(usersEndIndex);
+  }, [usersEndIndex]);
+
   return (
-    <section className="w-full bg-[#eaeaea]"></section>
+    <section className=" min-h-screen p-16  bg-gray-50 text-black w-full ">
+      {/* <h1>MITI Admin Page</h1> */}
+
+      <div className="border border-gray-400 p-4 space-y-2 rounded-md bg-white w-1/2 ">
+        <h2 className="font-bold text-lg">새로 가입한 유저</h2>
+        <ul>
+          {usersData?.data.page_content.map((user) => (
+            <li key={user.id} className="flex gap-8">
+              <span>{user.id}</span>
+              <span>{user.name}</span>
+              <span className="truncate w-40">{user.email}</span>
+              <span>{user.phone}</span>
+              <span>{user.signup_method}</span>
+              <span>{user.created_at}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/*  */}
+      {/* <Table>
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                );
+              })}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                No results.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table> */}
+
+      {/*  */}
+    </section>
+
     // <section className="min-h-screen bg-[#fff] pt-[6rem] py-[4rem]">
     //   <div className="max-w-[62rem]  mx-auto space-y-4 ">
     //     <h1 className="font-bold text-3xl">바로가기</h1>
