@@ -16,17 +16,7 @@ const Navbar = () => {
   };
 
   return (
-    // <SidebarProvider>
-    //   <Sidebar side="left" variant="sidebar" collapsible="offcanvas">
-    //     <SidebarHeader />
-    //     <SidebarContent>
-    //       <SidebarGroup />
-    //     </SidebarContent>
-    //     <SidebarFooter />
-    //   </Sidebar>
-    // </SidebarProvider>
-
-    <aside className="w-[300px] bg-sidebar-foreground text-white    p-8 flex flex-col justify-between h-screen ">
+    <aside className="w-[300px] bg-sidebar-primary text-white    p-8 flex flex-col justify-between h-screen ">
       <ul className="flex items-center flex-col gap-4">
         {NAVIGATION.map((nav) => {
           return (
@@ -48,6 +38,50 @@ const Navbar = () => {
         로그아웃
       </Button>
     </aside>
+
+    // <SidebarProvider>
+    //   <Sidebar>
+    //     <SidebarContent className="bg-[#212121] text-white">
+    //       <SidebarGroup>
+    //         <SidebarGroupLabel>MITI 관리자</SidebarGroupLabel>
+    //         <SidebarGroupContent>
+    //           <SidebarMenu>
+    //             {items.map((item) => (
+    //               <SidebarMenuItem key={item.title}>
+    //                 <SidebarMenuButton asChild>
+    //                   <a href={item.url}>
+    //                     <item.icon />
+    //                     <span>{item.title}</span>
+    //                   </a>
+    //                 </SidebarMenuButton>
+    //               </SidebarMenuItem>
+    //             ))}
+    //           </SidebarMenu>
+    //         </SidebarGroupContent>
+    //       </SidebarGroup>
+    //     </SidebarContent>
+    //     <SidebarFooter>
+    //       <Button
+    //         variant="destructive"
+    //         className="w-full"
+    //         onClick={handleLogout}
+    //       >
+    //         로그아웃
+    //       </Button>
+    //     </SidebarFooter>
+    //   </Sidebar>
+
+    // </SidebarProvider>
+    // <SidebarProvider>
+    //   <Sidebar side="left" variant="sidebar" collapsible="offcanvas">
+    //     <SidebarHeader />
+    //     <SidebarContent>
+    //       <SidebarGroup />
+    //     </SidebarContent>
+    //     <SidebarFooter />
+    //   </Sidebar>
+    // </SidebarProvider>
+
     // <nav
     //   className={` ${
     //     location.pathname === "/" || location.pathname === "/auth"
