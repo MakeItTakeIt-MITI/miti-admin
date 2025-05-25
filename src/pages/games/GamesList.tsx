@@ -1,59 +1,146 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-// import Sidebar from "../components/Sidebar";
-import PaginationBtns from "../../components/common/PaginationBtns";
-// import SportsBasketballIcon from "@mui/icons-material/SportsBasketball";
+import { Link, useSearchParams } from "react-router-dom";
 import { useGamesListHook } from "../../hook/useGamesListHook";
-import FeedIcon from "@mui/icons-material/Feed";
-import { PageLayout } from "../../features/common/PageLayout";
-import { TableLayout } from "../../components/common/TableLayout";
 import { GameField } from "../../features/games/interface/game";
 
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  Row,
+  useReactTable,
+} from "@tanstack/react-table";
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../../components/ui/table";
+import { NotepadText } from "lucide-react";
+import { PaginationWithLinks } from "../../components/common/PaginationWithLinks";
+
 const GamesList = () => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
-
+  // const [currentPage, setCurrentPage] = useState<number>(1);
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get("page");
+  const pageNow = page ? parseInt(page) : 1;
   // const { data } = useUsersListHook(currentPage);
-  const { data, isLoading } = useGamesListHook(currentPage);
+  const { data } = useGamesListHook(pageNow);
   const endIndex = data?.data.end_index;
-  const gameData = data?.data.page_content;
-  const headers = ["ID", "제목", "경기 상태", "시작", "종료료", "상세"];
+  const currentPage = data?.data?.current_index;
 
-  const tableData =
-    !isLoading && data?.status_code === 200
-      ? gameData.map((game: GameField) => [
-          game.id,
-          game.title,
-          game.game_status,
-          `${game.startdate} ${game.starttime}`,
-          `${game.enddate} ${game.endtime}`,
-          <Link to={`${game.id}`} className="inline-block w-full text-center">
-            <FeedIcon sx={{ color: "gray" }} />
-          </Link>,
-        ])
-      : [];
+  const columns: ColumnDef<GameField>[] = [
+    {
+      accessorKey: `id`,
+      header: `ID`,
+    },
+    {
+      accessorKey: "title",
+      header: "제목",
+    },
+    {
+      accessorKey: "game_status",
+      header: "경기 상태",
+    },
+    {
+      accessorKey: "startdate",
+      header: "시작일",
+    },
+    {
+      accessorKey: "starttime",
+      header: "시간 시간",
+    },
+
+    {
+      accessorKey: "enddate",
+      header: "종료일",
+    },
+    {
+      accessorKey: "endtime",
+      header: "종료 시간",
+    },
+    {
+      accessorKey: "info",
+      header: "상세",
+      cell: ({ row }: { row: Row<GameField> }) => (
+        <Link to={`${row.original.id}`}>
+          <NotepadText />
+        </Link>
+      ),
+    },
+  ];
+
+  const table = useReactTable({
+    data: data?.data.page_content || [],
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    enableRowSelection: true,
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
+
   return (
     <>
-      <PageLayout>
-        <div className="flex flex-col gap-2 ">
-          {data?.status_code === 200 ? (
-            <TableLayout
-              headers={headers}
-              data={tableData}
-              context="경기 내역이 없습니다!"
-            />
-          ) : (
-            <h1 className="flex items-center justify-center font-bold">
-              오류 발생
-            </h1>
-          )}
-        </div>
-        <PaginationBtns
-          spacing={2}
-          count={endIndex}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
+      <section className="w-full  p-8  flex flex-col justify-between bg-black">
+        <h1 className="text-white font-bold text-2xl">경기 목록</h1>
+        <Table className="h-[750px] overflow-y-auto  text-white">
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+        <PaginationWithLinks
+          page={currentPage}
+          pageSize={5}
+          totalCount={endIndex}
         />
-      </PageLayout>
+      </section>
     </>
   );
 };
