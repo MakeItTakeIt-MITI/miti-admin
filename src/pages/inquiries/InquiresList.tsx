@@ -22,6 +22,7 @@ import {
 } from "../../components/ui/table";
 import { NotepadText } from "lucide-react";
 import { PaginationWithLinks } from "../../components/common/PaginationWithLinks";
+import SearchField from "../../components/common/SearchField";
 
 const InquiresList = () => {
   const [searchParams] = useSearchParams();
@@ -82,6 +83,7 @@ const InquiresList = () => {
     <section className="w-full  p-8  flex flex-col justify-between bg-black">
       <div className="space-y-4">
         <h1 className="text-white font-bold text-2xl">유저 문의 목록</h1>
+        <SearchField />
         <Table className=" overflow-y-auto  text-white">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

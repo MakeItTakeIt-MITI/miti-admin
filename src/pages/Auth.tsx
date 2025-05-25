@@ -27,9 +27,10 @@ const Auth = () => {
   const errorCode = data?.error_code;
 
   const onSubmit = () => mutate({ email: email, password: password });
+
   useEffect(() => {
     if (isLoggedIn) {
-      navigate("/dashboard");
+      navigate("/users?page=1");
     }
   }, [isLoggedIn, navigate]);
 

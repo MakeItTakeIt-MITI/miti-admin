@@ -1,16 +1,8 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUserStore } from "../../store/useUserStore";
 import { Button } from "../ui/button";
-import clsx from "clsx";
 import { NAVIGATION } from "../../constants/NAVIGATION";
 
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarHeader,
-} from "@/components/ui/sidebar";
 import React from "react";
 
 const Navbar = () => {
@@ -20,13 +12,21 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    router("/");
+    router("/login");
   };
 
-  const location = useLocation();
-
   return (
-    <aside className="w-72    p-8 flex flex-col justify-between h-screen ">
+    // <SidebarProvider>
+    //   <Sidebar side="left" variant="sidebar" collapsible="offcanvas">
+    //     <SidebarHeader />
+    //     <SidebarContent>
+    //       <SidebarGroup />
+    //     </SidebarContent>
+    //     <SidebarFooter />
+    //   </Sidebar>
+    // </SidebarProvider>
+
+    <aside className="w-[300px] bg-sidebar-foreground text-white    p-8 flex flex-col justify-between h-screen ">
       <ul className="flex items-center flex-col gap-4">
         {NAVIGATION.map((nav) => {
           return (
@@ -44,7 +44,7 @@ const Navbar = () => {
         })}
       </ul>
 
-      <Button variant="destructive" className="w-full" onClick={handleLogout}>
+      <Button variant="secondary" className="w-full" onClick={handleLogout}>
         로그아웃
       </Button>
     </aside>

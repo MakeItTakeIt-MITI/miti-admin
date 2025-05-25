@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchReports } from "../api/reports";
 
-export const useReportsListHook = () => {
+export const useReportsListHook = (page: number) => {
   return useQuery({
     queryKey: ["Reports List"],
-    queryFn: () => fetchReports(),
+    queryFn: () => fetchReports(page),
   });
 };

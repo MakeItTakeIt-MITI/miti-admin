@@ -14,8 +14,8 @@ const axiosUrl: AxiosInstance = axios.create({
 
 const logoutUser = () => {
     localStorage.removeItem("accessToken");
-    alert("Your session has expired. Please log in again.");
-    window.location.href = "/";
+    // alert("Your session has expired. Please log in again.");
+    // window.location.href = "/";
 };
 
 const setLogoutTimer = () => {

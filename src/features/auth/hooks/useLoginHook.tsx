@@ -14,8 +14,8 @@ export const useLoginHook = () => {
         localStorage.setItem("accessToken", access);
         localStorage.setItem("refreshToken", refresh);
 
-        login(response.data);
-        navigate("/dashboard");
+        login(response?.data);
+        navigate("/");
       }
     },
   });
