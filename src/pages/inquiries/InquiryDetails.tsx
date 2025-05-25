@@ -6,6 +6,16 @@ import { InquiryAnswerField } from "../../features/inquries/interface/inquries";
 import { AvatarFallback, AvatarImage } from "../../components/ui/avatar";
 import { Avatar } from "@radix-ui/react-avatar";
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
+
 export const InquiryDetails = () => {
   const [replyContent, setReplyContent] = useState("");
   const { id } = useParams();
@@ -35,23 +45,15 @@ export const InquiryDetails = () => {
   return (
     <>
       {/* profile display */}
-      <section className="pt-[2rem]   h-[18rem]  px-[2rem] w-full   bg-[#fff] ">
-        <div className="shadow-md p-8 w-full h-full bg-[#f5f5f5]  flex justify-between rounded-md  ">
-          <div className="flex items-center gap-4">
-            <Avatar className=" w-[80px] h-[80px]">
-              <AvatarImage
-                src={
-                  inquiryDetails?.data.user.profile_image_url ||
-                  "https://github.com/shadcn.png"
-                }
-              />
-              <AvatarFallback>
-                {inquiryDetails?.data.user.nickname}
-              </AvatarFallback>
-            </Avatar>
-
-            {/* info */}
-
+      <section className=" w-full space-y-4">
+        {/* <section className="pt-[2rem]   h-[18rem]  px-[2rem] w-full   bg-[#fff] "> */}
+        <Card>
+          <CardHeader>
+            <CardTitle>사용자 정보</CardTitle>
+            {/* <CardDescription>Card Description</CardDescription> */}
+          </CardHeader>
+          <CardContent>
+            {/* <p>Card Content</p> */}{" "}
             <table className="border-collapse    w-full ">
               <thead>
                 <tr>
@@ -97,62 +99,64 @@ export const InquiryDetails = () => {
                 {/* ))} */}
               </tbody>
             </table>
-          </div>
-        </div>
-      </section>
+          </CardContent>
+        </Card>
 
-      <section className="pt-[2rem] px-[2rem] w-full   bg-[#fff] ">
-        <div className="shadow-md w-full  min-h-[900px] px-4 py-6 bg-[#f5f5f5]  flex justify-between rounded-md  ">
-          <div className="w-[60%] p-4 bg-[#fff] space-y-4">
+        <Card className="h-[30%]">
+          <CardHeader>
+            <CardTitle>문의 내용</CardTitle>
+          </CardHeader>
+          <CardContent className="space-2">
             <h1 className="font-bold text-2xl">
               {" "}
               {inquiryDetails?.data.title}
             </h1>
             <hr />
             <p className="p-2">{inquiryDetails?.data.content}</p>
-          </div>
-          <div className="w-[38%]  flex flex-col justify-between ">
-            <div
-              style={{
-                scrollbarWidth: "thin",
-              }}
-              className="bg-white h-[60%] overflow-y-auto  p-4"
-            >
-              {inquiryDetails?.data.num_of_answers === 0 && (
-                <h1 className="flex items-center justify-center w-full h-full font-bold">
-                  {" "}
-                  아직 관리자 답변이 없습니다!
-                </h1>
-              )}
-              <ul className="space-y-4 ">
-                {inquiryDetails?.data.answers.map(
-                  (answer: InquiryAnswerField) => (
-                    <li className="border border-gray-200 rounded-md p-4 text-sm flex flex-col gap-2">
-                      <span className="font-bold">
-                        [{answer.created_at.slice(0, 10)}{" "}
-                        {answer.created_at.slice(11, 16)}]
-                      </span>
+          </CardContent>
+        </Card>
 
-                      <span> {answer.content}</span>
-                    </li>
-                  )
-                )}
-              </ul>
-            </div>
-            <div className="bg-white h-[28%] p-4">
-              <textarea
-                onChange={(e) => setReplyContent(e.target.value)}
-                className="w-full h-full border border-gray-400 p-2 resize-none"
-              />
-            </div>
-            <button
-              type="button"
-              onClick={handleSubmitReply}
-              className="bg-blue-600 h-[5%] rounded-lg text-white hover:brightness-105"
-            >
-              답변하기
-            </button>
-          </div>
+        <Card className="h-[30%]">
+          <CardHeader>
+            <CardTitle>관리자 답변</CardTitle>
+          </CardHeader>
+          <CardContent className="space-2">
+            {inquiryDetails?.data.num_of_answers === 0 && (
+              <h1 className="flex items-center justify-center w-full h-full font-bold">
+                {" "}
+                아직 관리자 답변이 없습니다!
+              </h1>
+            )}
+            <ul className="space-y-4 ">
+              {inquiryDetails?.data.answers.map(
+                (answer: InquiryAnswerField) => (
+                  <li className="border border-gray-200 rounded-md p-4 text-sm flex flex-col gap-2">
+                    <span className="font-bold">
+                      [{answer.created_at.slice(0, 10)}{" "}
+                      {answer.created_at.slice(11, 16)}]
+                    </span>
+
+                    <span> {answer.content}</span>
+                  </li>
+                )
+              )}
+            </ul>
+          </CardContent>
+        </Card>
+        <div>
+          <textarea
+            onChange={(e) => setReplyContent(e.target.value)}
+            className="w-full border border-gray-400 p-2 resize-none"
+            placeholder="답변"
+          />
+          <Button
+            variant={"destructive"}
+            type="button"
+            onClick={handleSubmitReply}
+            className="w-full"
+          >
+            답변하기
+          </Button>
         </div>
       </section>
     </>

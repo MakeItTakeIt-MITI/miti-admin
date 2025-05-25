@@ -1,82 +1,160 @@
 // import Sidebar from "../components/Sidebar";
 // import PaymentIcon from "@mui/icons-material/Payment";
 
-import { Link } from "react-router-dom";
-import { PageLayout } from "../../features/common/PageLayout";
+import { Link, useSearchParams } from "react-router-dom";
 import { usePaymentsHook } from "../../features/settlements/hooks/usePaymentsHook";
 // import { SettlementsField } from "../../features/settlements/interface/settlements";
-import FeedIcon from "@mui/icons-material/Feed";
-import { TableLayout } from "../../components/common/TableLayout";
-import PaginationBtns from "../../components/common/PaginationBtns";
-import { useState } from "react";
+
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  Row,
+  useReactTable,
+} from "@tanstack/react-table";
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../../components/ui/table";
+import { NotepadText } from "lucide-react";
+import { PaginationWithLinks } from "../../components/common/PaginationWithLinks";
+import SearchField from "../../components/common/SearchField";
+import { SettlementsField } from "../../features/settlements/interface/settlements";
 
 const Settlements = () => {
   // const { data: paymentsData } = usePaymentsListhook(currentPage);
   // const endIndex = paymentsData?.data.end_index;
-  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get("page");
+  const pageNow = page ? parseInt(page) : 1;
 
   // const { data: paymentDetailsData } = usePaymentDetailsHook(paymentId)
-  const { data, isLoading } = usePaymentsHook();
+  const { data } = usePaymentsHook(pageNow);
   const endIndex = data?.data.end_index;
-  const settlementsList = data?.data.page_content;
+  const currentPage = data?.data?.current_index;
 
-  const headers = [
-    "id",
-    "account",
-    "transfer_status",
-    "amount",
-    "account_bank",
-    "account_holder",
-    "account_number",
-    "created_at",
-    "상세",
+  const columns: ColumnDef<SettlementsField>[] = [
+    {
+      accessorKey: `id`,
+      header: `ID`,
+    },
+    {
+      accessorKey: "account",
+      header: "계정",
+    },
+    {
+      accessorKey: "transfer_status",
+      header: "이체 상태",
+    },
+    {
+      accessorKey: "amount",
+      header: "금액",
+    },
+    {
+      accessorKey: "account_bank",
+      header: "은행",
+    },
+
+    {
+      accessorKey: "account_holder",
+      header: "예금주",
+    },
+    {
+      accessorKey: "account_number",
+      header: "계좌번호",
+    },
+    {
+      accessorKey: "created_at",
+      header: "생성일",
+    },
+    {
+      accessorKey: "info",
+      header: "상세",
+      cell: ({ row }: { row: Row<SettlementsField> }) => (
+        <Link to={`${row.original.id}`}>
+          <NotepadText />
+        </Link>
+      ),
+    },
   ];
-  const tableData =
-    !isLoading && data?.status_code === 200
-      ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        settlementsList.map((settlement: any) => [
-          settlement.id,
-          settlement.account,
-          settlement.transfer_status,
-          settlement.amount,
-          settlement.account_bank,
-          settlement.account_number,
-          settlement.account_holder,
-          `${settlement.created_at.slice(0, 10)}`,
 
-          <Link
-            to={`${settlement.id}`}
-            className="inline-block w-full text-center"
-          >
-            <FeedIcon sx={{ color: "gray" }} />
-          </Link>,
-        ])
-      : [];
+  const table = useReactTable({
+    data: data?.data.page_content || [],
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    enableRowSelection: true,
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
 
   return (
-    <>
-      <PageLayout>
-        <div className="flex flex-col gap-2 ">
-          {data?.status_code === 200 ? (
-            <TableLayout
-              headers={headers}
-              data={tableData}
-              context="정산 내역이 없습니다!"
-            />
-          ) : (
-            <h1 className="flex items-center justify-center font-bold">
-              오류 발생
-            </h1>
-          )}
-        </div>
-        <PaginationBtns
-          spacing={2}
-          count={endIndex}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
-      </PageLayout>
-    </>
+    <section className="w-full  p-8  flex flex-col justify-between bg-black">
+      <div className="space-y-4">
+        <h1 className="text-white font-bold text-2xl">정상금 요청 목록</h1>
+        <SearchField />
+        <Table className=" ">
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      <PaginationWithLinks
+        page={currentPage}
+        pageSize={5}
+        totalCount={endIndex}
+      />
+    </section>
   );
 };
 
