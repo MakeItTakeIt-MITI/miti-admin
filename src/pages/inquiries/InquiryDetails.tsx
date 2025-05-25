@@ -3,14 +3,10 @@ import { useInquiryDetailsHook } from "../../features/inquries/hooks/useInquiryD
 import { useInquiryReplyHook } from "../../features/inquries/hooks/useInquiryReplyHook";
 import { useState } from "react";
 import { InquiryAnswerField } from "../../features/inquries/interface/inquries";
-import { AvatarFallback, AvatarImage } from "../../components/ui/avatar";
-import { Avatar } from "@radix-ui/react-avatar";
 
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
