@@ -16,7 +16,7 @@ const Navbar = () => {
   };
 
   return (
-    <aside className="w-[300px] bg-sidebar-primary text-white    p-8 flex flex-col justify-between h-screen ">
+    <aside className="w-[300px] bg-sidebar-primary text-white    p-8 flex flex-col justify-between min-h-screen ">
       <ul className="flex items-center flex-col gap-4">
         {NAVIGATION.map((nav) => {
           return (
@@ -32,11 +32,13 @@ const Navbar = () => {
             </li>
           );
         })}
+        <hr className=" bg-white w-full" />
+        <li className="w-full">
+          <Button variant="secondary" className="w-full" onClick={handleLogout}>
+            로그아웃
+          </Button>
+        </li>
       </ul>
-
-      <Button variant="secondary" className="w-full" onClick={handleLogout}>
-        로그아웃
-      </Button>
     </aside>
 
     // <SidebarProvider>

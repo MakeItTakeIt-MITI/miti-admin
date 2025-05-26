@@ -1,9 +1,6 @@
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useGameDetailsDataHook } from "../../features/games/hooks/useGameDetailsDataHook";
-import { PageLayout } from "../../features/common/PageLayout";
 import { useState } from "react";
-// import EditIcon from "@mui/icons-material/Edit";
-// import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 import { HostInfo } from "../../features/games/components/HostInfo";
 import { Reports } from "../../features/games/components/Reports";
 import { Participants } from "../../features/games/components/Participants";
@@ -11,12 +8,15 @@ import { usePatchGameDetailsHook } from "../../features/games/hooks/usePatchGame
 
 import CloseIcon from "@mui/icons-material/Close";
 
-const GameDetails = () => {
-  const { id } = useParams();
-  const gameId = Number(id);
-  const { data } = useGameDetailsDataHook(gameId);
+import { Button } from "../../components/ui/button";
 
-  const { mutate } = usePatchGameDetailsHook(gameId);
+const GameDetails = () => {
+  const [searchParams] = useSearchParams();
+  const gameId = searchParams.get("gameId");
+
+  const { data } = useGameDetailsDataHook(Number(gameId));
+
+  const { mutate } = usePatchGameDetailsHook(Number(gameId));
 
   const handleDisplayEditContainer = () =>
     setShowEditContainer(!showEditContainer);
@@ -115,7 +115,7 @@ const GameDetails = () => {
                 />
               </div>
             </div>
-            <button
+            <Button
               type="submit"
               onClick={handleSubmitUpdate}
               disabled={minPlayers >= maxPlayers}
@@ -126,18 +126,18 @@ const GameDetails = () => {
               }  rounded-lg  font-semibold`}
             >
               수정하기
-            </button>
+            </Button>
           </div>
         </div>
       )}
 
-      <PageLayout>
-        <div className="flex flex-col gap-4 ">
+      <section className="pt-2 w-full">
+        <div className="flex flex-col  ">
           <ul className="flex items-center justify-start gap-1 ">
             <li
               onClick={() => handleChangeTab("game")}
               style={{
-                backgroundColor: activeTab === "game" ? "#fff" : "#f5f5f5",
+                backgroundColor: activeTab === "game" ? "#ffffff" : "#f5f5f5",
               }}
               className="cursor-pointer w-[170px] h-10 border border-gray-300 flex items-center  py-2 px-2 text-md rounded-tr-2xl font-semibold"
             >
@@ -173,118 +173,114 @@ const GameDetails = () => {
             </li>
           </ul>
           {activeTab === "game" && (
-            <>
-              <div className="flex items-center justify-between px-6 py-2 h-[8rem] bg-white">
+            <article className="bg-gray-800 text-white">
+              <div className="flex items-center justify-between h-32 px-6 ">
                 <h1 className="text-2xl font-semibold ">{data?.data.title}</h1>
-                <button
+                <Button
+                  variant={"secondary"}
                   type="button"
                   onClick={handleDisplayEditContainer}
-                  className="border hover:brightness-105  bg-gray-200 border-gray-400 rounded-lg w-[200px] h-[45px] flex items-center justify-center gap-2"
+                  size={"lg"}
                 >
                   경기 정보 수정
-                </button>
+                </Button>
               </div>
 
-              <hr className="bg-gray-400 rounded-xl" />
-
-              {/* 경기 정보 : id, 경기 상태, 제목, 참가비, 시작 일시, 종료 일시, 최소 모집 인원, 최대 모집 인원, 현재 모집 인원, 참가비, 모집 정보, 생성 일시 */}
-
-              <div className="space-y-8 py-2 px-4 bg-white flex items-center h-[6rem] rounded-md">
-                <div className="flex items-center flex-wrap gap-10 ">
-                  <div className="flex flex-col gap-1">
+              <hr className="bg-white " />
+              {/* GAME INFO CONTAINER */}
+              <div className="h-32 flex items-center">
+                <ul className="flex items-center gap-10 p-8">
+                  <li>
                     <h4 className="font-bold">경기 ID </h4>
                     <p className="text-gray-500">{data?.data.id}</p>
-                  </div>
-                  <div className="flex flex-col gap-1">
+                  </li>
+                  <li>
                     <h4 className="font-bold">경기 시작</h4>
                     <p className="text-gray-500">
                       {data?.data.startdate} ({data?.data.starttime.slice(0, 5)}
                       )
                     </p>
-                  </div>
-                  <div className="flex flex-col gap-1">
+                  </li>
+                  <li>
                     <h4 className="font-bold">경기 종료</h4>
                     <p className="text-gray-500">
                       {data?.data.enddate} ({data?.data.endtime.slice(0, 5)})
                     </p>
-                  </div>
-                  <div className="flex flex-col gap-1">
+                  </li>
+
+                  <li>
                     <h4 className="font-bold">경기 상태</h4>
                     <p className="text-gray-500">{data?.data.game_status}</p>
-                  </div>
-                  <div className="flex flex-col gap-1">
+                  </li>
+                  <li>
                     <h4 className="font-bold">참가비</h4>
                     <p className="text-gray-500">{data?.data.fee}</p>
-                  </div>
-                  <div className="flex flex-col gap-1">
+                  </li>
+
+                  <li>
                     <h4 className="font-bold">최소 인원</h4>
-                    <div className="text-gray-500 ">
-                      <span>{data?.data.min_invitation}</span>
-                      <button type="button"></button>
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-1">
+                    <p className="text-gray-500">{data?.data.min_invitation}</p>
+                  </li>
+
+                  <li>
                     <h4 className="font-bold">최대 인원</h4>
                     <p className="text-gray-500">{data?.data.max_invitation}</p>
-                  </div>
-                  <div className="flex flex-col gap-1">
+                  </li>
+
+                  <li>
                     <h4 className="font-bold">현재 모집 인원</h4>
                     <p className="text-gray-500">
                       {data?.data.num_of_participations}
                     </p>
-                  </div>
-                  <div className="flex flex-col gap-1">
+                  </li>
+                  <li>
                     <h4 className="font-bold">경기 생성일</h4>
                     <p className="text-gray-500">
                       {data?.data.created_at.slice(0, 10)}
                     </p>
-                  </div>
-                </div>
+                  </li>
+                </ul>
               </div>
-
-              {/* 코트 정보 */}
-              <div className="space-y-8 py-2 px-4 bg-white flex items-center h-[6rem] rounded-md">
-                <div className="flex items-center flex-wrap gap-10 ">
-                  <div className="flex flex-col gap-1">
+              <hr className="bg-white " />
+              {/* COURT INFO CONTAINER */}
+              <div className="h-32 flex items-center">
+                <ul className="flex items-center gap-10 p-8">
+                  <li>
                     <h4 className="font-bold">코트 ID </h4>
                     <p className="text-gray-500">{data?.data.court.id}</p>
-                  </div>
-                  <div className="flex flex-col gap-1">
+                  </li>
+                  <li>
+                    {" "}
                     <h4 className="font-bold">주소</h4>
                     <p className="text-gray-500">{data?.data.court.address} </p>
-                  </div>
-                  <div className="flex flex-col gap-1">
+                  </li>
+                  <li>
+                    {" "}
                     <h4 className="font-bold">상세 주소</h4>
                     <p className="text-gray-500">{data?.data.court.name}</p>
-                  </div>
-                </div>
+                  </li>
+                </ul>
               </div>
+              <hr className="bg-white " />
 
-              {/* 모집 정보 */}
+              {/* GAME DETAIELD INFO */}
               <div
                 style={{ scrollbarWidth: "thin" }}
-                className="space-y-4 px-4 py-2 bg-white  overflow-y-auto"
+                className="space-y-4 p-8  overflow-y-auto"
               >
-                <h2 className="text-lg font-bold">경기 정보</h2>
-                <hr />
                 <p style={{ whiteSpace: "pre-line" }}> {data?.data.info}</p>
               </div>
-            </>
+            </article>
           )}
-          {/* 참가자 목록: id, 참가 상태, 참가자 정보(id, 이메일, 닉네임, 이름, 생년월일, 가입 수단, 연락처), 플레이어 프로필(성별, 체중, 신장, 포지션, 역할) */}
 
-          {activeTab === "participants" && <Participants gameId={gameId} />}
+          {activeTab === "participants" && (
+            <Participants gameId={Number(gameId)} />
+          )}
 
           {activeTab === "host" && <HostInfo data={data?.data?.host} />}
-          {activeTab === "reports" && <Reports gameId={gameId} />}
+          {activeTab === "reports" && <Reports gameId={Number(gameId)} />}
         </div>
-
-        {/* 
-        기능
-경기 수정 : 최소 참여 인원, 최대 참여 인원, 모집 정보
-경기 모집글 재작성 요청
-경기 취소 */}
-      </PageLayout>
+      </section>
     </>
   );
 };

@@ -68,7 +68,7 @@ const GamesList = () => {
       accessorKey: "info",
       header: "상세",
       cell: ({ row }: { row: Row<GameField> }) => (
-        <Link to={`${row.original.id}`}>
+        <Link to={`detail?gameId=${row.original.id}`}>
           <NotepadText />
         </Link>
       ),
