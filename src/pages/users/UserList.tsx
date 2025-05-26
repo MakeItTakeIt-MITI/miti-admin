@@ -67,7 +67,7 @@ const UserList = () => {
       accessorKey: "info",
       header: "상세",
       cell: ({ row }: { row: Row<UserField> }) => (
-        <Link to={`${row.original.id}`}>
+        <Link to={`detail?userId=${row.original.id}`}>
           <PersonSearchIcon />
         </Link>
       ),
