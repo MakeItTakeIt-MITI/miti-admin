@@ -1,7 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import { useGameDetailsDataHook } from "../../features/games/hooks/useGameDetailsDataHook";
 import { useState } from "react";
-import { HostInfo } from "../../features/games/components/HostInfo";
 import { Reports } from "../../features/games/components/Reports";
 import { Participants } from "../../features/games/components/Participants";
 import { usePatchGameDetailsHook } from "../../features/games/hooks/usePatchGameDetailsHook";
@@ -12,11 +11,13 @@ import { Button } from "../../components/ui/button";
 import { GameInfo } from "../../features/games/components/GameInfo";
 
 const GameDetails = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const gameId = searchParams.get("gameId");
+  const tab = searchParams.get("tab");
 
+  // FETCH GAME INFO
   const { data } = useGameDetailsDataHook(Number(gameId));
-
+  // PATCH GAME INFO
   const { mutate } = usePatchGameDetailsHook(Number(gameId));
 
   const handleDisplayEditContainer = () =>
@@ -31,13 +32,15 @@ const GameDetails = () => {
   const [gameInfo, setGameInfo] = useState(data?.data.info);
   const [showEditContainer, setShowEditContainer] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<
-    "game" | "host" | "participants" | "reports"
-  >("game");
-
-  const handleChangeTab = (
-    select: "game" | "host" | "participants" | "reports"
-  ) => setActiveTab(select);
+  const handleSetTab = (
+    selected: "gameInfo" | "participants" | "hostReportInfo"
+  ) => {
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      params.set("tab", selected);
+      return params;
+    });
+  };
 
   const handleSubmitUpdate = () => {
     mutate(
@@ -135,62 +138,54 @@ const GameDetails = () => {
       <section className="pt-2 w-full">
         <div className="flex flex-col  ">
           <ul className="flex items-center justify-start gap-1 ">
-            <li
-              onClick={() => handleChangeTab("game")}
-              style={{
-                backgroundColor: activeTab === "game" ? "#1f2937" : "#f5f5f5",
-                color: activeTab === "game" ? "#fff" : "#000",
-              }}
-              className="cursor-pointer w-[170px] h-10 border-b ms-center  py-2 px-2 text-md rounded-tr-2xl font-semibold"
+            <button onClick={() => handleSetTab("gameInfo")} type="button">
+              <li
+                style={{
+                  backgroundColor: tab === "gameInfo" ? "#1f2937" : "#f5f5f5",
+                  color: tab === "gameInfo" ? "#fff" : "#000",
+                }}
+                className="cursor-pointer w-[170px] h-10 border-b flex items-center justify-center py-2 px-2 text-md rounded-tr-2xl font-semibold"
+              >
+                경기 정보
+              </li>
+            </button>
+            <button onClick={() => handleSetTab("participants")} type="button">
+              <li
+                style={{
+                  backgroundColor:
+                    tab === "participants" ? "#1f2937" : "#f5f5f5",
+                  color: tab === "participants" ? "#fff" : "#000",
+                }}
+                className="cursor-pointer w-[170px] h-10 border-b flex items-center justify-center py-2 px-2 text-md rounded-tr-2xl font-semibold"
+              >
+                참가자 목록
+              </li>
+            </button>
+
+            <button
+              onClick={() => handleSetTab("hostReportInfo")}
+              type="button"
             >
-              경기 정보
-            </li>
-            <li
-              onClick={() => handleChangeTab("participants")}
-              style={{
-                backgroundColor:
-                  activeTab === "participants" ? "#1f2937" : "#f5f5f5",
-                color: activeTab === "participants" ? "#fff" : "#000",
-              }}
-              className="cursor-pointer w-[170px] h-10 border-b  flex items-center  py-2 px-2 text-md rounded-tr-2xl font-semibold"
-            >
-              참가자 목록
-            </li>
-            <li
-              onClick={() => handleChangeTab("host")}
-              style={{
-                backgroundColor: activeTab === "host" ? "#1f2937" : "#f5f5f5",
-                color: activeTab === "host" ? "#fff" : "#000",
-              }}
-              className="cursor-pointer w-[170px] h-10 border-b  flex items-center  py-2 px-2 text-md rounded-tr-2xl font-semibold"
-            >
-              호스트 정보
-            </li>
-            <li
-              onClick={() => handleChangeTab("reports")}
-              style={{
-                backgroundColor:
-                  activeTab === "reports" ? "#1f2937" : "#f5f5f5",
-                color: activeTab === "reports" ? "#fff" : "#000",
-              }}
-              className="cursor-pointer w-[170px] h-10 border-b  flex items-center  py-2 px-2 text-md rounded-tr-2xl font-semibold"
-            >
-              호스트 신고 정보
-            </li>
+              <li
+                style={{
+                  backgroundColor:
+                    tab === "hostReportInfo" ? "#1f2937" : "#f5f5f5",
+                  color: tab === "hostReportInfo" ? "#fff" : "#000",
+                }}
+                className="cursor-pointer w-[170px] h-10 border-b flex items-center justify-center py-2 px-2 text-md rounded-tr-2xl font-semibold"
+              >
+                호스트 신고 정보
+              </li>
+            </button>
           </ul>
-          {activeTab === "game" && (
+          {tab === "gameInfo" && (
             <GameInfo
-              data={data}
+              data={data?.data}
               handleDisplayEditContainer={handleDisplayEditContainer}
             />
           )}
-
-          {activeTab === "participants" && (
-            <Participants gameId={Number(gameId)} />
-          )}
-
-          {activeTab === "host" && <HostInfo data={data?.data?.host} />}
-          {activeTab === "reports" && <Reports gameId={Number(gameId)} />}
+          {tab === "participants" && <Participants gameId={Number(gameId)} />}
+          {tab === "hostReportInfo" && <Reports gameId={Number(gameId)} />}
         </div>
       </section>
     </>

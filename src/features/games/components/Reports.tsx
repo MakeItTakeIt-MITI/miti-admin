@@ -7,91 +7,6 @@ interface ReportsProps {
 
 export const Reports = ({ gameId }: ReportsProps) => {
   const { data: hostReportList } = useHostReportDetailsHook(gameId);
-  //   const hostReportList = {
-  //     status_code: 200,
-  //     message: "OK",
-  //     data: [
-  //       {
-  //         id: 1,
-  //         report_reason: 1,
-  //         game: 6,
-  //         report_status: "waiting",
-  //         created_at: "2025-01-15T12:59:06.345217+09:00",
-  //         reportee: {
-  //           id: 1,
-  //           email: "invent819@naver.com",
-  //           nickname: "test",
-  //           name: "김정현",
-  //           birthday: "1996-01-09",
-  //           signup_method: "email",
-  //           phone: "01076362116",
-  //         },
-  //         reporter: {
-  //           id: 2,
-  //           email: "testuser1@makeittakeit.kr",
-  //           nickname: "testuser1",
-  //           name: "테스트유저",
-  //           birthday: "2000-01-01",
-  //           signup_method: "email",
-  //           phone: "01083382165",
-  //         },
-  //       },
-
-  //       {
-  //         id: 1,
-  //         report_reason: 1,
-  //         game: 6,
-  //         report_status: "waiting",
-  //         created_at: "2025-01-15T12:59:06.345217+09:00",
-  //         reportee: {
-  //           id: 1,
-  //           email: "invent819@naver.com",
-  //           nickname: "test",
-  //           name: "김정현",
-  //           birthday: "1996-01-09",
-  //           signup_method: "email",
-  //           phone: "01076362116",
-  //         },
-  //         reporter: {
-  //           id: 2,
-  //           email: "testuser1@makeittakeit.kr",
-  //           nickname: "testuser1",
-  //           name: "테스트유저",
-  //           birthday: "2000-01-01",
-  //           signup_method: "email",
-  //           phone: "01083382165",
-  //         },
-  //       },
-  //       {
-  //         id: 1,
-  //         report_reason: 1,
-  //         game: 6,
-  //         report_status: "waiting",
-  //         created_at: "2025-01-15T12:59:06.345217+09:00",
-  //         reportee: {
-  //           id: 1,
-  //           email: "invent819@naver.com",
-  //           nickname: "test",
-  //           name: "김정현",
-  //           birthday: "1996-01-09",
-  //           signup_method: "email",
-  //           phone: "01076362116",
-  //         },
-  //         reporter: {
-  //           id: 2,
-  //           email: "testuser1@makeittakeit.kr",
-  //           nickname: "testuser1",
-  //           name: "테스트유저",
-  //           birthday: "2000-01-01",
-  //           signup_method: "email",
-  //           phone: "01083382165",
-  //         },
-  //       },
-  //     ],
-  //   };
-  /***
-
-        */
 
   //   d, 이메일, 닉네임, 이름, 생년월일, 가입수단, 연락처
   const headers = ["신고 ID", "신고 사유 ID", "신고 상태"];
@@ -108,15 +23,15 @@ export const Reports = ({ gameId }: ReportsProps) => {
   return (
     <>
       {hostReportList?.data.length == 0 && (
-        <p className="text-center p-10 font-bold">
+        <div className="flex items-center text-2xl justify-center font-bold h-screen text-white  bg-[#1f2937]">
           호스트 신고 내역이 없습니다!
-        </p>
+        </div>
       )}
       {hostReportList?.status_code === 200 &&
         hostReportList?.data.map((hostReport: HostReportField) => (
           <table
             key={hostReport.id}
-            className="table-fixed w-full border-collapse mb-10  bg-white p-2 rounded-lg"
+            className="table-fixed w-full border-collapse mb-10 text-white  bg-[#1f2937] p-2 rounded-lg"
           >
             <thead>
               <tr className=" h-[48px]">
