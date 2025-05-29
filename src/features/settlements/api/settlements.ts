@@ -9,7 +9,7 @@ export const fetchPaymentsList = async (page: number) => {
         console.log(error)
     }
 }
-export const fetchSettlementDetails = async (requestId: number) => {
+export const fetchTransferRequestDetails = async (requestId: number | null) => {
     try {
         const response = await axiosUrl.get(`/admin/transfer-requests/${requestId}`)
         return response.data
@@ -19,7 +19,7 @@ export const fetchSettlementDetails = async (requestId: number) => {
 }
 
 
-export const patchTransferStatus = async (requestId: number, data: TransferField) => {
+export const patchTransferStatus = async (requestId: number | null, data: TransferField) => {
     try {
         const response = await axiosUrl.get(`/admin/transfer-requests/${requestId}`, { data })
         return response.data

@@ -2,10 +2,10 @@ import { useMutation } from "@tanstack/react-query";
 import { patchTransferStatus } from "../api/settlements";
 import { TransferField } from "../interface/settlements";
 
-const useEditPaymentStatusHook = (requestId: number) => {
+const useEditTransferStatus = (requestId: number | null) => {
   return useMutation({
     mutationFn: (data: TransferField) => patchTransferStatus(requestId, data),
   });
 };
 
-export default useEditPaymentStatusHook;
+export default useEditTransferStatus;

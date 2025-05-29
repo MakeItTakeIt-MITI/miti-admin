@@ -12,25 +12,7 @@ const axiosUrl: AxiosInstance = axios.create({
 
 });
 
-const logoutUser = () => {
-    localStorage.removeItem("accessToken");
-    // alert("Your session has expired. Please log in again.");
-    // window.location.href = "/";
-};
 
-const setLogoutTimer = () => {
-    const expirationTime = Date.now() + 2 * 60 * 60 * 1000;
-    localStorage.setItem("logoutExpiration", expirationTime.toString());
-
-    setTimeout(() => {
-        const storedExpiration = localStorage.getItem("logoutExpiration");
-        if (storedExpiration && Date.now() > Number(storedExpiration)) {
-            logoutUser();
-        }
-    }, 2 * 60 * 60 * 1000);
-};
-
-setLogoutTimer();
 
 axiosUrl.interceptors.request.use(
     (config) => {
@@ -57,9 +39,9 @@ axiosUrl.interceptors.response.use(
         console.log(errorCode);
         console.log(statusCode);
 
-        if (statusCode === 401) {
-            logoutUser();
-        }
+        // if (statusCode === 401) {
+        //     logoutUser();
+        // }
 
         return Promise.reject(error);
     }

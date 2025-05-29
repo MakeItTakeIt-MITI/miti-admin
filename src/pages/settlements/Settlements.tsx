@@ -1,9 +1,5 @@
-// import Sidebar from "../components/Sidebar";
-// import PaymentIcon from "@mui/icons-material/Payment";
-
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { usePaymentsHook } from "../../features/settlements/hooks/usePaymentsHook";
-// import { SettlementsField } from "../../features/settlements/interface/settlements";
 
 import {
   ColumnDef,
@@ -11,7 +7,6 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  Row,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -27,19 +22,67 @@ import { NotepadText } from "lucide-react";
 import { PaginationWithLinks } from "../../components/common/PaginationWithLinks";
 import SearchField from "../../components/common/SearchField";
 import { SettlementsField } from "../../features/settlements/interface/settlements";
+import { useState } from "react";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "../../components/ui/sheet";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select";
+
+import { Button } from "../../components/ui/button";
+import { useTransferRequestDetails } from "../../features/settlements/hooks/useTransferRequestDetails.tsx";
+import useEditTransferStatus from "../../features/settlements/hooks/useEditTransferStatus.tsx";
 
 const Settlements = () => {
-  // const { data: paymentsData } = usePaymentsListhook(currentPage);
-  // const endIndex = paymentsData?.data.end_index;
-
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page");
   const pageNow = page ? parseInt(page) : 1;
 
-  // const { data: paymentDetailsData } = usePaymentDetailsHook(paymentId)
+  const [settlementId, setSettlementId] = useState<null | number>(null);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
   const { data } = usePaymentsHook(pageNow);
   const endIndex = data?.data.end_index;
   const currentPage = data?.data?.current_index;
+
+  const { data: settlementDetailsData } =
+    useTransferRequestDetails(settlementId);
+
+  const [statusValue, setStatusValue] = useState(
+    settlementDetailsData?.data.transfer_status
+  );
+
+  const { mutate } = useEditTransferStatus(settlementId);
+
+  const handleSubmitPaymentStatus = () => {
+    const data = { transfer_status: statusValue };
+    mutate(data, {
+      onSuccess: () => {
+        alert("Payment status updated successfully!");
+      },
+      onError: (error) => {
+        console.error("Failed to update payment status:", error);
+        alert("Failed to update payment status.");
+      },
+    });
+  };
+
+  const handleSetSettlementId = (id: number | null) => {
+    console.log("Setting settlementId:", id);
+    setSettlementId(id);
+    setIsSheetOpen(true);
+  };
 
   const columns: ColumnDef<SettlementsField>[] = [
     {
@@ -78,10 +121,76 @@ const Settlements = () => {
     {
       accessorKey: "info",
       header: "상세",
-      cell: ({ row }: { row: Row<SettlementsField> }) => (
-        <Link to={`${row.original.id}`}>
-          <NotepadText />
-        </Link>
+      cell: ({ row }) => (
+        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+          <SheetTrigger onClick={() => handleSetSettlementId(row.original.id)}>
+            <button className="flex items-center justify-center">
+              <NotepadText />
+            </button>
+          </SheetTrigger>
+          <SheetContent className="bg-[#1f2937] space-y-4">
+            <SheetHeader>
+              <SheetTitle className="text-white text-xl font-bold space-y-1">
+                <span>정상금 상세 정보 ({settlementDetailsData?.data.id})</span>
+                <hr />
+              </SheetTitle>
+            </SheetHeader>
+            <SheetDescription className="text-white flex flex-col justify-between gap-8">
+              <ul className="space-y-4">
+                {Object.keys(settlementDetailsData?.data || {}).map((key) => (
+                  <li key={key} className="">
+                    {key}: {settlementDetailsData?.data[key]}
+                  </li>
+                ))}
+              </ul>
+              <Select>
+                <SelectTrigger className="w-full">
+                  <SelectValue
+                    placeholder={settlementDetailsData?.data.transfer_status}
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="completed">
+                    <button
+                      onClick={() => setStatusValue("completed")}
+                      type="button"
+                    >
+                      completed
+                    </button>
+                  </SelectItem>
+                  <SelectItem value="waiting">
+                    {" "}
+                    <button
+                      onClick={() => setStatusValue("waiting")}
+                      type="button"
+                    >
+                      waiting
+                    </button>
+                  </SelectItem>
+                  <SelectItem value="decline">
+                    {" "}
+                    <button
+                      onClick={() => setStatusValue("decline")}
+                      type="button"
+                    >
+                      decline
+                    </button>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <Button
+                onClick={handleSubmitPaymentStatus}
+                variant={"destructive"}
+                size={"lg"}
+                className="w-full"
+              >
+                이체 상태 적용하기
+              </Button>
+            </SheetDescription>
+          </SheetContent>
+        </Sheet>
+
+        // </button>
       ),
     },
   ];
