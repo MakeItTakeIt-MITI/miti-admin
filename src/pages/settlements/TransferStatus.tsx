@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import { usePaymentsHook } from "../../features/settlements/hooks/usePaymentsHook";
+import { usePaymentsHook } from "../../features/settlements/hooks/usePaymentsHook.tsx";
 
 import {
   ColumnDef,
@@ -17,11 +17,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../components/ui/table";
+} from "../../components/ui/table.tsx";
 import { NotepadText } from "lucide-react";
-import { PaginationWithLinks } from "../../components/common/PaginationWithLinks";
-import SearchField from "../../components/common/SearchField";
-import { SettlementsField } from "../../features/settlements/interface/settlements";
+import { PaginationWithLinks } from "../../components/common/PaginationWithLinks.tsx";
+import SearchField from "../../components/common/SearchField.tsx";
+import { SettlementsField } from "../../features/settlements/interface/settlements.ts";
 import { useState } from "react";
 import {
   Sheet,
@@ -30,7 +30,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "../../components/ui/sheet";
+} from "../../components/ui/sheet.tsx";
 
 import {
   Select,
@@ -38,13 +38,13 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../components/ui/select";
+} from "../../components/ui/select.tsx";
 
-import { Button } from "../../components/ui/button";
+import { Button } from "../../components/ui/button.tsx";
 import { useTransferRequestDetails } from "../../features/settlements/hooks/useTransferRequestDetails.tsx";
 import useEditTransferStatus from "../../features/settlements/hooks/useEditTransferStatus.tsx";
 
-const Settlements = () => {
+export default function TransferStatus() {
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page");
   const pageNow = page ? parseInt(page) : 1;
@@ -265,6 +265,4 @@ const Settlements = () => {
       />
     </section>
   );
-};
-
-export default Settlements;
+}

@@ -24,7 +24,7 @@ import { NotepadText } from "lucide-react";
 import { PaginationWithLinks } from "../../components/common/PaginationWithLinks";
 import SearchField from "../../components/common/SearchField";
 
-const InquiresList = () => {
+export default function UserInquriesList() {
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page");
   const pageNow = page ? parseInt(page) : 1;
@@ -139,30 +139,5 @@ const InquiresList = () => {
         totalCount={endIndex}
       />
     </section>
-    // <>
-    //   <PageLayout>
-    //     <div className="flex flex-col gap-2 ">
-    //       {data?.status_code === 200 ? (
-    //         <TableLayout
-    //           headers={headers}
-    //           data={tableData}
-    //           context="신고 내역이 없습니다!"
-    //         />
-    //       ) : (
-    //         <h1 className="flex items-center justify-center font-bold">
-    //           오류 발생
-    //         </h1>
-    //       )}
-    //     </div>
-    //     <PaginationBtns
-    //       spacing={2}
-    //       count={endIndex}
-    //       currentPage={currentPage}
-    //       setCurrentPage={setCurrentPage}
-    //     />
-    //   </PageLayout>
-    // </>
   );
-};
-
-export default InquiresList;
+}

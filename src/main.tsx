@@ -7,17 +7,16 @@ import Auth from "./pages/Auth.tsx";
 import UserList from "./pages/users/UserList.tsx";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import Settlements from "./pages/settlements/Settlements.tsx";
+import TransferStatus from "./pages/settlements/TransferStatus.tsx";
 import ReportsList from "./pages/reports/ReportsList.tsx";
 import GamesList from "./pages/games/GamesList.tsx";
-import InquiresList from "./pages/inquiries/InquiresList.tsx";
+import UserInquriesList from "./pages/inquiries/UserInquriesList.tsx";
 import GameDetails from "./pages/games/GameDetails.tsx";
 import ReportDetails from "./pages/ReportDetails.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import GamePayments from "./pages/GamePayments.tsx";
 import { UserDetails } from "./pages/users/UserDetails.tsx";
 import { InquiryDetails } from "./pages/inquiries/InquiryDetails.tsx";
-import { SettlementDetail } from "./pages/settlements/SettlementDetail.tsx";
 import PrivateRoute from "./pages/PrivateRoute.tsx";
 import Home from "./pages/Home.tsx";
 
@@ -57,24 +56,14 @@ const router = createBrowserRouter([
       },
       {
         path: "settlements",
-        children: [
-          { path: "", element: <Settlements /> },
-          { path: ":requestId", element: <SettlementDetail /> },
-        ],
+        children: [{ path: "", element: <TransferStatus /> }],
       },
       { path: "payments", element: <GamePayments /> },
       {
         path: "support",
         children: [
-          { path: "", element: <InquiresList /> },
+          { path: "", element: <UserInquriesList /> },
           { path: ":id", element: <InquiryDetails /> },
-        ],
-      },
-      {
-        path: "settlements",
-        children: [
-          { path: "", element: <Settlements /> },
-          { path: ":requestId", element: <SettlementDetail /> },
         ],
       },
     ],
