@@ -11,8 +11,9 @@ export const useLoginHook = () => {
     onSuccess: (response) => {
       if (response.status_code === 200) {
         const { access, refresh } = response.data.token;
-        localStorage.setItem("accessToken", access);
-        localStorage.setItem("refreshToken", refresh);
+
+        sessionStorage.setItem("accessToken", access);
+        sessionStorage.setItem("refreshToken", refresh);
 
         login(response?.data);
         navigate("/");

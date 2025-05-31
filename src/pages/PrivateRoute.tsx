@@ -5,7 +5,7 @@ import Navbar from "../components/common/Navbar";
 export default function PrivateRoute() {
   const { logout } = useUserStore();
 
-  if (!localStorage.getItem("accessToken")) {
+  if (!sessionStorage.getItem("accessToken")) {
     logout();
     return <Navigate to="/login" />;
   }
