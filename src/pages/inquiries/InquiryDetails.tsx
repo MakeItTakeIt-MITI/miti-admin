@@ -1,23 +1,19 @@
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useInquiryDetailsHook } from "../../features/inquries/hooks/useInquiryDetailsHook";
 import { useInquiryReplyHook } from "../../features/inquries/hooks/useInquiryReplyHook";
 import { useState } from "react";
 import { InquiryAnswerField } from "../../features/inquries/interface/inquries";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
+import { Textarea } from "../../components/ui/textarea";
 
 export const InquiryDetails = () => {
-  const [replyContent, setReplyContent] = useState("");
-  const { id } = useParams();
-  const idNumber = Number(id);
+  const [searchParams] = useSearchParams();
+  const inquiryId = searchParams.get("inquiryId");
 
-  const { data: inquiryDetails } = useInquiryDetailsHook(idNumber);
+  const [replyContent, setReplyContent] = useState("");
+
+  const { data: inquiryDetails } = useInquiryDetailsHook(Number(inquiryId));
   const { mutate: replyToInquiry } = useInquiryReplyHook();
 
   const handleSubmitReply = () => {
@@ -27,134 +23,108 @@ export const InquiryDetails = () => {
     });
   };
 
-  const headers = [
-    "id",
-    "email",
-    "nickname",
-    "name",
-    "birthday",
-    "signup_method",
-    "phone",
-    "created_at",
-  ];
-
   return (
-    <>
-      {/* profile display */}
-      <section className=" w-full space-y-4">
-        {/* <section className="pt-[2rem]   h-[18rem]  px-[2rem] w-full   bg-[#fff] "> */}
-        <Card>
-          <CardHeader>
-            <CardTitle>사용자 정보</CardTitle>
-            {/* <CardDescription>Card Description</CardDescription> */}
-          </CardHeader>
-          <CardContent>
-            {/* <p>Card Content</p> */}{" "}
-            <table className="border-collapse    w-full ">
-              <thead>
-                <tr>
-                  {headers.map((header, i) => (
-                    <th
-                      key={i}
-                      className=" border-b w-[120px] px-4 py-1 bg-gray-100"
-                    >
-                      {header}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {/* {data.map((row, ri) => ( */}
-                <tr key={inquiryDetails?.data.user.id}>
-                  {/* {row.map((cell, ci) => ( */}
-                  <td className="w-[120px] text-center px-4 py-1">
-                    {inquiryDetails?.data.user.id}
-                  </td>
-                  <td className="w-[120px] text-center px-4 py-1">
-                    {inquiryDetails?.data.user.email}
-                  </td>
-                  <td className="w-[120px] text-center px-4 py-1">
-                    {inquiryDetails?.data.user.nickname}
-                  </td>
-                  <td className="w-[120px] text-center px-4 py-1">
-                    {inquiryDetails?.data.user.name}
-                  </td>
-                  <td className="w-[120px] text-center px-4 py-1">
-                    {inquiryDetails?.data.user.birthday}
-                  </td>
-                  <td className="w-[120px] text-center px-4 py-1">
-                    {inquiryDetails?.data.user.signup_method}
-                  </td>
-                  <td className="w-[120px] text-center px-4 py-1">
-                    {inquiryDetails?.data.user.phone}
-                  </td>
-                  <td className="w-[120px] text-center px-4 py-1">
-                    {inquiryDetails?.data.user.created_at.slice(0, 10)}
-                  </td>
-                </tr>
-                {/* ))} */}
-              </tbody>
-            </table>
-          </CardContent>
-        </Card>
+    <section className="h-[3rem] w-full text-white p-8 space-y-8">
+      <ul className="bg-[#1f2937] h-[6rem] rounded-lg p-8 flex items-center gap-10 text-sm ">
+        <li className="flex flex-col gap-1">
+          <span className="">사용자 ID</span>
+          <span className="text-sm text-gray-400">
+            {inquiryDetails?.data.user.id}
+          </span>
+        </li>
+        <li className="flex flex-col gap-1">
+          <span className="">이메일</span>
+          <span className="text-sm text-gray-400">
+            {inquiryDetails?.data.user.email}
+          </span>
+        </li>
+        <li className="flex flex-col gap-1">
+          <span className="">닉네임</span>
+          <span className="text-sm text-gray-400">
+            {inquiryDetails?.data.user.nickname}
+          </span>
+        </li>
+        <li className="flex flex-col gap-1">
+          <span className="">생년월일</span>
+          <span className="text-sm text-gray-400">
+            {inquiryDetails?.data.user.birthday}
+          </span>
+        </li>
+        <li className="flex flex-col gap-1">
+          <span className="">가입수단</span>
+          <span className="text-sm text-gray-400">
+            {inquiryDetails?.data.user.signup_method}
+          </span>
+        </li>
+        <li className="flex flex-col gap-1">
+          <span className="">연락처</span>
+          <span className="text-sm text-gray-400">
+            {inquiryDetails?.data.user.phone}
+          </span>
+        </li>
+        <li className="flex flex-col gap-1">
+          <span className="">가입 날짜</span>
+          <span className="text-sm text-gray-400">
+            {inquiryDetails?.data.user.created_at.slice(0, 10)}
+          </span>
+        </li>
+      </ul>
 
-        <Card className="h-[30%]">
-          <CardHeader>
-            <CardTitle>문의 내용</CardTitle>
-          </CardHeader>
-          <CardContent className="space-2">
-            <h1 className="font-bold text-2xl">
-              {" "}
-              {inquiryDetails?.data.title}
+      {/* CONTENT */}
+      <div className="p-8 bg-[#1f2937] mx-auto w-[40rem] h-[50rem] rounded-lg">
+        {/* FLEX-BETWEEN CONTENT AND SUBMIT CONTAINER */}
+        <div className="flex flex-col justify-between h-full">
+          {/* user inquiry title and content */}
+          <div className="space-y-4">
+            <h1 className="font-semibold text-lg w-[90%] text-wrap truncate">
+              <span> {inquiryDetails?.data.title}</span>
             </h1>
             <hr />
-            <p className="p-2">{inquiryDetails?.data.content}</p>
-          </CardContent>
-        </Card>
+            <p>
+              <span className="text-gray-400">
+                {inquiryDetails?.data.content}
+              </span>
+            </p>
+          </div>
 
-        <Card className="h-[30%]">
-          <CardHeader>
-            <CardTitle>관리자 답변</CardTitle>
-          </CardHeader>
-          <CardContent className="space-2">
-            {inquiryDetails?.data.num_of_answers === 0 && (
-              <h1 className="flex items-center justify-center w-full h-full font-bold">
-                {" "}
-                아직 관리자 답변이 없습니다!
-              </h1>
-            )}
-            <ul className="space-y-4 ">
+          {/* textarea and submit buttions */}
+          <div className="space-y-4">
+            <ul className="space-y-4 overflow-y-auto ">
+              {inquiryDetails?.data.num_of_answers === 0 && (
+                <li className="text-center text-gray-400">
+                  아직 관리자 답변이 없습니다!
+                </li>
+              )}
               {inquiryDetails?.data.answers.map(
                 (answer: InquiryAnswerField) => (
-                  <li className="border border-gray-200 rounded-md p-4 text-sm flex flex-col gap-2">
+                  <li
+                    key={answer.id}
+                    className="border text-wrap border-gray-200 rounded-md p-4 text-sm flex flex-col gap-2"
+                  >
                     <span className="font-bold">
                       [{answer.created_at.slice(0, 10)}{" "}
                       {answer.created_at.slice(11, 16)}]
                     </span>
-
-                    <span> {answer.content}</span>
+                    <span>{answer.content}</span>
                   </li>
                 )
               )}
             </ul>
-          </CardContent>
-        </Card>
-        <div>
-          <textarea
-            onChange={(e) => setReplyContent(e.target.value)}
-            className="w-full border border-gray-400 p-2 resize-none"
-            placeholder="답변"
-          />
-          <Button
-            variant={"destructive"}
-            type="button"
-            onClick={handleSubmitReply}
-            className="w-full"
-          >
-            답변하기
-          </Button>
+            <Textarea
+              placeholder="Type your message here."
+              onChange={(e) => setReplyContent(e.target.value)}
+            />
+            <Button
+              variant={"destructive"}
+              type="button"
+              onClick={handleSubmitReply}
+              className="w-full mt-4"
+            >
+              답변하기
+            </Button>
+          </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };

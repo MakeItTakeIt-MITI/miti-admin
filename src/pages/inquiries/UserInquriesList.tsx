@@ -65,7 +65,7 @@ export default function UserInquriesList() {
       accessorKey: "info",
       header: "상세",
       cell: ({ row }: { row: Row<InquiryDataField> }) => (
-        <Link to={`${row.original.id}`}>
+        <Link to={`detail?inquiryId=${row.original.id}`}>
           <NotepadText />
         </Link>
       ),
