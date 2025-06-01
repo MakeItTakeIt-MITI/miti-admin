@@ -23,6 +23,7 @@ import {
 import { NotepadText } from "lucide-react";
 import { PaginationWithLinks } from "../../components/common/PaginationWithLinks";
 import SearchField from "../../components/common/SearchField";
+import { Badge } from "../../components/ui/badge";
 
 export default function UserInquriesList() {
   const [searchParams] = useSearchParams();
@@ -35,6 +36,30 @@ export default function UserInquriesList() {
   const endIndex = data?.data.end_index;
 
   const columns: ColumnDef<InquiryDataField>[] = [
+    {
+      accessorKey: "isAnswered",
+      header: "답변 여부",
+      cell: ({ row }: { row: Row<InquiryDataField> }) => {
+        const status =
+          row.original.num_of_answers === 0 ? "미답변" : "답변완료";
+        let statusElement;
+        switch (status) {
+          case "답변완료":
+            statusElement = <Badge variant={"secondary"}>답변완료</Badge>;
+            break;
+          case "미답변":
+            statusElement = (
+              <Badge variant={"destructive"} className="">
+                미답변
+              </Badge>
+            );
+            break;
+          default:
+            statusElement = <span className="text-red-400">알 수 없음</span>;
+        }
+        return <span>{statusElement}</span>;
+      },
+    },
     {
       accessorKey: `id`,
       header: `문의 ID`,
