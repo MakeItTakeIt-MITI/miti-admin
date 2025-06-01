@@ -23,6 +23,7 @@ import {
 import { NotepadText } from "lucide-react";
 import { PaginationWithLinks } from "../../components/common/PaginationWithLinks";
 import SearchField from "../../components/common/SearchField";
+import { Badge } from "../../components/ui/badge";
 
 const GamesList = () => {
   // const [currentPage, setCurrentPage] = useState<number>(1);
@@ -46,6 +47,45 @@ const GamesList = () => {
     {
       accessorKey: "game_status",
       header: "경기 상태",
+      cell: ({ row }: { row: Row<GameField> }) => {
+        const status = row.original.game_status;
+        let statusElement;
+        switch (status) {
+          case "open":
+            statusElement = <Badge variant={"secondary"}>모집중</Badge>;
+            break;
+          case "closed":
+            statusElement = (
+              <Badge variant={"destructive"}>모집완료(마감)</Badge>
+            );
+            break;
+          case "canceled":
+            statusElement = <Badge variant={"destructive"}>경기취소</Badge>;
+            break;
+          case "completed":
+            statusElement = (
+              <Badge variant={"outline"} className="text-white">
+                경기 완료
+              </Badge>
+            );
+            break;
+          default:
+            statusElement = <span className="text-red-400">알 수 없음</span>;
+        }
+        return <span>{statusElement}</span>;
+      },
+    },
+    {
+      accessorKey: "num_of_participations",
+      header: "참여 인원",
+    },
+    {
+      accessorKey: "min_invitation",
+      header: "최소 인원",
+    },
+    {
+      accessorKey: "max_invitation",
+      header: "최대 인원",
     },
     {
       accessorKey: "startdate",
@@ -63,6 +103,11 @@ const GamesList = () => {
     {
       accessorKey: "endtime",
       header: "종료 시간",
+    },
+
+    {
+      accessorKey: "fee",
+      header: "참여비",
     },
     {
       accessorKey: "info",
