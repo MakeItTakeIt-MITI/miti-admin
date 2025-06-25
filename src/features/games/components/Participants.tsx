@@ -32,6 +32,7 @@ interface UserProfile {
 }
 
 interface User {
+  id: number;
   nickname?: string;
   email?: string;
   birthday?: string;
@@ -53,7 +54,7 @@ export const Participants = ({ gameId }: ParticipantsProps) => {
       accessorKey: "info",
       header: "상세",
       cell: ({ row }: { row: Row<Participant> }) => (
-        <Link to={`/users/detail?userId=${row.original.id}`}>
+        <Link to={`/users/detail?userId=${row.original?.user?.id}`}>
           <PersonSearchIcon />
         </Link>
       ),
