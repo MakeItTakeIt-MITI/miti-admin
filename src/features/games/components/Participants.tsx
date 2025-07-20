@@ -6,7 +6,6 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   Row,
   useReactTable,
@@ -117,7 +116,7 @@ export const Participants = ({ gameId }: ParticipantsProps) => {
     columns,
     getCoreRowModel: getCoreRowModel(),
     enableRowSelection: true,
-    getPaginationRowModel: getPaginationRowModel(),
+    // getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
 
