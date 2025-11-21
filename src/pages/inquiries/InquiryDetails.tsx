@@ -7,7 +7,7 @@ export const InquiryDetails = () => {
   const {
     handleSubmitReply,
     setReplyContent,
-    replyContent, // 추가: 훅에서 replyContent 받아오기 (훅에 없으면 훅 수정 필요)
+    replyContent,
     answerStatus,
     statusCls,
     formatKoreanPhone,
@@ -16,7 +16,6 @@ export const InquiryDetails = () => {
 
   return (
     <section className="w-full min-h-screen p-8 flex flex-col gap-6 bg-black text-white">
-      {/* Summary Header (본문 제거) */}
       <div className="rounded-lg border border-gray-700 bg-gray-800 p-6 flex flex-col gap-4">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div className="space-y-2">
@@ -114,7 +113,7 @@ export const InquiryDetails = () => {
             type="button"
             onClick={async () => {
               await handleSubmitReply();
-              setReplyContent(""); // 클릭 후 입력창 비우기
+              setReplyContent("");
             }}
             disabled={!replyContent?.trim()}
             className="w-full h-10 text-sm font-semibold disabled:opacity-50"
