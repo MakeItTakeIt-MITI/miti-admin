@@ -1,121 +1,74 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useUserStore } from "../../store/useUserStore";
 import { Button } from "../ui/button";
 import { NAVIGATION } from "../../constants/NAVIGATION";
-
 import React from "react";
 
 const Navbar = () => {
   const { logout } = useUserStore();
-
   const router = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     logout();
     router("/login");
   };
 
-  return (
-    <aside className="w-[300px] bg-sidebar-primary text-white    p-8 flex flex-col justify-between min-h-screen ">
-      <ul className="flex items-center flex-col gap-4">
-        {NAVIGATION.map((nav) => {
-          return (
-            <li className=" text-lg font-semibold w-full" key={nav.path}>
-              {/* <Link to={nav.path}></Link> */}
+  const isActive = (path: string) =>
+    location.pathname === path || location.pathname.startsWith(path + "/");
 
-              <Link to={nav.path}>
-                <Button variant="ghost" className="w-full">
-                  {React.createElement(nav.icon, { className: "text-xl" })}
-                  <span> {nav.title}</span>
+  return (
+    <aside className="w-[300px] min-h-screen bg-gray-900 text-white border-r border-gray-800 p-6 flex flex-col gap-6">
+      {/* Brand */}
+      <div className="flex items-center gap-3 px-2">
+        {/* <div className="h-9 w-9 rounded-md bg-blue-600/20 ring-1 ring-inset ring-blue-500/30" /> */}
+        <div className="flex flex-col leading-tight">
+          <span className="text-lg font-semibold">MITI 관리자</span>
+          <span className="text-[11px] text-gray-400">대시보드</span>
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <ul className="flex flex-col gap-1">
+        {NAVIGATION.map((nav) => {
+          const active = isActive(nav.path);
+          return (
+            <li key={nav.path} className="w-full">
+              <Link to={nav.path} className="block">
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start gap-3 rounded-md transition-colors
+                    ${
+                      active
+                        ? "bg-gray-800 text-white ring-1 ring-gray-700"
+                        : "text-gray-300 hover:bg-gray-800/60 hover:text-white"
+                    }`}
+                >
+                  {React.createElement(nav.icon, {
+                    className: `text-xl ${
+                      active
+                        ? "text-blue-400"
+                        : "text-gray-400 group-hover:text-white"
+                    }`,
+                  })}
+                  <span className="text-xs font-medium">{nav.title}</span>
                 </Button>
               </Link>
             </li>
           );
         })}
-        <hr className=" bg-white w-full" />
-        <li className="w-full">
-          <Button variant="secondary" className="w-full" onClick={handleLogout}>
+
+        <li className="mt-auto pt-4 border-t border-gray-800">
+          <Button
+            variant="secondary"
+            className="w-full bg-rose-600 hover:bg-rose-700 text-white"
+            onClick={handleLogout}
+          >
             로그아웃
           </Button>
         </li>
       </ul>
     </aside>
-
-    // <SidebarProvider>
-    //   <Sidebar>
-    //     <SidebarContent className="bg-[#212121] text-white">
-    //       <SidebarGroup>
-    //         <SidebarGroupLabel>MITI 관리자</SidebarGroupLabel>
-    //         <SidebarGroupContent>
-    //           <SidebarMenu>
-    //             {items.map((item) => (
-    //               <SidebarMenuItem key={item.title}>
-    //                 <SidebarMenuButton asChild>
-    //                   <a href={item.url}>
-    //                     <item.icon />
-    //                     <span>{item.title}</span>
-    //                   </a>
-    //                 </SidebarMenuButton>
-    //               </SidebarMenuItem>
-    //             ))}
-    //           </SidebarMenu>
-    //         </SidebarGroupContent>
-    //       </SidebarGroup>
-    //     </SidebarContent>
-    //     <SidebarFooter>
-    //       <Button
-    //         variant="destructive"
-    //         className="w-full"
-    //         onClick={handleLogout}
-    //       >
-    //         로그아웃
-    //       </Button>
-    //     </SidebarFooter>
-    //   </Sidebar>
-
-    // </SidebarProvider>
-    // <SidebarProvider>
-    //   <Sidebar side="left" variant="sidebar" collapsible="offcanvas">
-    //     <SidebarHeader />
-    //     <SidebarContent>
-    //       <SidebarGroup />
-    //     </SidebarContent>
-    //     <SidebarFooter />
-    //   </Sidebar>
-    // </SidebarProvider>
-
-    // <nav
-    //   className={` ${
-    //     location.pathname === "/" || location.pathname === "/auth"
-    //       ? "hidden"
-    //       : "block"
-    //   }  h-[3.5rem] bg-[#000] text-white w-full flex items-center justify-between px-[2rem]  drop-b-shadow-sm  z-[9999]`}
-    // >
-    //   <div className="flex items-center gap-6">
-    //     <h1 className="font-bold text-2xl">MITI</h1>
-    //     <ul className="flex items-center gap-4 font-[400]">
-    //       {NAVIGATION.map((nav, index) => (
-    //         <li key={index}>
-    //           <Link
-    //             className={clsx(
-    //               "text-sm font-semibold",
-    //               location.pathname.includes(nav.path)
-    //                 ? "text-white"
-    //                 : "text-[#717171]"
-    //             )}
-    //             to={nav.path}
-    //           >
-    //             {nav.title}
-    //           </Link>
-    //         </li>
-    //       ))}
-    //     </ul>
-    //   </div>
-
-    //   <Button onClick={handleLogout} variant="ghost" size={"default"}>
-    //     <span className="text-[14x] font-semibold">로그아웃</span>
-    //   </Button>
-    // </nav>
   );
 };
 
