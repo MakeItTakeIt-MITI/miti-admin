@@ -1,11 +1,11 @@
 import { useSearchParams } from "react-router-dom";
-import { useInquiryDetailsHook } from "../../features/inquries/hooks/useInquiryDetailsHook";
-import { useInquiryReplyHook } from "../../features/inquries/hooks/useInquiryReplyHook";
 import { useState } from "react";
 import { InquiryAnswerField } from "../../features/inquries/interface/inquries";
 
 import { Button } from "../../components/ui/button";
 import { Textarea } from "../../components/ui/textarea";
+import { useInquiryReplyHook } from "../../features/inquries/hooks/mutation/useInquiryReplyHook";
+import { useInquiryDetailsHook } from "../../features/inquries/hooks/query/useInquiryDetailsHook";
 
 export const InquiryDetails = () => {
   const [searchParams] = useSearchParams();

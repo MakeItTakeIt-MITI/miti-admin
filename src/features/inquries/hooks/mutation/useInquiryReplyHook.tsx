@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addInquiryReply } from "../api/support";
+import { addInquiryReply } from "../../api/support";
 
 export const useInquiryReplyHook = () => {
   const queryClient = useQueryClient();

@@ -1,168 +1,124 @@
-import { useInquiriesListHook } from "../../features/inquries/hooks/useInquiriesListHook";
-import { Link, useSearchParams } from "react-router-dom";
-import { InquiryDataField } from "../../features/inquries/interface/inquries";
-
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  Row,
-  useReactTable,
-} from "@tanstack/react-table";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../../components/ui/table";
-import { NotepadText } from "lucide-react";
-import { PaginationWithLinks } from "../../components/common/PaginationWithLinks";
-// import SearchField from "../../components/common/SearchField";
-import { Badge } from "../../components/ui/badge";
+import { Link } from "react-router-dom";
+import { useInquiryPage } from "../../features/inquries/hooks/useInquiryPage";
+import SearchField from "../../components/common/SearchField";
 
 export default function UserInquriesList() {
-  const [searchParams] = useSearchParams();
-  const page = searchParams.get("page");
-  const pageNow = page ? parseInt(page) : 1;
+  const {
+    rows,
+    hasNextPage,
+    hasPreviousPage,
+    fetchNextPage,
+    fetchPreviousPage,
+  } = useInquiryPage();
 
-  const { data } = useInquiriesListHook(pageNow);
-  const currentPage = data?.data?.current_index;
-
-  const endIndex = data?.data.end_index;
-
-  const columns: ColumnDef<InquiryDataField>[] = [
-    {
-      accessorKey: "isAnswered",
-      header: "답변 여부",
-      cell: ({ row }: { row: Row<InquiryDataField> }) => {
-        const status =
-          row.original.num_of_answers === 0 ? "미답변" : "답변완료";
-        let statusElement;
-        switch (status) {
-          case "답변완료":
-            statusElement = <Badge variant={"secondary"}>답변완료</Badge>;
-            break;
-          case "미답변":
-            statusElement = (
-              <Badge variant={"destructive"} className="">
-                미답변
-              </Badge>
-            );
-            break;
-          default:
-            statusElement = <span className="text-red-400">알 수 없음</span>;
-        }
-        return <span>{statusElement}</span>;
-      },
-    },
-    {
-      accessorKey: `id`,
-      header: `문의 ID`,
-    },
-    {
-      accessorKey: "user",
-      header: "사용자 ID",
-    },
-    {
-      accessorKey: "title",
-      header: "제목",
-    },
-    {
-      accessorKey: "num_of_answers",
-      header: "답변 갯수",
-    },
-    {
-      accessorKey: "created_at",
-      header: "생성일",
-    },
-
-    {
-      accessorKey: "modified_at",
-      header: "수정일",
-    },
-
-    {
-      accessorKey: "info",
-      header: "상세",
-      cell: ({ row }: { row: Row<InquiryDataField> }) => (
-        <Link to={`detail?inquiryId=${row.original.id}`}>
-          <NotepadText />
-        </Link>
-      ),
-    },
-  ];
-  const table = useReactTable({
-    data: data?.data.page_content || [],
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    enableRowSelection: true,
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-  });
   return (
-    <section className="w-full  p-8  flex flex-col justify-between bg-black">
+    <section className="w-full p-8 flex flex-col gap-4 bg-black">
       <div className="space-y-4">
         <h1 className="text-white font-bold text-2xl">유저 문의 목록</h1>
-        {/* <SearchField /> */}
-        <Table className=" overflow-y-auto  text-white">
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+        <SearchField paramKey="search" />
       </div>
-      <PaginationWithLinks
-        page={currentPage}
-        pageSize={5}
-        totalCount={endIndex}
-      />
+
+      <div className="flex items-center justify-center gap-3 ">
+        <button
+          type="button"
+          disabled={!hasPreviousPage}
+          onClick={() => {
+            if (hasPreviousPage) {
+              fetchPreviousPage();
+            }
+          }}
+          className="px-4 py-1.5 rounded-lg text-sm bg-white text-black border border-gray-300 hover:bg-gray-100 transition"
+        >
+          이전
+        </button>
+        <button
+          type="button"
+          disabled={!hasNextPage}
+          onClick={() => {
+            if (hasNextPage) {
+              fetchNextPage();
+            }
+          }}
+          className="px-4 py-1.5 rounded-lg text-sm bg-white text-black border border-gray-300 hover:bg-gray-100 transition"
+        >
+          다음
+        </button>
+      </div>
+
+      <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
+        <table className="min-w-[900px] w-full text-xs">
+          <thead className="bg-gray-800 text-gray-200">
+            <tr className="text-left">
+              <th className="px-4 py-3 font-medium">ID</th>
+              <th className="px-4 py-3 font-medium">사용자 ID</th>
+              <th className="px-4 py-3 font-medium">제목</th>
+              <th className="px-4 py-3 font-medium">답변 수</th>
+              <th className="px-4 py-3 font-medium">답변 상태</th>
+              <th className="px-4 py-3 font-medium">생성일</th>
+              <th className="px-4 py-3 font-medium">수정일</th>
+              <th className="px-4 py-3 font-medium">상세</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.length === 0 && (
+              <tr>
+                <td
+                  className="px-4 py-10 text-center text-gray-400"
+                  colSpan={8}
+                >
+                  결과가 없습니다.
+                </td>
+              </tr>
+            )}
+            {rows.map((i) => {
+              const answerStatus =
+                i.num_of_answers === 0 ? "미답변" : "답변완료";
+              const statusCls =
+                i.num_of_answers === 0
+                  ? "bg-rose-600/20 text-rose-300 ring-1 ring-inset ring-rose-500/30"
+                  : "bg-emerald-600/20 text-emerald-300 ring-1 ring-inset ring-emerald-500/30";
+              return (
+                <tr
+                  key={i.id}
+                  className="border-t border-gray-700 hover:bg-gray-800 transition-colors"
+                >
+                  <td className="px-4 py-2 text-white">{i.id}</td>
+                  <td className="px-4 py-2 text-gray-300">{i.user}</td>
+                  <td className="px-4 py-2 text-gray-300">{i.title}</td>
+                  <td className="px-4 py-2 text-gray-300">
+                    {i.num_of_answers}
+                  </td>
+                  <td className="px-4 py-2">
+                    <span
+                      className={`inline-flex rounded-full px-2 py-0.5 text-[10px] font-medium ${statusCls}`}
+                    >
+                      {answerStatus}
+                    </span>
+                  </td>
+                  <td className="px-4 py-2 text-gray-300">
+                    {i.created_at
+                      ? new Date(i.created_at).toLocaleString()
+                      : "-"}
+                  </td>
+                  <td className="px-4 py-2 text-gray-300">
+                    {i.modified_at
+                      ? new Date(i.modified_at).toLocaleString()
+                      : "-"}
+                  </td>
+                  <td className="px-4 py-2">
+                    <Link
+                      to={`detail?inquiryId=${i.id}`}
+                      className="text-blue-400 hover:underline"
+                    >
+                      보기
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </section>
   );
 }
