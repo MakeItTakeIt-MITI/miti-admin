@@ -1,9 +1,9 @@
 import axiosUrl from "../../../utils/axios"
 import { TransferField } from "../interface/settlements"
 
-export const fetchPaymentsList = async (page: number) => {
+export const fetchPaymentsList = async (cursor: number | null, limit: number, status: string | null) => {
     try {
-        const response = await axiosUrl.get(`admin/transfer-requests?page=${page}`)
+        const response = await axiosUrl.get(`admin/transfer-requests?cursor=${cursor}&limit=${limit}&status=${status}`)
         return response.data
     } catch (error) {
         console.log(error)
