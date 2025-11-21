@@ -1,5 +1,6 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { useTransactionsPage } from "../../features/transactions/hooks/useTransactionsPage.ts";
+import { useTransferStatusesPage } from "../../features/transactions/hooks/useTransactionsPage.ts";
+import { useTransactionDetailsContainer } from "../../features/transactions/hooks/useTransactionDetailsContainer.ts";
 
 export default function TransferStatus() {
   const {
@@ -8,13 +9,10 @@ export default function TransferStatus() {
     fetchNextPage,
     fetchPreviousPage,
     rows,
-    handleClose,
-    openId,
-    badgeCls,
-    detailData,
-    formatPhone,
-    setOpenId,
-  } = useTransactionsPage();
+  } = useTransferStatusesPage();
+
+  const { openId, setOpenId, handleClose, detailData, formatPhone, badgeCls } =
+    useTransactionDetailsContainer();
 
   return (
     <section className="w-full p-8 flex flex-col gap-4 bg-black relative">
@@ -132,8 +130,8 @@ export default function TransferStatus() {
       </div>
 
       <div
-        className={`fixed top-0 left-0 h-full max-h-screen w-[460px] md:w-[520px] bg-black  border-r border-gray-800 shadow-2xl z-50 flex flex-col transition-transform duration-300 ease-out ${
-          openId !== null ? "translate-x-0" : "-translate-x-full"
+        className={`fixed top-0 right-0 h-full max-h-screen w-[460px] md:w-[520px] bg-black  border-r border-gray-800 shadow-2xl z-50 flex flex-col transition-transform duration-300 ease-out ${
+          openId !== null ? "translate-x-0" : "translate-x-full"
         }`}
         role="dialog"
         aria-modal="true"
