@@ -54,7 +54,7 @@ const GamesList = () => {
               <th className="px-4 py-3 font-medium">제목</th>
               <th className="px-4 py-3 font-medium">시작</th>
               <th className="px-4 py-3 font-medium">종료</th>
-              <th className="px-4 py-3 font-medium">(최소/최대)</th>
+              <th className="px-4 py-3 font-medium">초대 (최소/최대)</th>
               <th className="px-4 py-3 font-medium">참가 인원</th>
               <th className="px-4 py-3 font-medium">참가비</th>
               <th className="px-4 py-3 font-medium">생성일</th>
@@ -72,7 +72,7 @@ const GamesList = () => {
                 </td>
               </tr>
             )}
-            {rows.map((g: any) => {
+            {rows?.map((g: any) => {
               const statusCls =
                 g.game_status === "completed"
                   ? "bg-emerald-600/20 text-emerald-300 ring-1 ring-inset ring-emerald-500/30"
@@ -115,7 +115,7 @@ const GamesList = () => {
                   </td>
                   <td className="px-4 py-2">
                     <Link
-                      to={`detail?gameId=${g.id}`}
+                      to={`detail?gameId=${g.id}&tab=gameInfo`}
                       className="text-blue-400 hover:underline text-xs"
                     >
                       보기

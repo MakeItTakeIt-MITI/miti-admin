@@ -35,139 +35,174 @@ interface GameInfoProps {
   handleDisplayEditContainer: () => void;
 }
 
+const statusClass = (s: string) =>
+  s === "completed"
+    ? "bg-emerald-600/20 text-emerald-300 ring-1 ring-inset ring-emerald-500/30"
+    : s === "pending"
+    ? "bg-amber-600/20 text-amber-300 ring-1 ring-inset ring-amber-500/30"
+    : "bg-blue-600/20 text-blue-300 ring-1 ring-inset ring-blue-500/30";
 export const GameInfo = ({
   data,
   handleDisplayEditContainer,
 }: GameInfoProps) => {
+  const capacityPct =
+    data?.max_invitation > 0
+      ? Math.min(
+          100,
+          Math.round((data?.num_of_participations / data?.max_invitation) * 100)
+        )
+      : 0;
   return (
-    <article className="bg-gray-800 text-white min-h-screen">
-      <div className="flex items-center justify-between h-32 px-6 ">
-        <h1 className="text-2xl font-semibold ">{data?.title}</h1>
-        <Button
-          variant={"secondary"}
-          type="button"
-          onClick={handleDisplayEditContainer}
-          size={"lg"}
-        >
-          경기 정보 수정
-        </Button>
+    <article className="bg-gray-800 text-white rounded-lg border border-gray-700 overflow-hidden">
+      {/* Header */}
+      <div className="flex flex-col gap-3 p-6 bg-gradient-to-r from-gray-800 to-gray-700">
+        <div className="flex items-start justify-between gap-4">
+          <div className="space-y-1">
+            <h1 className="text-2xl font-semibold">{data.title}</h1>
+            <div className="flex items-center gap-3">
+              <span
+                className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${statusClass(
+                  data.game_status
+                )}`}
+              >
+                {data.game_status}
+              </span>
+              <span className="text-xs text-gray-400">
+                생성일: {data.created_at.slice(0, 10)}
+              </span>
+            </div>
+          </div>
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={handleDisplayEditContainer}
+            size="sm"
+            className="bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            경기 정보 수정
+          </Button>
+        </div>
+        {/* Progress */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-xs text-gray-300">
+            <span>
+              모집 현황 {data.num_of_participations}/{data.max_invitation}
+            </span>
+            <span>{capacityPct}%</span>
+          </div>
+          <div className="h-2 w-full bg-gray-700 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-blue-500 transition-all"
+              style={{ width: `${capacityPct}%` }}
+            />
+          </div>
+        </div>
       </div>
 
-      <hr className="bg-white " />
+      {/* Grid Sections */}
+      <div className="p-6 space-y-8">
+        {/* Host / Court / Game meta */}
+        <div className="grid gap-6 md:grid-cols-3">
+          {/* Host */}
+          <div className="rounded-lg border border-gray-700 bg-gray-900 p-4 space-y-3">
+            <h2 className="text-sm font-semibold tracking-wide text-gray-200">
+              호스트 정보
+            </h2>
+            <ul className="space-y-1 text-xs text-gray-300">
+              <li>
+                <span className="font-medium text-gray-400">ID:</span>{" "}
+                {data.host.id}
+              </li>
+              <li>
+                <span className="font-medium text-gray-400">이름:</span>{" "}
+                {data.host.name}
+              </li>
+              <li>
+                <span className="font-medium text-gray-400">닉네임:</span>{" "}
+                {data.host.nickname}
+              </li>
+              <li>
+                <span className="font-medium text-gray-400">이메일:</span>{" "}
+                {data.host.email}
+              </li>
+              <li>
+                <span className="font-medium text-gray-400">생년월일:</span>{" "}
+                {data.host.birthday}
+              </li>
+              <li>
+                <span className="font-medium text-gray-400">연락처:</span>{" "}
+                {data.host.phone}
+              </li>
+            </ul>
+          </div>
 
-      {/* HOST INFO CONTAINER */}
-      <div className="h-32 flex items-center">
-        <ul className="flex items-center gap-10 p-8">
-          <li>
-            <h4 className="font-bold">호스트 ID </h4>
-            <p className="text-gray-500">{data?.host.id}</p>
-          </li>
-          <li>
-            {" "}
-            <h4 className="font-bold">이름</h4>
-            <p className="text-gray-500">{data?.host.name} </p>
-          </li>
-          <li>
-            {" "}
-            <h4 className="font-bold">닉네임</h4>
-            <p className="text-gray-500">{data?.host.nickname}</p>
-          </li>
-          <li>
-            {" "}
-            <h4 className="font-bold">이메일</h4>
-            <p className="text-gray-500">{data?.host.email}</p>
-          </li>
-          <li>
-            {" "}
-            <h4 className="font-bold">생년월일</h4>
-            <p className="text-gray-500">{data?.host.birthday}</p>
-          </li>
-          <li>
-            {" "}
-            <h4 className="font-bold">연락처</h4>
-            <p className="text-gray-500">{data?.host.phone}</p>
-          </li>
-        </ul>
-      </div>
-      <hr className="bg-white " />
+          {/* Court */}
+          <div className="rounded-lg border border-gray-700 bg-gray-900 p-4 space-y-3">
+            <h2 className="text-sm font-semibold tracking-wide text-gray-200">
+              코트 정보
+            </h2>
+            <ul className="space-y-1 text-xs text-gray-300">
+              <li>
+                <span className="font-medium text-gray-400">코트 ID:</span>{" "}
+                {data.court.id}
+              </li>
+              <li>
+                <span className="font-medium text-gray-400">주소:</span>{" "}
+                {data.court.address}
+              </li>
+              <li>
+                <span className="font-medium text-gray-400">상세 주소:</span>{" "}
+                {data.court.name}
+              </li>
+            </ul>
+          </div>
 
-      {/* GAME INFO CONTAINER */}
-      <div className="h-32 flex items-center">
-        <ul className="flex items-center gap-10 p-8">
-          <li>
-            <h4 className="font-bold">경기 ID </h4>
-            <p className="text-gray-500">{data?.id}</p>
-          </li>
-          <li>
-            <h4 className="font-bold">경기 시작</h4>
-            <p className="text-gray-500">
-              {data?.startdate} ({data?.starttime.slice(0, 5)})
-            </p>
-          </li>
-          <li>
-            <h4 className="font-bold">경기 종료</h4>
-            <p className="text-gray-500">
-              {data?.enddate} ({data?.endtime.slice(0, 5)})
-            </p>
-          </li>
+          {/* Game Metrics */}
+          <div className="rounded-lg border border-gray-700 bg-gray-900 p-4 space-y-3">
+            <h2 className="text-sm font-semibold tracking-wide text-gray-200">
+              경기 메타
+            </h2>
+            <ul className="space-y-1 text-xs text-gray-300">
+              <li>
+                <span className="font-medium text-gray-400">경기 ID:</span>{" "}
+                {data.id}
+              </li>
+              <li>
+                <span className="font-medium text-gray-400">시작:</span>{" "}
+                {data.startdate} ({data.starttime.slice(0, 5)})
+              </li>
+              <li>
+                <span className="font-medium text-gray-400">종료:</span>{" "}
+                {data.enddate} ({data.endtime.slice(0, 5)})
+              </li>
+              <li>
+                <span className="font-medium text-gray-400">참가비:</span>{" "}
+                {data.fee ? `${data.fee.toLocaleString()}원` : "무료"}
+              </li>
+              <li>
+                <span className="font-medium text-gray-400">최소/최대:</span>{" "}
+                {data.min_invitation}/{data.max_invitation}
+              </li>
+              <li>
+                <span className="font-medium text-gray-400">현재 인원:</span>{" "}
+                {data.num_of_participations}
+              </li>
+            </ul>
+          </div>
+        </div>
 
-          <li>
-            <h4 className="font-bold">경기 상태</h4>
-            <p className="text-gray-500">{data?.game_status}</p>
-          </li>
-          <li>
-            <h4 className="font-bold">참가비</h4>
-            <p className="text-gray-500">{data?.fee}</p>
-          </li>
-
-          <li>
-            <h4 className="font-bold">최소 인원</h4>
-            <p className="text-gray-500">{data?.min_invitation}</p>
-          </li>
-
-          <li>
-            <h4 className="font-bold">최대 인원</h4>
-            <p className="text-gray-500">{data?.max_invitation}</p>
-          </li>
-
-          <li>
-            <h4 className="font-bold">현재 모집 인원</h4>
-            <p className="text-gray-500">{data?.num_of_participations}</p>
-          </li>
-          <li>
-            <h4 className="font-bold">경기 생성일</h4>
-            <p className="text-gray-500">{data?.created_at.slice(0, 10)}</p>
-          </li>
-        </ul>
-      </div>
-      <hr className="bg-white " />
-      {/* COURT INFO CONTAINER */}
-      <div className="h-32 flex items-center">
-        <ul className="flex items-center gap-10 p-8">
-          <li>
-            <h4 className="font-bold">코트 ID </h4>
-            <p className="text-gray-500">{data?.court.id}</p>
-          </li>
-          <li>
-            {" "}
-            <h4 className="font-bold">주소</h4>
-            <p className="text-gray-500">{data?.court.address} </p>
-          </li>
-          <li>
-            {" "}
-            <h4 className="font-bold">상세 주소</h4>
-            <p className="text-gray-500">{data?.court.name}</p>
-          </li>
-        </ul>
-      </div>
-      <hr className="bg-white " />
-
-      {/* GAME DETAIELD INFO */}
-      <div
-        style={{ scrollbarWidth: "thin" }}
-        className="space-y-4 p-8  overflow-y-auto"
-      >
-        <p style={{ whiteSpace: "pre-line" }}> {data?.info}</p>
+        {/* Detailed Info */}
+        <div className="rounded-lg border border-gray-700 bg-gray-900 p-5">
+          <h2 className="text-sm font-semibold tracking-wide mb-3 text-gray-200">
+            상세 정보
+          </h2>
+          <div
+            className="text-sm leading-relaxed whitespace-pre-line max-h-[320px] overflow-y-auto scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-gray-600 pr-1"
+            style={{ scrollbarWidth: "thin" }}
+          >
+            {data.info || "상세 정보가 없습니다."}
+          </div>
+        </div>
       </div>
     </article>
   );

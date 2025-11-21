@@ -135,57 +135,61 @@ const GameDetails = () => {
         </div>
       )}
 
-      <section className="pt-2 w-full">
-        <div className="flex flex-col  ">
-          <ul className="flex items-center justify-start gap-1 ">
-            <button onClick={() => handleSetTab("gameInfo")} type="button">
-              <li
-                style={{
-                  backgroundColor: tab === "gameInfo" ? "#1f2937" : "#f5f5f5",
-                  color: tab === "gameInfo" ? "#fff" : "#000",
-                }}
-                className="cursor-pointer w-[170px] h-10 border-b flex items-center justify-center py-2 px-2 text-md rounded-tr-2xl font-semibold"
-              >
-                경기 정보
-              </li>
-            </button>
-            <button onClick={() => handleSetTab("participants")} type="button">
-              <li
-                style={{
-                  backgroundColor:
-                    tab === "participants" ? "#1f2937" : "#f5f5f5",
-                  color: tab === "participants" ? "#fff" : "#000",
-                }}
-                className="cursor-pointer w-[170px] h-10 border-b flex items-center justify-center py-2 px-2 text-md rounded-tr-2xl font-semibold"
-              >
-                참가자 목록
-              </li>
-            </button>
+      <section className="pt-4 w-full">
+        <div className="flex flex-col gap-4">
+          {/* Tabs styled similar to GamesList table header */}
+          <div
+            className="rounded-lg border border-gray-700 overflow-hidden bg-gray-900/60"
+            role="tablist"
+          >
+            <div className="grid grid-cols-3">
+              {[
+                { key: "gameInfo", label: "경기 정보" },
+                { key: "participants", label: "참가자 목록" },
+                { key: "hostReportInfo", label: "호스트 신고 정보" },
+              ].map((t) => {
+                const active = tab === t.key;
+                return (
+                  <button
+                    key={t.key}
+                    type="button"
+                    role="tab"
+                    aria-selected={active}
+                    onClick={() =>
+                      handleSetTab(
+                        t.key as "gameInfo" | "participants" | "hostReportInfo"
+                      )
+                    }
+                    className={`px-4 py-3 text-sm font-semibold flex items-center justify-center transition-colors
+                      ${
+                        active
+                          ? "bg-gray-800 text-white"
+                          : "bg-gray-700/40 text-gray-300 hover:bg-gray-700"
+                      }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      {t.label}
+                      {active && (
+                        <span className="inline-block h-2 w-2 rounded-full bg-blue-500" />
+                      )}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
-            <button
-              onClick={() => handleSetTab("hostReportInfo")}
-              type="button"
-            >
-              <li
-                style={{
-                  backgroundColor:
-                    tab === "hostReportInfo" ? "#1f2937" : "#f5f5f5",
-                  color: tab === "hostReportInfo" ? "#fff" : "#000",
-                }}
-                className="cursor-pointer w-[170px] h-10 border-b flex items-center justify-center py-2 px-2 text-md rounded-tr-2xl font-semibold"
-              >
-                호스트 신고 정보
-              </li>
-            </button>
-          </ul>
-          {tab === "gameInfo" && (
-            <GameInfo
-              data={data?.data}
-              handleDisplayEditContainer={handleDisplayEditContainer}
-            />
-          )}
-          {tab === "participants" && <Participants gameId={Number(gameId)} />}
-          {tab === "hostReportInfo" && <Reports gameId={Number(gameId)} />}
+          {/* Tab content container */}
+          <div className="rounded-lg border border-gray-700 bg-gray-800 p-6">
+            {tab === "gameInfo" && (
+              <GameInfo
+                data={data?.data}
+                handleDisplayEditContainer={handleDisplayEditContainer}
+              />
+            )}
+            {tab === "participants" && <Participants gameId={Number(gameId)} />}
+            {tab === "hostReportInfo" && <Reports gameId={Number(gameId)} />}
+          </div>
         </div>
       </section>
     </>
