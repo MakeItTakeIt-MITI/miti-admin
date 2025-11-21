@@ -9,6 +9,8 @@ interface ParticipantsProps {
 }
 
 interface UserProfile {
+  gender: string;
+  height: number;
   weight?: number;
   position?: string;
   role?: string;
@@ -16,6 +18,7 @@ interface UserProfile {
 
 interface User {
   id: number;
+  name: string;
   nickname?: string;
   email?: string;
   birthday?: string;
@@ -134,9 +137,9 @@ export const Participants = ({ gameId }: ParticipantsProps) => {
               <th className="px-4 py-3 font-medium">이메일</th>
               <th className="px-4 py-3 font-medium">생년월일</th>
               <th className="px-4 py-3 font-medium">연락처</th>
+              <th className="px-4 py-3 font-medium">실명</th>
+              <th className="px-4 py-3 font-medium">신장</th>
               <th className="px-4 py-3 font-medium">체중</th>
-              <th className="px-4 py-3 font-medium">포지션</th>
-              <th className="px-4 py-3 font-medium">역할</th>
             </tr>
           </thead>
           <tbody>
@@ -189,13 +192,13 @@ export const Participants = ({ gameId }: ParticipantsProps) => {
                     {formatKoreanPhone(p.user?.phone)}
                   </td>
                   <td className="px-4 py-2 text-gray-300">
+                    {p.user?.name ?? "-"}
+                  </td>
+                  <td className="px-4 py-2 text-gray-300">
+                    {profile?.height ?? "-"}
+                  </td>
+                  <td className="px-4 py-2 text-gray-300">
                     {profile?.weight ?? "-"}
-                  </td>
-                  <td className="px-4 py-2 text-gray-300">
-                    {profile?.position ?? "-"}
-                  </td>
-                  <td className="px-4 py-2 text-gray-300">
-                    {profile?.role ?? "-"}
                   </td>
                 </tr>
               );
