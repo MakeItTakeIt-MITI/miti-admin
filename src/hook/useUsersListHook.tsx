@@ -1,9 +1,17 @@
 import { usersListData } from "../api/users";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
-export const useUsersListHook = (page: number | null) => {
-  return useQuery({
-    queryKey: ["Users", page],
-    queryFn: () => usersListData(page),
+export const useUsersListHook = (search: string | null) => {
+  return useInfiniteQuery({
+    queryKey: ["Users", search],
+    queryFn: ({ pageParam }) => usersListData(pageParam, 40, search),
+
+    getNextPageParam: (lastPage) => {
+      const data = lastPage?.data;
+      if (!data) return undefined;
+      return data.has_more ? data.page_last_cursor : undefined;
+    },
+
+    initialPageParam: null,
   });
 };

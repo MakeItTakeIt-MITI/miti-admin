@@ -1,6 +1,6 @@
-import { useGetUserDetails } from "../../features/users/hooks/useGetUserDetails";
+import { useGetUserDetails } from "../../features/users/hooks/query/useGetUserDetails";
 import { useSearchParams } from "react-router-dom";
-import { useSuspendUser } from "../../features/users/hooks/useSuspendUser";
+import { useSuspendUser } from "../../features/users/hooks/mutation/useSuspendUser";
 import { useState } from "react";
 import {
   Card,

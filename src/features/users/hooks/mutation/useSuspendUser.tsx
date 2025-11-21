@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { suspendUser } from "../api/suspend";
+import { suspendUser } from "../../api/suspend";
 
 export const useSuspendUser = (userId: number, days: number) => {
   return useMutation({
