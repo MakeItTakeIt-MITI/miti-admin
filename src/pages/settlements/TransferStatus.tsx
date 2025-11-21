@@ -1,69 +1,25 @@
-// import { useSearchParams } from "react-router-dom";
-
-// import { useTransferRequestDetails } from "../../features/settlements/hooks/useTransferRequestDetails.tsx";
-// import useEditTransferStatus from "../../features/settlements/hooks/useEditTransferStatus.tsx";
-import { useMemo, useState } from "react";
-import { useGetTransferRequests } from "../../features/settlements/hooks/useGetTransferRequests.tsx";
-import SearchField from "../../components/common/SearchField.tsx";
+import CloseIcon from "@mui/icons-material/Close";
+import { useTransactionsPage } from "../../features/transactions/hooks/useTransactionsPage.ts";
 
 export default function TransferStatus() {
-  // const [searchParams] = useSearchParams();
-  // const search = searchParams.get("search");
-
-  // const [settlementId, setSettlementId] = useState<null | number>(null);
-  const [_isSheetOpen] = useState(false);
-
   const {
-    data,
     hasNextPage,
     hasPreviousPage,
     fetchNextPage,
     fetchPreviousPage,
-    // isLoading,
-  } = useGetTransferRequests("completed");
-
-  const transferRequestData = data?.pages?.flatMap((page) => page?.data?.items);
-
-  // const { data: settlementDetailsData } =
-  //   useTransferRequestDetails(settlementId);
-
-  // const [statusValue, setStatusValue] = useState(
-  //   settlementDetailsData?.data.transfer_status
-  // );
-
-  // const { mutate } = useEditTransferStatus(settlementId);
-
-  // const handleSubmitPaymentStatus = () => {
-  //   const data = { transfer_status: statusValue };
-  //   mutate(data, {
-  //     onSuccess: () => {
-  //       alert("Payment status updated successfully!");
-  //     },
-  //     onError: (error) => {
-  //       console.error("Failed to update payment status:", error);
-  //       alert("Failed to update payment status.");
-  //     },
-  //   });
-  // };
-
-  // const handleSetSettlementId = (id: number | null) => {
-  //   console.log("Setting settlementId:", id);
-  //   setSettlementId(id);
-  //   setIsSheetOpen(true);
-  // };
-
-  const rows = useMemo(() => {
-    if (!transferRequestData) return [];
-    if (Array.isArray(transferRequestData)) return transferRequestData;
-
-    return transferRequestData;
-  }, [transferRequestData]);
+    rows,
+    handleClose,
+    openId,
+    badgeCls,
+    detailData,
+    formatPhone,
+    setOpenId,
+  } = useTransactionsPage();
 
   return (
-    <section className="w-full  p-8  flex flex-col gap-4 bg-black">
+    <section className="w-full p-8 flex flex-col gap-4 bg-black relative">
       <div className="space-y-4">
-        <h1 className="text-white font-bold text-2xl">정상금 요청 목록</h1>
-        <SearchField paramKey={"search"} />
+        <h1 className="text-white font-bold text-2xl">정산금 요청 목록</h1>
       </div>
 
       <div className="flex items-center justify-center gap-3">
@@ -111,7 +67,7 @@ export default function TransferStatus() {
                 </td>
               </tr>
             )}
-            {/* {rows.map((r: any) => {
+            {rows.map((r: any) => {
               const statusCls =
                 r.transfer_status === "completed"
                   ? "bg-emerald-600/20 text-emerald-300 ring-1 ring-inset ring-emerald-500/30"
@@ -151,7 +107,7 @@ export default function TransferStatus() {
                   </td>
                   <td className="px-4 py-2">
                     <button
-                      onClick={() => handleSetSettlementId(r.id)}
+                      onClick={() => setOpenId(r.id)}
                       className="text-blue-400 hover:underline text-xs"
                     >
                       보기
@@ -159,9 +115,225 @@ export default function TransferStatus() {
                   </td>
                 </tr>
               );
-            })} */}
+            })}
           </tbody>
         </table>
+      </div>
+
+      <div
+        className={`fixed inset-0 z-50 transition-opacity duration-300 ${
+          openId !== null
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }`}
+        onClick={handleClose}
+      >
+        <div className="absolute inset-0 bg-black/55 backdrop-blur-sm" />
+      </div>
+
+      <div
+        className={`fixed top-0 left-0 h-full max-h-screen w-[460px] md:w-[520px] bg-black  border-r border-gray-800 shadow-2xl z-50 flex flex-col transition-transform duration-300 ease-out ${
+          openId !== null ? "translate-x-0" : "-translate-x-full"
+        }`}
+        role="dialog"
+        aria-modal="true"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-start justify-between px-6 py-5 border-b border-gray-800">
+          <div className="space-y-4">
+            <h2 className="text-lg font-semibold leading-tight text-white">
+              정산 상세 ID({detailData?.id ?? "-"})
+            </h2>
+            {detailData && (
+              <span
+                className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${badgeCls(
+                  detailData.transfer_status
+                )}`}
+              >
+                {detailData.transfer_status}
+              </span>
+            )}
+          </div>
+          <button
+            onClick={handleClose}
+            className="text-gray-400 hover:text-white transition"
+            type="button"
+            aria-label="Close panel"
+          >
+            <CloseIcon fontSize="small" />
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-6 py-6 space-y-8 text-xs scrollbar-thin scrollbar-track-gray-900 scrollbar-thumb-gray-700">
+          {!detailData && (
+            <div className="text-gray-400 text-center py-24">
+              항목을 선택하세요.
+            </div>
+          )}
+
+          {detailData && (
+            <>
+              {/* 기본 정보 */}
+              <section className="space-y-3">
+                <h3 className="text-sm font-semibold text-gray-200">
+                  기본 정보
+                </h3>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-gray-400">금액</span>
+                    <span className="text-gray-200 font-medium">
+                      {detailData.amount
+                        ? `${detailData.amount.toLocaleString()}원`
+                        : "-"}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-gray-400">생성일</span>
+                    <span className="text-gray-300">
+                      {detailData.created_at
+                        ? new Date(detailData.created_at).toLocaleString()
+                        : "-"}
+                    </span>
+                  </div>
+                </div>
+              </section>
+
+              {/* 계좌 정보 */}
+              <section className="space-y-3">
+                <h3 className="text-sm font-semibold text-gray-200">
+                  계좌 정보
+                </h3>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-gray-400">은행</span>
+                    <span className="text-gray-300">
+                      {detailData.account_bank || "-"}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-gray-400">예금주</span>
+                    <span className="text-gray-300">
+                      {detailData.account_holder || "-"}
+                    </span>
+                  </div>
+                  <div className="col-span-2 flex flex-col gap-0.5">
+                    <span className="text-gray-400">계좌번호</span>
+                    <span className="text-gray-300">
+                      {detailData.account_number || "-"}
+                    </span>
+                  </div>
+                </div>
+              </section>
+
+              {/* 계정 상세 */}
+              {detailData.account && (
+                <section className="space-y-3">
+                  <h3 className="text-sm font-semibold text-gray-200">
+                    계정 상세
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-gray-400">계정 ID</span>
+                      <span className="text-gray-300">
+                        {detailData.account.id}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-gray-400">타입</span>
+                      <span className="text-gray-300">
+                        {detailData.account.account_type}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-gray-400">잔액</span>
+                      <span className="text-gray-200 font-medium">
+                        {detailData.account.balance
+                          ? `${detailData.account.balance.toLocaleString()}원`
+                          : "-"}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-gray-400">포인트</span>
+                      <span className="text-gray-300">
+                        {detailData.account.point}
+                      </span>
+                    </div>
+                    <div className="col-span-2 flex flex-col gap-0.5">
+                      <span className="text-gray-400">상태</span>
+                      <span className="text-gray-300">
+                        {detailData.account.status}
+                      </span>
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {/* 사용자 정보 */}
+              {detailData.account?.user && (
+                <section className="space-y-3">
+                  <h3 className="text-sm font-semibold text-gray-200">
+                    사용자 정보
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-gray-400">ID</span>
+                      <span className="text-gray-300">
+                        {detailData.account.user.id}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-gray-400">닉네임</span>
+                      <span className="text-gray-300">
+                        {detailData.account.user.nickname}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-gray-400">이름</span>
+                      <span className="text-gray-300">
+                        {detailData.account.user.name}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-gray-400">이메일</span>
+                      <span className="text-gray-300">
+                        {detailData.account.user.email}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-gray-400">연락처</span>
+                      <span className="text-gray-300">
+                        {formatPhone(detailData.account.user.phone)}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-gray-400">생년월일</span>
+                      <span className="text-gray-300">
+                        {detailData.account.user.birthday}
+                      </span>
+                    </div>
+                    <div className="col-span-2 flex flex-col gap-0.5">
+                      <span className="text-gray-400">가입수단</span>
+                      <span className="text-gray-300">
+                        {detailData.account.user.signup_method}
+                      </span>
+                    </div>
+                  </div>
+                </section>
+              )}
+            </>
+          )}
+        </div>
+
+        {/* Footer actions (optional placeholder) */}
+        <div className="px-6 py-4 border-t border-gray-800 text-right">
+          <button
+            type="button"
+            onClick={handleClose}
+            className="rounded-md bg-gray-700 hover:bg-gray-600 text-xs px-4 py-2 text-gray-200 transition"
+          >
+            닫기
+          </button>
+        </div>
       </div>
     </section>
   );

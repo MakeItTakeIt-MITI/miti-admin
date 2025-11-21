@@ -3,7 +3,13 @@ import { TransferField } from "../interface/settlements"
 
 export const fetchPaymentsList = async (cursor: number | null, limit: number, status: string | null) => {
     try {
-        const response = await axiosUrl.get(`admin/transfer-requests?cursor=${cursor}&limit=${limit}&status=${status}`)
+        const response = await axiosUrl.get(`admin/transfer-requests`, {
+            params: {
+                cursor,
+                limit,
+                status
+            }
+        })
         return response.data
     } catch (error) {
         console.log(error)

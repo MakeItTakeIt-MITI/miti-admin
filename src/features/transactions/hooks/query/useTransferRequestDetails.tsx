@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchTransferRequestDetails } from "../api/settlements";
+import { fetchTransferRequestDetails } from "../../api/settlements";
 
 export const useTransferRequestDetails = (requestId: number | null) => {
   return useQuery({
