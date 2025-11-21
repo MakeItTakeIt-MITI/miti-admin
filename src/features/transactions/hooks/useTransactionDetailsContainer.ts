@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { useTransferStatusesPage } from "./useTransactionsPage";
+import { useTransferRequestDetails } from "./query/useTransferRequestDetails";
+// import useEditTransferStatus from "./mutation/useEditTransferStatus";
 
 export const useTransactionDetailsContainer = () => {
     const { rows } = useTransferStatusesPage()
 
     const [openId, setOpenId] = useState<number | null>(null);
 
+    const { data } = useTransferRequestDetails(openId);
+    const detailDataContent = data?.data
     const handleClose = () => setOpenId(null);
 
     // ESC 닫기
@@ -17,43 +21,7 @@ export const useTransactionDetailsContainer = () => {
         return () => window.removeEventListener("keydown", onKey);
     }, [openId]);
 
-    const mockDetail = {
-        data: {
-            id: 7,
-            transfer_status: "waiting",
-            amount: 20000,
-            account_bank: "DAEGUBANK",
-            account_holder: "테스트",
-            account_number: "424023840923843",
-            created_at: "2025-02-28T04:05:27.654400+09:00",
-            account: {
-                id: 3,
-                account_type: "personal",
-                status: "active",
-                balance: 1000000,
-                point: 0,
-                user: {
-                    id: 3,
-                    email: "testuser2@makeittakeit.kr",
-                    nickname: "testuser2",
-                    name: "테스트유저",
-                    birthday: "2000-01-01",
-                    signup_method: "email",
-                    phone: "01011111111",
-                    created_at: "2025-01-12T17:43:27.155065+09:00",
-                    profile_image_url:
-                        "https://image-dev.makeittakeit.kr/user-profile-images/user_3.png",
-                    player_profile: {
-                        gender: "male",
-                        height: null,
-                        weight: 80,
-                        position: null,
-                        role: null,
-                    },
-                },
-            },
-        },
-    };
+
 
     const badgeCls = (s?: string) =>
         s === "completed"
@@ -68,7 +36,7 @@ export const useTransactionDetailsContainer = () => {
     const detailData =
         openId !== null
             ? {
-                ...(rows.find((r) => r.id === openId) || mockDetail.data),
+                ...(rows.find((r) => r.id === openId) || detailDataContent),
             }
             : null;
 
@@ -82,12 +50,25 @@ export const useTransactionDetailsContainer = () => {
             return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
         return phone;
     };
+
+    const [statusValue, setStatusValue] = useState<string>("");
+
+    useEffect(() => {
+        if (detailData?.transfer_status) {
+            setStatusValue(detailData.transfer_status);
+        }
+    }, [detailData]);
+
+    // const { mutate: editTransferStatus } = useEditTransferStatus(openId);
+
     return {
         openId,
         setOpenId,
         handleClose,
         detailData,
         formatPhone,
-        badgeCls
+        badgeCls,
+        statusValue,
+        setStatusValue
     };
 }

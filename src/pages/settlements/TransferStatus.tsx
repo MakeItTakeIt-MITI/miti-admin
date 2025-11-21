@@ -11,8 +11,16 @@ export default function TransferStatus() {
     rows,
   } = useTransferStatusesPage();
 
-  const { openId, setOpenId, handleClose, detailData, formatPhone, badgeCls } =
-    useTransactionDetailsContainer();
+  const {
+    openId,
+    setOpenId,
+    handleClose,
+    detailData,
+    formatPhone,
+    badgeCls,
+    statusValue,
+    setStatusValue,
+  } = useTransactionDetailsContainer();
 
   return (
     <section className="w-full p-8 flex flex-col gap-4 bg-black relative">
@@ -224,47 +232,46 @@ export default function TransferStatus() {
               </section>
 
               {/* 계정 상세 */}
-              {detailData.account && (
-                <section className="space-y-3">
-                  <h3 className="text-sm font-semibold text-gray-200">
-                    계정 상세
-                  </h3>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="flex flex-col gap-0.5">
-                      <span className="text-gray-400">계정 ID</span>
-                      <span className="text-gray-300">
-                        {detailData.account.id}
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-0.5">
-                      <span className="text-gray-400">타입</span>
-                      <span className="text-gray-300">
-                        {detailData.account.account_type}
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-0.5">
-                      <span className="text-gray-400">잔액</span>
-                      <span className="text-gray-200 font-medium">
-                        {detailData.account.balance
-                          ? `${detailData.account.balance.toLocaleString()}원`
-                          : "-"}
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-0.5">
-                      <span className="text-gray-400">포인트</span>
-                      <span className="text-gray-300">
-                        {detailData.account.point}
-                      </span>
-                    </div>
-                    <div className="col-span-2 flex flex-col gap-0.5">
-                      <span className="text-gray-400">상태</span>
-                      <span className="text-gray-300">
-                        {detailData.account.status}
-                      </span>
-                    </div>
+
+              <section className="space-y-3">
+                <h3 className="text-sm font-semibold text-gray-200">
+                  계정 상세
+                </h3>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-gray-400">계정 ID</span>
+                    <span className="text-gray-300">
+                      {detailData.account.id}
+                    </span>
                   </div>
-                </section>
-              )}
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-gray-400">타입</span>
+                    <span className="text-gray-300">
+                      {detailData.account.account_type}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-gray-400">잔액</span>
+                    <span className="text-gray-200 font-medium">
+                      {detailData.account.balance
+                        ? `${detailData.account.balance.toLocaleString()}원`
+                        : "-"}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-gray-400">포인트</span>
+                    <span className="text-gray-300">
+                      {detailData.account.point}
+                    </span>
+                  </div>
+                  <div className="col-span-2 flex flex-col gap-0.5">
+                    <span className="text-gray-400">상태</span>
+                    <span className="text-gray-300">
+                      {detailData.account.status}
+                    </span>
+                  </div>
+                </div>
+              </section>
 
               {/* 사용자 정보 */}
               {detailData.account?.user && (
@@ -318,6 +325,31 @@ export default function TransferStatus() {
                   </div>
                 </section>
               )}
+              <section className="space-y-2">
+                <h3 className="text-sm font-semibold text-gray-200">
+                  이체 상태 변경
+                </h3>
+                <select
+                  value={statusValue}
+                  disabled
+                  onChange={(e) => setStatusValue(e.target.value)}
+                  className="w-full h-9 rounded-md bg-gray-700 border border-gray-600 text-xs text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                >
+                  <option value="waiting">waiting</option>
+                  <option value="completed">completed</option>
+                  <option value="declined">declined</option>
+                </select>
+                <div className="flex items-center gap-2 text-[11px] text-gray-400">
+                  현재 상태:
+                  <span
+                    className={`inline-flex rounded-full px-2 py-0.5 font-medium ${badgeCls(
+                      detailData.transfer_status
+                    )}`}
+                  >
+                    {detailData.transfer_status}
+                  </span>
+                </div>
+              </section>
             </>
           )}
         </div>
