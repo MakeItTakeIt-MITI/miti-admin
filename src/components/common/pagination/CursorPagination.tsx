@@ -21,7 +21,7 @@ export function CursorPagination({
   hasMore,
   cursorSearchParam = "cursor",
 }: CursorPaginationProps) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname;
   const searchParams = new URLSearchParams(location.search);

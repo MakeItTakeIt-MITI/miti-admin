@@ -1,17 +1,17 @@
-import { Link, useSearchParams } from "react-router-dom";
+// import { useSearchParams } from "react-router-dom";
 
-import { useTransferRequestDetails } from "../../features/settlements/hooks/useTransferRequestDetails.tsx";
-import useEditTransferStatus from "../../features/settlements/hooks/useEditTransferStatus.tsx";
+// import { useTransferRequestDetails } from "../../features/settlements/hooks/useTransferRequestDetails.tsx";
+// import useEditTransferStatus from "../../features/settlements/hooks/useEditTransferStatus.tsx";
 import { useMemo, useState } from "react";
 import { useGetTransferRequests } from "../../features/settlements/hooks/useGetTransferRequests.tsx";
 import SearchField from "../../components/common/SearchField.tsx";
 
 export default function TransferStatus() {
-  const [searchParams] = useSearchParams();
-  const search = searchParams.get("search");
+  // const [searchParams] = useSearchParams();
+  // const search = searchParams.get("search");
 
-  const [settlementId, setSettlementId] = useState<null | number>(null);
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  // const [settlementId, setSettlementId] = useState<null | number>(null);
+  const [_isSheetOpen] = useState(false);
 
   const {
     data,
@@ -19,19 +19,19 @@ export default function TransferStatus() {
     hasPreviousPage,
     fetchNextPage,
     fetchPreviousPage,
-    isLoading,
+    // isLoading,
   } = useGetTransferRequests("completed");
 
   const transferRequestData = data?.pages?.flatMap((page) => page?.data?.items);
 
-  const { data: settlementDetailsData } =
-    useTransferRequestDetails(settlementId);
+  // const { data: settlementDetailsData } =
+  //   useTransferRequestDetails(settlementId);
 
   // const [statusValue, setStatusValue] = useState(
   //   settlementDetailsData?.data.transfer_status
   // );
 
-  const { mutate } = useEditTransferStatus(settlementId);
+  // const { mutate } = useEditTransferStatus(settlementId);
 
   // const handleSubmitPaymentStatus = () => {
   //   const data = { transfer_status: statusValue };
@@ -46,11 +46,11 @@ export default function TransferStatus() {
   //   });
   // };
 
-  const handleSetSettlementId = (id: number | null) => {
-    console.log("Setting settlementId:", id);
-    setSettlementId(id);
-    setIsSheetOpen(true);
-  };
+  // const handleSetSettlementId = (id: number | null) => {
+  //   console.log("Setting settlementId:", id);
+  //   setSettlementId(id);
+  //   setIsSheetOpen(true);
+  // };
 
   const rows = useMemo(() => {
     if (!transferRequestData) return [];

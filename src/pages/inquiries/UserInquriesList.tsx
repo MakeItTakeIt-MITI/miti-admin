@@ -108,7 +108,7 @@ export default function UserInquriesList() {
     <section className="w-full  p-8  flex flex-col justify-between bg-black">
       <div className="space-y-4">
         <h1 className="text-white font-bold text-2xl">유저 문의 목록</h1>
-        <SearchField />
+        {/* <SearchField /> */}
         <Table className=" overflow-y-auto  text-white">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

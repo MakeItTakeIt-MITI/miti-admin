@@ -106,7 +106,7 @@ const ReportsList = () => {
     <section className="w-full  p-8  flex flex-col justify-between bg-black">
       <div className="space-y-4">
         <h1 className="text-white font-bold text-2xl">신고 목록</h1>
-        <SearchField />
+        {/* <SearchField /> */}
         <Table className=" ">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
