@@ -83,7 +83,7 @@ export const Reports = ({ gameId }: ReportsProps) => {
               <div className="p-6 space-y-6">
                 {/* Reporter */}
                 <div className="space-y-2">
-                  <h3 className="text-sm font-semibold text-gray-200">
+                  <h3 className="text-xs font-semibold text-gray-200">
                     신고자 정보
                   </h3>
                   <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
@@ -130,7 +130,7 @@ export const Reports = ({ gameId }: ReportsProps) => {
 
                 {/* Reportee */}
                 <div className="space-y-2">
-                  <h3 className="text-sm font-semibold text-gray-200">
+                  <h3 className="text-xs font-semibold text-gray-200">
                     피신고자 정보
                   </h3>
                   <div className="w-full overflow-x-auto rounded-lg border border-gray-700">

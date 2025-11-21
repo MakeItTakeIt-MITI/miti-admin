@@ -72,15 +72,15 @@ const GameDetails = () => {
             <div className="text-center space-y-4">
               <h1 className="text-center font-bold text-lg">경기 정보 수정</h1>
               {minPlayers >= maxPlayers && (
-                <p className="text-sm text-red-600">
+                <p className="text-xs text-red-600">
                   최소 인원은 최대 인원보다 작아야 합니다.
                 </p>
               )}
             </div>
             {/* <hr /> */}
-            <div className="flex flex-col gap-4 text-sm  ">
+            <div className="flex flex-col gap-4 text-xs  ">
               <div className="flex flex-col gap-1">
-                <label htmlFor="min_players " className="text-sm">
+                <label htmlFor="min_players " className="text-xs">
                   최소 인원
                 </label>
                 <input
@@ -93,7 +93,7 @@ const GameDetails = () => {
                 />
               </div>
               <div className="flex flex-col gap-1">
-                <label htmlFor="max_players" className="text-sm">
+                <label htmlFor="max_players" className="text-xs">
                   최대 인원
                 </label>
                 <input
@@ -106,7 +106,7 @@ const GameDetails = () => {
                 />
               </div>
               <div className="flex flex-col gap-1">
-                <label htmlFor="game_info" className="text-sm">
+                <label htmlFor="game_info" className="text-xs">
                   경기 정보
                 </label>
                 <textarea
@@ -160,7 +160,7 @@ const GameDetails = () => {
                         t.key as "gameInfo" | "participants" | "hostReportInfo"
                       )
                     }
-                    className={`px-4 py-3 text-sm font-semibold flex items-center justify-center transition-colors
+                    className={`px-4 py-3 text-xs font-semibold flex items-center justify-center transition-colors
                       ${
                         active
                           ? "bg-gray-800 text-white"

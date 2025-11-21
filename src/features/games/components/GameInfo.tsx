@@ -58,17 +58,17 @@ export const GameInfo = ({
       <div className="flex flex-col gap-3 p-6 bg-gradient-to-r from-gray-800 to-gray-700">
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1">
-            <h1 className="text-2xl font-semibold">{data.title}</h1>
+            <h1 className="text-2xl font-semibold">{data?.title}</h1>
             <div className="flex items-center gap-3">
               <span
                 className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${statusClass(
-                  data.game_status
+                  data?.game_status
                 )}`}
               >
-                {data.game_status}
+                {data?.game_status}
               </span>
               <span className="text-xs text-gray-400">
-                생성일: {data.created_at.slice(0, 10)}
+                생성일: {data?.created_at.slice(0, 10)}
               </span>
             </div>
           </div>
@@ -86,7 +86,7 @@ export const GameInfo = ({
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs text-gray-300">
             <span>
-              모집 현황 {data.num_of_participations}/{data.max_invitation}
+              모집 현황 {data?.num_of_participations}/{data?.max_invitation}
             </span>
             <span>{capacityPct}%</span>
           </div>
@@ -111,27 +111,27 @@ export const GameInfo = ({
             <ul className="space-y-1 text-xs text-gray-300">
               <li>
                 <span className="font-medium text-gray-400">ID:</span>{" "}
-                {data.host.id}
+                {data?.host.id}
               </li>
               <li>
                 <span className="font-medium text-gray-400">이름:</span>{" "}
-                {data.host.name}
+                {data?.host.name}
               </li>
               <li>
                 <span className="font-medium text-gray-400">닉네임:</span>{" "}
-                {data.host.nickname}
+                {data?.host.nickname}
               </li>
               <li>
                 <span className="font-medium text-gray-400">이메일:</span>{" "}
-                {data.host.email}
+                {data?.host.email}
               </li>
               <li>
                 <span className="font-medium text-gray-400">생년월일:</span>{" "}
-                {data.host.birthday}
+                {data?.host.birthday}
               </li>
               <li>
                 <span className="font-medium text-gray-400">연락처:</span>{" "}
-                {data.host.phone}
+                {data?.host.phone}
               </li>
             </ul>
           </div>
@@ -144,15 +144,15 @@ export const GameInfo = ({
             <ul className="space-y-1 text-xs text-gray-300">
               <li>
                 <span className="font-medium text-gray-400">코트 ID:</span>{" "}
-                {data.court.id}
+                {data?.court.id}
               </li>
               <li>
                 <span className="font-medium text-gray-400">주소:</span>{" "}
-                {data.court.address}
+                {data?.court.address}
               </li>
               <li>
                 <span className="font-medium text-gray-400">상세 주소:</span>{" "}
-                {data.court.name}
+                {data?.court.name}
               </li>
             </ul>
           </div>
@@ -165,27 +165,27 @@ export const GameInfo = ({
             <ul className="space-y-1 text-xs text-gray-300">
               <li>
                 <span className="font-medium text-gray-400">경기 ID:</span>{" "}
-                {data.id}
+                {data?.id}
               </li>
               <li>
                 <span className="font-medium text-gray-400">시작:</span>{" "}
-                {data.startdate} ({data.starttime.slice(0, 5)})
+                {data?.startdate} ({data?.starttime.slice(0, 5)})
               </li>
               <li>
                 <span className="font-medium text-gray-400">종료:</span>{" "}
-                {data.enddate} ({data.endtime.slice(0, 5)})
+                {data?.enddate} ({data?.endtime.slice(0, 5)})
               </li>
               <li>
                 <span className="font-medium text-gray-400">참가비:</span>{" "}
-                {data.fee ? `${data.fee.toLocaleString()}원` : "무료"}
+                {data?.fee ? `${data?.fee.toLocaleString()}원` : "무료"}
               </li>
               <li>
                 <span className="font-medium text-gray-400">최소/최대:</span>{" "}
-                {data.min_invitation}/{data.max_invitation}
+                {data?.min_invitation}/{data?.max_invitation}
               </li>
               <li>
                 <span className="font-medium text-gray-400">현재 인원:</span>{" "}
-                {data.num_of_participations}
+                {data?.num_of_participations}
               </li>
             </ul>
           </div>
@@ -200,7 +200,7 @@ export const GameInfo = ({
             className="text-sm leading-relaxed whitespace-pre-line max-h-[320px] overflow-y-auto scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-gray-600 pr-1"
             style={{ scrollbarWidth: "thin" }}
           >
-            {data.info || "상세 정보가 없습니다."}
+            {data?.info || "상세 정보가 없습니다."}
           </div>
         </div>
       </div>
