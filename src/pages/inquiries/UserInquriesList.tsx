@@ -22,7 +22,7 @@ import {
 } from "../../components/ui/table";
 import { NotepadText } from "lucide-react";
 import { PaginationWithLinks } from "../../components/common/PaginationWithLinks";
-import SearchField from "../../components/common/SearchField";
+// import SearchField from "../../components/common/SearchField";
 import { Badge } from "../../components/ui/badge";
 
 export default function UserInquriesList() {
