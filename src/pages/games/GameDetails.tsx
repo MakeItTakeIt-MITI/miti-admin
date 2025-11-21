@@ -135,7 +135,7 @@ const GameDetails = () => {
         </div>
       )}
 
-      <section className="pt-4 w-full">
+      <section className="px-4 pt-4 w-full">
         <div className="flex flex-col gap-4">
           {/* Tabs styled similar to GamesList table header */}
           <div

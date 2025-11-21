@@ -50,7 +50,7 @@ export default function SearchField({ paramKey }: SearchFieldProps) {
     <div className="flex w-full max-w-sm items-center space-x-2">
       <Input
         type="text"
-        placeholder="아이디 검색"
+        placeholder="검색"
         className="text-white"
         onChange={(e) => setInputValue(e.target.value)}
         onKeyDown={handleKeyDown}

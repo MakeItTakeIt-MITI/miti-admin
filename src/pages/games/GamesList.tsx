@@ -46,7 +46,7 @@ const GamesList = () => {
       </div>
 
       <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
-        <table className="min-w-[1100px] w-full text-sm">
+        <table className="min-w-[1100px] w-full text-xs">
           <thead className="bg-gray-800 text-gray-200">
             <tr className="text-left">
               <th className="px-4 py-3 font-medium">ID</th>
