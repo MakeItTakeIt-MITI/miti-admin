@@ -28,7 +28,7 @@ const UserList = () => {
         <SearchField paramKey={"search"} />
       </div>
 
-      <div className="flex items-center justify-center gap-3">
+      <div className="flex items-center justify-center gap-3 ">
         <button
           type="button"
           disabled={!hasPreviousPage}
@@ -37,7 +37,7 @@ const UserList = () => {
               fetchPreviousPage();
             }
           }}
-          className="px-4 py-1.5 rounded-lg bg-white text-black border border-gray-300 hover:bg-gray-100 transition"
+          className="px-4 py-1.5 rounded-lg text-sm bg-white text-black border border-gray-300 hover:bg-gray-100 transition"
         >
           이전
         </button>
@@ -49,7 +49,7 @@ const UserList = () => {
               fetchNextPage();
             }
           }}
-          className="px-4 py-1.5 rounded-lg bg-white text-black border border-gray-300 hover:bg-gray-100 transition"
+          className="px-4 py-1.5 rounded-lg text-sm bg-white text-black border border-gray-300 hover:bg-gray-100 transition"
         >
           다음
         </button>
@@ -57,7 +57,7 @@ const UserList = () => {
 
       {/* table */}
       <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
-        <table className="min-w-[900px] w-full text-sm">
+        <table className="min-w-[900px] w-full text-xs">
           <thead className="bg-gray-800 text-gray-200">
             <tr className="text-left">
               <th className="px-4 py-3 font-medium">ID</th>
