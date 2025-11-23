@@ -48,7 +48,7 @@ export default function TransferStatus() {
       </div>
 
       <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
-        <table className="min-w-[1000px] w-full text-sm">
+        <table className="min-w-[1000px] w-full text-xs">
           <thead className="bg-gray-800 text-gray-200">
             <tr className="text-left">
               <th className="px-4 py-3 font-medium">ID</th>
@@ -181,7 +181,7 @@ export default function TransferStatus() {
             <>
               {/* 기본 정보 */}
               <section className="space-y-3">
-                <h3 className="text-sm font-semibold text-gray-200">
+                <h3 className="text-xs font-semibold text-gray-200">
                   기본 정보
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
@@ -206,7 +206,7 @@ export default function TransferStatus() {
 
               {/* 계좌 정보 */}
               <section className="space-y-3">
-                <h3 className="text-sm font-semibold text-gray-200">
+                <h3 className="text-xs font-semibold text-gray-200">
                   계좌 정보
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
@@ -234,7 +234,7 @@ export default function TransferStatus() {
               {/* 계정 상세 */}
 
               <section className="space-y-3">
-                <h3 className="text-sm font-semibold text-gray-200">
+                <h3 className="text-xs font-semibold text-gray-200">
                   계정 상세
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
@@ -276,7 +276,7 @@ export default function TransferStatus() {
               {/* 사용자 정보 */}
               {detailData.account?.user && (
                 <section className="space-y-3">
-                  <h3 className="text-sm font-semibold text-gray-200">
+                  <h3 className="text-xs font-semibold text-gray-200">
                     사용자 정보
                   </h3>
                   <div className="grid grid-cols-2 gap-3">
@@ -326,7 +326,7 @@ export default function TransferStatus() {
                 </section>
               )}
               <section className="space-y-2">
-                <h3 className="text-sm font-semibold text-gray-200">
+                <h3 className="text-xs font-semibold text-gray-200">
                   이체 상태 변경
                 </h3>
                 <select
