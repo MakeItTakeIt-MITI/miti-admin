@@ -1,23 +1,17 @@
-import { useMemo } from "react";
 import SearchField from "../../components/common/SearchField";
 import { useGamesPage } from "../../features/games/hooks/useGamesPage";
 import { Link } from "react-router-dom";
 
 const GamesList = () => {
   const {
-    gamesDataPage,
     hasNextPage,
     hasPreviousPage,
     fetchNextPage,
     fetchPreviousPage,
+    rows,
+    status,
+    setStatus,
   } = useGamesPage();
-
-  const rows = useMemo(() => {
-    if (!gamesDataPage) return [];
-    if (Array.isArray(gamesDataPage)) return gamesDataPage;
-
-    return gamesDataPage;
-  }, [gamesDataPage]);
 
   return (
     <section className="w-full  p-8  flex flex-col gap-4 bg-black">
@@ -43,6 +37,30 @@ const GamesList = () => {
         >
           다음
         </button>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-3">
+        <label
+          htmlFor="game_status"
+          className="text-[11px] font-medium text-gray-300"
+        >
+          상태 필터
+        </label>
+        <select
+          id="game_status"
+          value={status ?? ""}
+          onChange={(e) => {
+            const v = e.target.value;
+            setStatus(v === "" ? null : v);
+          }}
+          className="h-9 rounded-md bg-gray-800 border border-gray-700 px-3 text-xs text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600"
+        >
+          <option value={""}>전체</option>
+          <option value="open">모집중</option>
+          <option value="closed">모집완료(마감)</option>
+          <option value="canceled">경기 취소</option>
+          <option value="completed">경기 완료</option>
+        </select>
       </div>
 
       <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
