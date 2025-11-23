@@ -15,7 +15,7 @@ export default function PrivateRoute() {
   }
 
   return (
-    <div className="flex">
+    <div className="flex md:space-y-0 space-y-14">
       <Navbar />
       <Outlet />;
     </div>
