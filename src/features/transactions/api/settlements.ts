@@ -27,7 +27,7 @@ export const fetchTransferRequestDetails = async (requestId: number | null) => {
 
 export const patchTransferStatus = async (requestId: number | null, data: TransferField) => {
     try {
-        const response = await axiosUrl.get(`/admin/transfer-requests/${requestId}`, { data })
+        const response = await axiosUrl.patch(`/admin/transfer-requests`, { params: requestId, data })
         return response.data
     } catch (error) {
         console.log(error)

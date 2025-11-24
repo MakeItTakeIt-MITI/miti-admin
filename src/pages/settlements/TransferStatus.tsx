@@ -1,6 +1,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { useTransferStatusesPage } from "../../features/transactions/hooks/useTransactionsPage.ts";
 import { useTransactionDetailsContainer } from "../../features/transactions/hooks/useTransactionDetailsContainer.ts";
+import { Button } from "../../components/ui/button.tsx";
 
 export default function TransferStatus() {
   const {
@@ -20,6 +21,8 @@ export default function TransferStatus() {
     badgeCls,
     statusValue,
     setStatusValue,
+    editTransferStatus,
+    handleUpdateStatus,
   } = useTransactionDetailsContainer();
 
   return (
@@ -330,8 +333,7 @@ export default function TransferStatus() {
                   이체 상태 변경
                 </h3>
                 <select
-                  value={statusValue}
-                  disabled
+                  // value={statusValue}
                   onChange={(e) => setStatusValue(e.target.value)}
                   className="w-full h-9 rounded-md bg-gray-700 border border-gray-600 text-xs text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600"
                 >
@@ -339,22 +341,36 @@ export default function TransferStatus() {
                   <option value="completed">completed</option>
                   <option value="declined">declined</option>
                 </select>
-                <div className="flex items-center gap-2 text-[11px] text-gray-400">
-                  현재 상태:
-                  <span
-                    className={`inline-flex rounded-full px-2 py-0.5 font-medium ${badgeCls(
-                      detailData.transfer_status
-                    )}`}
+                <div className="flex items-center justify-between pt-2">
+                  <div className="flex items-center gap-2 text-[11px] text-gray-400">
+                    현재 상태:
+                    <span
+                      className={`inline-flex rounded-full px-2 py-0.5 font-medium ${badgeCls(
+                        detailData?.transfer_status
+                      )}`}
+                    >
+                      {detailData?.transfer_status}
+                    </span>
+                  </div>
+                  <Button
+                    type="button"
+                    // handleUpdateStatus from hook
+                    onClick={() =>
+                      handleUpdateStatus(
+                        statusValue as "completed" | "pending" | "declined"
+                      )
+                    }
+                    className="h-8 px-3 text-[11px] font-medium bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-40 disabled:cursor-not-allowed"
                   >
-                    {detailData.transfer_status}
-                  </span>
+                    상태 저장
+                  </Button>
                 </div>
               </section>
             </>
           )}
         </div>
 
-        {/* Footer actions (optional placeholder) */}
+        {/* Footer actions*/}
         <div className="px-6 py-4 border-t border-gray-800 text-right">
           <button
             type="button"

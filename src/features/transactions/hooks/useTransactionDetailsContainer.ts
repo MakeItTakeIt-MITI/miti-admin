@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTransferStatusesPage } from "./useTransactionsPage";
 import { useTransferRequestDetails } from "./query/useTransferRequestDetails";
+import useEditTransferStatus from "./mutation/useEditTransferStatus";
 // import useEditTransferStatus from "./mutation/useEditTransferStatus";
 
 export const useTransactionDetailsContainer = () => {
@@ -59,8 +60,13 @@ export const useTransactionDetailsContainer = () => {
         }
     }, [detailData]);
 
-    // const { mutate: editTransferStatus } = useEditTransferStatus(openId);
+    const { mutate: editTransferStatus } = useEditTransferStatus(openId);
 
+    const handleUpdateStatus = (transfer_status: 'completed' | 'pending' | 'declined') => {
+        editTransferStatus(
+            { transfer_status },
+        );
+    }
     return {
         openId,
         setOpenId,
@@ -69,6 +75,8 @@ export const useTransactionDetailsContainer = () => {
         formatPhone,
         badgeCls,
         statusValue,
-        setStatusValue
+        setStatusValue,
+        editTransferStatus,
+        handleUpdateStatus
     };
 }
