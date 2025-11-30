@@ -94,9 +94,24 @@ const GamesList = () => {
               const statusCls =
                 g.game_status === "completed"
                   ? "bg-emerald-600/20 text-emerald-300 ring-1 ring-inset ring-emerald-500/30"
-                  : g.game_status === "pending"
+                  : g.game_status === "canceled"
+                  ? "bg-red-600/20 text-red-300 ring-1 ring-inset ring-red-500/30"
+                  : g.game_status === "closed"
                   ? "bg-amber-600/20 text-amber-300 ring-1 ring-inset ring-amber-500/30"
+                  : g.game_status === "open"
+                  ? "bg-blue-600/20 text-blue-300 ring-1 ring-inset ring-blue-500/30"
                   : "bg-blue-600/20 text-blue-300 ring-1 ring-inset ring-blue-500/30";
+
+              const statusLabelMap: Record<string, string> = {
+                open: "모집중",
+                closed: "모집완료(마감)",
+                canceled: "경기 취소",
+                completed: "경기 완료",
+              };
+
+              const statusLabel =
+                statusLabelMap[g.game_status] ?? g.game_status;
+
               return (
                 <tr
                   key={g.id}
@@ -107,7 +122,7 @@ const GamesList = () => {
                     <span
                       className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${statusCls}`}
                     >
-                      {g.game_status}
+                      {statusLabel}
                     </span>
                   </td>
                   <td className="px-4 py-2 text-gray-300">{g.title || "-"}</td>
