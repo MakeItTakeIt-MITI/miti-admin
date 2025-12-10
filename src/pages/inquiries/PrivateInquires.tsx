@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import SearchField from "../../components/common/SearchField";
 
-export default function AnonymousInquiry() {
+export default function PrivateInquires() {
   const rows = [
     {
       id: 3,
