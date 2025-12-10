@@ -1,8 +1,15 @@
+import { Button } from "../../components/ui/button";
+import { Textarea } from "../../components/ui/textarea";
 import { usePrivateInquiryDetailsPage } from "../../features/private_inquries/hooks/usePrivateInquiryDetailsPage";
 
 export default function PrivateInquiryDetails() {
-  const { inquiryDetailData, inquiryAnswerData } =
-    usePrivateInquiryDetailsPage();
+  const {
+    inquiryDetailData,
+    inquiryAnswerData,
+    handleSubmitReply,
+    setReplyContent,
+    replyContent,
+  } = usePrivateInquiryDetailsPage();
 
   const answerStatus =
     inquiryDetailData.num_of_answers === 0 ? "미답변" : "답변완료";
@@ -108,6 +115,28 @@ export default function PrivateInquiryDetails() {
         ) : (
           <div className="text-xs text-gray-400">등록된 답변이 없습니다.</div>
         )}
+      </div>
+
+      <div className="rounded-lg border border-gray-700 bg-gray-800 p-6 flex flex-col gap-4">
+        <h2 className="text-sm font-semibold">관리자 답변 작성</h2>
+        <Textarea
+          placeholder="답변을 입력하세요..."
+          value={replyContent} // 값 바인딩
+          onChange={(e) => setReplyContent(e.target.value)}
+          className="min-h-[180px] text-sm"
+        />
+        <Button
+          variant="destructive"
+          type="button"
+          onClick={async () => {
+            await handleSubmitReply();
+            setReplyContent("");
+          }}
+          disabled={!replyContent?.trim()}
+          className="w-full h-10 text-sm font-semibold disabled:opacity-50"
+        >
+          답변하기
+        </Button>
       </div>
     </section>
   );

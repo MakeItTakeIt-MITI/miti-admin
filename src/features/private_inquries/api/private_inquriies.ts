@@ -35,3 +35,14 @@ export const privateInquiresDetailAnswer = async (inquiryId: number,) => {
     }
 }
 
+
+export const postPrivateInquiresAnswer = async (inquiryId: number, data: { content: string }) => {
+
+    try {
+        const response = await axiosUrl.post(`/admin/anonymous-questions/${inquiryId}/answers`, data);
+        return response.data;
+    } catch (error) {
+        console.error("Error posting private inquiry answer:", error);
+        throw error;
+    }
+}
