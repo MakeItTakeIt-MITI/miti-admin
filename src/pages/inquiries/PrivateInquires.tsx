@@ -1,25 +1,10 @@
 import { Link } from "react-router-dom";
 import SearchField from "../../components/common/SearchField";
+import { usePrivateInquiriesPage } from "../../features/private_inquries/hooks/usePrivateInquiriesPage";
 
 export default function PrivateInquires() {
-  const rows = [
-    {
-      id: 3,
-      title: "문의 제목",
-      nickname: "고릴라",
-      content: "안녕하세ㅐ요",
-      num_of_answers: 0,
-      created_at: "2025-09-27T16:17:26.379239+09:00",
-    },
-    {
-      id: 3,
-      title: "문의 제목",
-      nickname: "고릴라",
-      content: "안녕하세ㅐ요",
-      num_of_answers: 1,
-      created_at: "2025-09-27T16:17:26.379239+09:00",
-    },
-  ];
+  const { rows } = usePrivateInquiriesPage();
+
   return (
     <section className="w-full p-8 flex flex-col gap-4 bg-black">
       <div className="space-y-4">
@@ -41,7 +26,7 @@ export default function PrivateInquires() {
             </tr>
           </thead>
           <tbody>
-            {rows.length === 0 && (
+            {rows?.length === 0 && (
               <tr>
                 <td
                   className="px-4 py-10 text-center text-gray-400"
@@ -51,7 +36,7 @@ export default function PrivateInquires() {
                 </td>
               </tr>
             )}
-            {rows.map((i) => {
+            {rows?.map((i) => {
               const answerStatus =
                 i.num_of_answers === 0 ? "미답변" : "답변완료";
               const statusCls =
