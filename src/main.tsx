@@ -20,6 +20,7 @@ import { InquiryDetails } from "./pages/inquiries/InquiryDetails.tsx";
 import PrivateRoute from "./pages/PrivateRoute.tsx";
 import Home from "./pages/Home.tsx";
 import PrivateInquires from "./pages/inquiries/PrivateInquires.tsx";
+import PrivateInquiryDetails from "./pages/inquiries/PrivateInquiryDetails.tsx";
 
 const queryClient = new QueryClient();
 
@@ -71,7 +72,7 @@ const router = createBrowserRouter([
         path: "anonymous-inquiry",
         children: [
           { path: "", element: <PrivateInquires /> },
-          // { path: ":id", element: <InquiryDetails /> },
+          { path: ":inquiryId", element: <PrivateInquiryDetails /> },
         ],
       },
     ],

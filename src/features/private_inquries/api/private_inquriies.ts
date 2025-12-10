@@ -13,11 +13,11 @@ export const privateInquiresList = async (cursor: string | null, limit: number, 
 }
 
 
-export const privateInquiresDetails = async (id: number, cursor: string | null, limit: number, search: string | null) => {
+export const privateInquiresDetails = async (inquiryId: number,) => {
 
     try {
-        const resposne = await axiosUrl.get(`/admin/anonymous-questions/${id}`, { params: { cursor, limit, search } });
-        return resposne.data;
+        const response = await axiosUrl.get(`/admin/anonymous-questions/${inquiryId}`);
+        return response.data;
     } catch (error) {
         console.error("Error fetching private inquiries:", error);
         throw error;
