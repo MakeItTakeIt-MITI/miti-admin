@@ -21,7 +21,7 @@ export default function TransferStatus() {
     badgeCls,
     statusValue,
     setStatusValue,
-    editTransferStatus,
+    // editTransferStatus,
     handleUpdateStatus,
   } = useTransactionDetailsContainer();
 

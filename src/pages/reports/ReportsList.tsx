@@ -2,30 +2,30 @@ import { Link } from "react-router-dom";
 import SearchField from "../../components/common/SearchField";
 import { useReportsPage } from "../../features/reports/hook/useReportsPage";
 
-type UserLite = {
-  id: number;
-  email: string;
-  nickname: string;
-  name?: string;
-  birthday?: string;
-  signup_method?: string;
-  phone?: string;
-};
+// type UserLite = {
+//   id: number;
+//   email: string;
+//   nickname: string;
+//   name?: string;
+//   birthday?: string;
+//   signup_method?: string;
+//   phone?: string;
+// };
 
-type ReportRow = {
-  id: number;
-  report_status: "waiting" | "completed" | "declined";
-  report_reason: string;
-  reportee: UserLite;
-  reporter: UserLite;
-  content?: string;
-  created_at?: string;
-  report_type: string;
-};
+// type ReportRow = {
+//   id: number;
+//   report_status: "waiting" | "completed" | "declined";
+//   report_reason: string;
+//   reportee: UserLite;
+//   reporter: UserLite;
+//   content?: string;
+//   created_at?: string;
+//   report_type: string;
+// };
 
 const ReportsList = () => {
   const {
-    reportsDataPage,
+    // reportsDataPage,
     rows,
     hasNextPage,
     hasPreviousPage,
