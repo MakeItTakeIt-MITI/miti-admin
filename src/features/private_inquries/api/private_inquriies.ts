@@ -23,3 +23,15 @@ export const privateInquiresDetails = async (inquiryId: number,) => {
         throw error;
     }
 }
+
+export const privateInquiresDetailAnswer = async (inquiryId: number,) => {
+
+    try {
+        const response = await axiosUrl.get(`/admin/anonymous-questions/${inquiryId}/answers`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching private inquiries:", error);
+        throw error;
+    }
+}
+

@@ -1,7 +1,8 @@
 import { usePrivateInquiryDetailsPage } from "../../features/private_inquries/hooks/usePrivateInquiryDetailsPage";
 
 export default function PrivateInquiryDetails() {
-  const { inquiryDetailData } = usePrivateInquiryDetailsPage();
+  const { inquiryDetailData, inquiryAnswerData } =
+    usePrivateInquiryDetailsPage();
 
   const answerStatus =
     inquiryDetailData.num_of_answers === 0 ? "미답변" : "답변완료";
@@ -53,12 +54,60 @@ export default function PrivateInquiryDetails() {
           </div>
         </div>
       </div>
-
       <div className="rounded-lg border border-gray-700 bg-gray-800 p-6">
         <h2 className="text-sm font-semibold mb-3">문의 내용</h2>
         <div className="text-sm leading-relaxed whitespace-pre-line max-h-[360px] overflow-y-auto scrollbar-thin scrollbar-track-gray-900 scrollbar-thumb-gray-600 pr-2">
           {inquiryDetailData.content || "문의 내용이 없습니다."}
         </div>
+      </div>
+
+      {/* 답변 목록 */}
+      <div className="rounded-lg border border-gray-700 bg-gray-800 p-6">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-sm font-semibold">답변</h2>
+          <span className="text-[11px] text-gray-400">
+            총 {Array.isArray(inquiryAnswerData) ? inquiryAnswerData.length : 0}
+            개
+          </span>
+        </div>
+
+        {Array.isArray(inquiryAnswerData) && inquiryAnswerData.length > 0 ? (
+          <ul className="space-y-4">
+            {inquiryAnswerData.map(
+              (ans: {
+                id: number;
+                content: string;
+                created_at?: string;
+                modified_at?: string;
+              }) => (
+                <li
+                  key={ans.id}
+                  className="rounded-md border border-gray-700 bg-gray-900/60 p-4"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs text-gray-400">
+                      작성일:{" "}
+                      {ans.created_at
+                        ? new Date(ans.created_at).toLocaleString()
+                        : "-"}
+                    </span>
+                    <span className="text-[11px] text-gray-500">
+                      수정일:{" "}
+                      {ans.modified_at
+                        ? new Date(ans.modified_at).toLocaleString()
+                        : "-"}
+                    </span>
+                  </div>
+                  <div className="text-sm whitespace-pre-line text-gray-200">
+                    {ans.content || "-"}
+                  </div>
+                </li>
+              )
+            )}
+          </ul>
+        ) : (
+          <div className="text-xs text-gray-400">등록된 답변이 없습니다.</div>
+        )}
       </div>
     </section>
   );

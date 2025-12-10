@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import { usePrivateDetails } from "./query/usePrivateInquiryDetails";
+import { usePrivateInquiryAnswer } from "./query/usePrivateInquiryAnswer";
 
 export const usePrivateInquiryDetailsPage = () => {
   const [searchParams] = useSearchParams();
@@ -8,7 +9,10 @@ export const usePrivateInquiryDetailsPage = () => {
 
   const { data } = usePrivateDetails(inquiryIdNumber);
 
-  const inquiryDetailData = data?.data;
+  const { data: answerData } = usePrivateInquiryAnswer(inquiryIdNumber);
 
-  return { inquiryDetailData };
+  const inquiryDetailData = data?.data || "";
+  const inquiryAnswerData = answerData?.data || "";
+
+  return { inquiryDetailData, inquiryAnswerData };
 };
