@@ -21,6 +21,7 @@ import PrivateRoute from "./pages/PrivateRoute.tsx";
 import Home from "./pages/Home.tsx";
 import PrivateInquires from "./pages/inquiries/PrivateInquires.tsx";
 import PrivateInquiryDetails from "./pages/inquiries/PrivateInquiryDetails.tsx";
+import CourtsList from "./pages/courts/CourtsList.tsx";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,13 @@ const router = createBrowserRouter([
         children: [
           { path: "", element: <GamesList /> },
           { path: "detail", element: <GameDetails /> },
+        ],
+      },
+      {
+        path: "courts",
+        children: [
+          { path: "", element: <CourtsList /> },
+          // { path: "detail", element: <GameDetails /> },
         ],
       },
       {
