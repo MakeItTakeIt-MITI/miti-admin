@@ -2,15 +2,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useTransferStatusesPage } from "../../features/transactions/hooks/useTransactionsPage.ts";
 import { useTransactionDetailsContainer } from "../../features/transactions/hooks/useTransactionDetailsContainer.ts";
 import { Button } from "../../components/ui/button.tsx";
+import NextPageLoader from "../../features/common/NextPageLoader.tsx";
 
 export default function TransferStatus() {
-  const {
-    hasNextPage,
-    hasPreviousPage,
-    fetchNextPage,
-    fetchPreviousPage,
-    rows,
-  } = useTransferStatusesPage();
+  const { hasNextPage, fetchNextPage, rows } = useTransferStatusesPage();
 
   const {
     openId,
@@ -29,25 +24,6 @@ export default function TransferStatus() {
     <section className="w-full p-8 flex flex-col gap-4 bg-black relative">
       <div className="space-y-4">
         <h1 className="text-white font-bold text-2xl">정산금 요청 목록</h1>
-      </div>
-
-      <div className="flex items-center justify-center gap-3">
-        <button
-          type="button"
-          disabled={!hasPreviousPage}
-          onClick={() => hasPreviousPage && fetchPreviousPage()}
-          className="px-4 py-1.5 rounded-lg bg-white text-black border border-gray-300 hover:bg-gray-100 transition disabled:opacity-40"
-        >
-          이전
-        </button>
-        <button
-          type="button"
-          disabled={!hasNextPage}
-          onClick={() => hasNextPage && fetchNextPage()}
-          className="px-4 py-1.5 rounded-lg bg-white text-black border border-gray-300 hover:bg-gray-100 transition disabled:opacity-40"
-        >
-          다음
-        </button>
       </div>
 
       <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
@@ -381,6 +357,7 @@ export default function TransferStatus() {
           </button>
         </div>
       </div>
+      <NextPageLoader hasNextPage={hasNextPage} fetchNextPage={fetchNextPage} />
     </section>
   );
 }

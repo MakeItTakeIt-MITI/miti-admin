@@ -1,48 +1,16 @@
 import { Link } from "react-router-dom";
 import { useInquiryPage } from "../../features/inquries/hooks/useInquiryPage";
 import SearchField from "../../components/common/SearchField";
+import NextPageLoader from "../../features/common/NextPageLoader";
 
 export default function UserInquriesList() {
-  const {
-    rows,
-    hasNextPage,
-    hasPreviousPage,
-    fetchNextPage,
-    fetchPreviousPage,
-  } = useInquiryPage();
+  const { rows, hasNextPage, fetchNextPage } = useInquiryPage();
 
   return (
     <section className="w-full p-8 flex flex-col gap-4 bg-black">
       <div className="space-y-4">
         <h1 className="text-white font-bold text-2xl">유저 문의 목록</h1>
         <SearchField paramKey="search" />
-      </div>
-
-      <div className="flex items-center justify-center gap-3 ">
-        <button
-          type="button"
-          disabled={!hasPreviousPage}
-          onClick={() => {
-            if (hasPreviousPage) {
-              fetchPreviousPage();
-            }
-          }}
-          className="px-4 py-1.5 rounded-lg text-sm bg-white text-black border border-gray-300 hover:bg-gray-100 transition"
-        >
-          이전
-        </button>
-        <button
-          type="button"
-          disabled={!hasNextPage}
-          onClick={() => {
-            if (hasNextPage) {
-              fetchNextPage();
-            }
-          }}
-          className="px-4 py-1.5 rounded-lg text-sm bg-white text-black border border-gray-300 hover:bg-gray-100 transition"
-        >
-          다음
-        </button>
       </div>
 
       <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
@@ -119,6 +87,7 @@ export default function UserInquriesList() {
           </tbody>
         </table>
       </div>
+      <NextPageLoader hasNextPage={hasNextPage} fetchNextPage={fetchNextPage} />
     </section>
   );
 }

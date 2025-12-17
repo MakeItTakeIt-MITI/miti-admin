@@ -2,17 +2,10 @@ import { useMemo } from "react";
 import SearchField from "../../components/common/SearchField";
 import useUsersPage from "../../features/users/hooks/useUsersPage";
 import { Link } from "react-router-dom";
+import NextPageLoader from "../../features/common/NextPageLoader";
 
 const UserList = () => {
-  const {
-    usersDataPage,
-    hasNextPage,
-    hasPreviousPage,
-    fetchNextPage,
-    fetchPreviousPage,
-  } = useUsersPage();
-
-  console.log(usersDataPage);
+  const { usersDataPage, hasNextPage, fetchNextPage } = useUsersPage();
 
   const rows = useMemo(() => {
     if (!usersDataPage) return [];
@@ -26,33 +19,6 @@ const UserList = () => {
       <div className="space-y-4">
         <h1 className="text-white font-bold text-2xl">회원 목록</h1>
         <SearchField paramKey={"search"} />
-      </div>
-
-      <div className="flex items-center justify-center gap-3 ">
-        <button
-          type="button"
-          disabled={!hasPreviousPage}
-          onClick={() => {
-            if (hasPreviousPage) {
-              fetchPreviousPage();
-            }
-          }}
-          className="px-4 py-1.5 rounded-lg text-sm bg-white text-black border border-gray-300 hover:bg-gray-100 transition"
-        >
-          이전
-        </button>
-        <button
-          type="button"
-          disabled={!hasNextPage}
-          onClick={() => {
-            if (hasNextPage) {
-              fetchNextPage();
-            }
-          }}
-          className="px-4 py-1.5 rounded-lg text-sm bg-white text-black border border-gray-300 hover:bg-gray-100 transition"
-        >
-          다음
-        </button>
       </div>
 
       {/* table */}
@@ -100,6 +66,7 @@ const UserList = () => {
           </tbody>
         </table>
       </div>
+      <NextPageLoader hasNextPage={hasNextPage} fetchNextPage={fetchNextPage} />
     </section>
   );
 };

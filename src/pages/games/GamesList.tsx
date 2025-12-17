@@ -1,42 +1,17 @@
 import SearchField from "../../components/common/SearchField";
+import NextPageLoader from "../../features/common/NextPageLoader";
 import { useGamesPage } from "../../features/games/hooks/useGamesPage";
 import { Link } from "react-router-dom";
 
 const GamesList = () => {
-  const {
-    hasNextPage,
-    hasPreviousPage,
-    fetchNextPage,
-    fetchPreviousPage,
-    rows,
-    status,
-    setStatus,
-  } = useGamesPage();
+  const { hasNextPage, fetchNextPage, rows, status, setStatus } =
+    useGamesPage();
 
   return (
     <section className="w-full  p-8  flex flex-col gap-4 bg-black">
       <div className="space-y-4">
         <h1 className="text-white font-bold text-2xl">경기 목록</h1>
         <SearchField paramKey={"search"} />
-      </div>
-
-      <div className="flex items-center justify-center gap-3">
-        <button
-          type="button"
-          disabled={!hasPreviousPage}
-          onClick={() => hasPreviousPage && fetchPreviousPage()}
-          className="px-4 py-1.5 rounded-lg bg-white text-black border border-gray-300 hover:bg-gray-100 transition disabled:opacity-40"
-        >
-          이전
-        </button>
-        <button
-          type="button"
-          disabled={!hasNextPage}
-          onClick={() => hasNextPage && fetchNextPage()}
-          className="px-4 py-1.5 rounded-lg bg-white text-black border border-gray-300 hover:bg-gray-100 transition disabled:opacity-40"
-        >
-          다음
-        </button>
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
@@ -160,6 +135,7 @@ const GamesList = () => {
           </tbody>
         </table>
       </div>
+      <NextPageLoader hasNextPage={hasNextPage} fetchNextPage={fetchNextPage} />
     </section>
   );
 };
