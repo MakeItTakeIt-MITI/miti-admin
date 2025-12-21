@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { gamesListData } from "../api/games";
+import { gamesListData } from "../../api/games";
 
 export const useGamesListHook = (
   search: string | null,

@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import { useGamesListHook } from "../../../hook/useGamesListHook";
+import { useGamesListHook } from "./query/useGamesListHook";
 import { useMemo, useState } from "react";
 
 export const useGamesPage = () => {

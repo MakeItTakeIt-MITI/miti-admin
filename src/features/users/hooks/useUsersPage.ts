@@ -1,7 +1,7 @@
 
 
 import { useSearchParams } from "react-router-dom";
-import { useUsersListHook } from "../../../hook/useUsersListHook";
+import { useUsersListHook } from "./query/useUsersListHook";
 
 
 const useUsersPage = () => {

@@ -1,5 +1,5 @@
-import { usersListData } from "../api/users";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { usersListData } from "../../../../api/users";
 
 export const useUsersListHook = (search: string | null) => {
   return useInfiniteQuery({

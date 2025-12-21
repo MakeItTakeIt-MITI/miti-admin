@@ -12,7 +12,6 @@ import ReportsList from "./pages/reports/ReportsList.tsx";
 import GamesList from "./pages/games/GamesList.tsx";
 import UserInquriesList from "./pages/inquiries/UserInquriesList.tsx";
 import GameDetails from "./pages/games/GameDetails.tsx";
-import ReportDetails from "./pages/ReportDetails.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import GamePayments from "./pages/GamePayments.tsx";
 import { UserDetails } from "./pages/users/UserDetails.tsx";
@@ -55,14 +54,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/reports",
-        children: [
-          { path: "", element: <ReportsList /> },
-
-          {
-            path: ":reportId",
-            element: <ReportDetails />,
-          },
-        ],
+        children: [{ path: "", element: <ReportsList /> }],
       },
       {
         path: "settlements",
