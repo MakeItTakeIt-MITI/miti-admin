@@ -7,7 +7,7 @@ export const useCourtsList = (
 ) => {
   return useInfiniteQuery({
     queryKey: ["courtsList", search, province],
-    queryFn: ({ pageParam }) => getCourtsList(pageParam, 40, search, province),
+    queryFn: ({ pageParam }) => getCourtsList(pageParam, 10, search, province),
     getNextPageParam: (lastPage) => {
       const data = lastPage?.data;
       if (!data) return undefined;
