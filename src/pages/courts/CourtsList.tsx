@@ -54,20 +54,6 @@ export default function CourtsList() {
     },
   ];
 
-  useEffect(() => {
-    const courtsListData = async () => {
-      try {
-        const res = await axiosUrl.get("/admin/courts");
-        console.log(res.data);
-        return res.data;
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    courtsListData();
-  }, []);
-
   return (
     <section className="w-full p-8 flex flex-col gap-6 bg-black">
       <div className="space-y-4">
@@ -75,11 +61,20 @@ export default function CourtsList() {
         <SearchField paramKey={"search"} />
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {rows.map((u) => (
-          <CourtsCard u={u} />
-        ))}
-      </div>
+      {rows.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <div className="text-gray-400 text-lg mb-2">
+            경기장 정보가 없습니다.
+          </div>
+          <p className="text-gray-500 text-sm">등록된 경기장이 없습니다.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {rows.map((u) => (
+            <CourtsCard key={u.id} u={u} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
