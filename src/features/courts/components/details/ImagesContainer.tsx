@@ -33,7 +33,7 @@ const ImagesContainer = ({ isEditing, display, removeImage }) => {
             파일 선택
             <input
               type="file"
-              accept="image/*"
+              accept="image/webp"
               multiple
               className="hidden"
               // onChange={(e) => handleFilesAdd(e.target.files)}

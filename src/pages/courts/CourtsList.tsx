@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import SearchField from "../../components/common/SearchField";
 import CourtsCard from "../../features/courts/components/list/CourtsCard";
+import axiosUrl from "../../utils/axios";
 // import { useCourtsPage } from "../../features/courts/hooks/useCourtsPage";
 
 export default function CourtsList() {
@@ -51,6 +53,20 @@ export default function CourtsList() {
       ],
     },
   ];
+
+  useEffect(() => {
+    const courtsListData = async () => {
+      try {
+        const res = await axiosUrl.get("/admin/courts");
+        console.log(res.data);
+        return res.data;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    courtsListData();
+  }, []);
 
   return (
     <section className="w-full p-8 flex flex-col gap-6 bg-black">
