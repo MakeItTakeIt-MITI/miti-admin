@@ -1,15 +1,22 @@
-import React from "react";
+interface CoordinatesFieldProps {
+  gameDetailsData: {
+    latitude?: number;
+    longitude?: number;
+  };
+}
 
-const CoordinatesField = ({ display }) => {
+const CoordinatesField = ({ gameDetailsData }: CoordinatesFieldProps) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-[11px]">
       <div className="text-gray-400">
         latitude:{" "}
-        <span className="text-gray-200">{display.latitude ?? "-"}</span>
+        <span className="text-gray-200">{gameDetailsData.latitude ?? "-"}</span>
       </div>
       <div className="text-gray-400">
         longitude:{" "}
-        <span className="text-gray-200">{display.longitude ?? "-"}</span>
+        <span className="text-gray-200">
+          {gameDetailsData.longitude ?? "-"}
+        </span>
       </div>
     </div>
   );

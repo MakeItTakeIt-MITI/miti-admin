@@ -1,4 +1,4 @@
-import axiosUrl from "../../utils/axios"
+import axiosUrl from "../../../utils/axios"
 
 export const getCourtsList = async (cursor: null | string, size: number, search: string | null, province: string | null) => {
     try {

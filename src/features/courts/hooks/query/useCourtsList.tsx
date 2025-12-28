@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getCourtsList } from "../../courts";
+import { getCourtsList } from "../../api/courts";
 
 export const useCourtsList = (
   search: string | null,

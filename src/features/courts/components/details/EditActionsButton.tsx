@@ -1,6 +1,16 @@
-import React from "react";
+interface EditActionsButtonProps {
+  isEditing: boolean;
+  startEdit: () => void;
+  saveEdit: () => void;
+  cancelEdit: () => void;
+}
 
-const EditActionsButton = ({ isEditing, startEdit, saveEdit, cancelEdit }) => {
+const EditActionsButton = ({
+  isEditing,
+  startEdit,
+  saveEdit,
+  cancelEdit,
+}: EditActionsButtonProps) => {
   return (
     <div className="mt-2 flex items-center gap-2">
       {!isEditing ? (
