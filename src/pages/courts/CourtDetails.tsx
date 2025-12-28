@@ -95,7 +95,7 @@ export default function CourtDetails() {
       </div>
 
       {/* Image card */}
-      <div className="group rounded-lg overflow-hidden border border-gray-800 bg-gray-900">
+      <div className="group rounded-lg overflow-hidden border py-2 border-gray-800 bg-gray-900">
         <CourtDetailsImgCard
           idx={idx}
           imgs={imgs}

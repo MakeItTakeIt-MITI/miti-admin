@@ -1,5 +1,3 @@
-import React from "react";
-
 const CourtDetailsContainer = ({ isEditing, draft, display, setDraft }) => {
   return (
     <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">

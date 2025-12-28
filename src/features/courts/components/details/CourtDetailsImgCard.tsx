@@ -1,10 +1,26 @@
-const CourtDetailsImgCard = ({ idx, imgs, display, prev, next }) => {
+interface CourtDetailsImgCardProps {
+  idx: number;
+  imgs: string[];
+  display: {
+    name: string;
+  };
+  prev: () => void;
+  next: () => void;
+}
+
+const CourtDetailsImgCard = ({
+  idx,
+  imgs,
+  display,
+  prev,
+  next,
+}: CourtDetailsImgCardProps) => {
   return (
     <div className="relative bg-gray-800 w-full max-w-md mx-auto aspect-[4/3]">
       <img
         src={imgs[idx]}
         alt={display.name}
-        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        className="h-full w-full object-cover transition-transform duration-300 "
       />
       {imgs.length > 1 && (
         <>

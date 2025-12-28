@@ -20,11 +20,17 @@ const CourtsCard = ({ u }: CourtsCardProps) => {
       className="group rounded-lg overflow-hidden border border-gray-800 bg-gray-900"
     >
       <div className="aspect-square bg-gray-800">
-        <img
-          src={getThumb(u.images)}
-          alt={u.name}
-          className="h-full w-full object-cover transition-transform duration-300 "
-        />
+        {u.images.length === 0 ? (
+          <div className="h-full w-full flex items-center justify-center text-gray-600">
+            이미지 없음
+          </div>
+        ) : (
+          <img
+            src={getThumb(u.images)}
+            alt={u.name}
+            className="h-full w-full object-cover transition-transform duration-300 "
+          />
+        )}
       </div>
 
       <div className="p-3 flex flex-col gap-1">
