@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import CourtDetailsImgCard from "../../features/courts/components/details/CourtDetailsImgCard";
 import CourtDetailsContainer from "../../features/courts/components/details/CourtDetailsContainer";
@@ -6,43 +5,11 @@ import EditActionsButton from "../../features/courts/components/details/EditActi
 import CoordinatesField from "../../features/courts/components/details/CoordinatesField";
 import { useCourtsDetailPage } from "../../features/courts/hooks/useCourtsDetailPage";
 
-type CourtDetail = {
-  id: number;
-  name: string;
-  address: string;
-  address_detail?: string | null;
-  latitude?: string;
-  longitude?: string;
-  info?: string;
-  images?: string[];
-};
+import UpdateDetailsForm from "../../features/courts/components/details/UpdateDetailsForm";
 
 export default function CourtDetails() {
-  const { gameDetailsData } = useCourtsDetailPage();
-
-  const [court, setCourt] = useState(gameDetailsData);
-  const [isEditing, setIsEditing] = useState(false);
-  const [draft, setDraft] = useState(court);
-
-  const startEdit = () => {
-    setDraft(court);
-    setIsEditing(true);
-  };
-  const cancelEdit = () => {
-    setIsEditing(false);
-  };
-
-  const saveEdit = () => {
-    setCourt((prev: CourtDetail) => ({
-      ...prev,
-      name: draft.name || prev.name,
-      address: draft.address || prev.address,
-      address_detail: draft.address_detail ?? null,
-      info: draft.info,
-      images: draft.images && draft.images.length > 0 ? draft.images : [],
-    }));
-    setIsEditing(false);
-  };
+  const { gameDetailsData, startEdit, cancelEdit, isEditing, saveEdit, draft } =
+    useCourtsDetailPage();
 
   if (!gameDetailsData) {
     return (
@@ -69,21 +36,23 @@ export default function CourtDetails() {
         <CourtDetailsImgCard gameDetailsData={gameDetailsData} />
 
         <div className="p-4 flex flex-col items-start gap-3">
-          <CourtDetailsContainer
-            isEditing={isEditing}
-            draft={draft}
-            gameDetailsData={gameDetailsData}
-            setDraft={setDraft}
-          />
+          {!isEditing ? (
+            <CourtDetailsContainer
+              gameDetailsData={gameDetailsData}
+              isEditing={isEditing}
+              draft={draft}
+            />
+          ) : (
+            <UpdateDetailsForm
+              gameDetailsData={gameDetailsData}
+              saveEdit={saveEdit}
+              cancelEdit={cancelEdit}
+            />
+          )}
 
           <CoordinatesField gameDetailsData={gameDetailsData} />
 
-          <EditActionsButton
-            isEditing={isEditing}
-            startEdit={startEdit}
-            saveEdit={saveEdit}
-            cancelEdit={cancelEdit}
-          />
+          <EditActionsButton isEditing={isEditing} startEdit={startEdit} />
         </div>
       </div>
     </section>

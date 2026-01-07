@@ -27,3 +27,30 @@ export const getCourtsDetails = async (courtId: null | number) => {
 
     }
 }
+
+interface CourtPatchPayload {
+    name?: string;
+
+    info?: string;
+    images?: string[];
+}
+export const patchCourtsDetails = async (
+    courtId: number,
+    data: CourtPatchPayload
+) => {
+    const response = await axiosUrl.patch(
+        `/admin/courts/${courtId}`,
+        data
+    );
+    return response.data;
+};
+
+//파일 업로드 url 조회 API																			
+export const getFileUploadUrl = async () => {
+    try {
+        const response = await axiosUrl.get('/file-upload-url?category=court_image&webp=10')
+        return response.data
+    } catch (error) {
+        console.log(error)
+    }
+}
