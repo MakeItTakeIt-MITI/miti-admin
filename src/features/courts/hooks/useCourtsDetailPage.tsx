@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { useCourtsDetails } from "./query/useCourtsDetails";
 import { useState } from "react";
 import { useEditCourtDetails } from "./mutation/useEditCourtDetails";
+import { useGetFileUrl } from "./query/useGetFileUrl";
 
 export const useCourtsDetailPage = () => {
   const [searchParams] = useSearchParams();
@@ -24,6 +25,18 @@ export const useCourtsDetailPage = () => {
 
   const { mutate: mutateCourtDetails } = useEditCourtDetails(courtId);
 
+  //
+  const [file, setFile] = useState<FileList | null>(null);
+
+  const onChangeSaveImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFile(e.target.files);
+  };
+
+  const { data: urlData } = useGetFileUrl();
+  const uploadUrl = urlData?.data.png[0].upload_url;
+  const fileUrl = urlData?.data.png[0].file_url;
+  const contentType = urlData?.data.png[0].content_type;
+
   const [draft, setDraft] = useState({
     name: gameDetailsData?.name,
     address: gameDetailsData?.address,
@@ -40,15 +53,43 @@ export const useCourtsDetailPage = () => {
     setIsEditing(false);
   };
 
-  const saveEdit = (state: {
+  const saveEdit = async (state: {
     name: string;
     info: string;
     images: string[];
   }) => {
-    // e.preventDefault();
     mutateCourtDetails(state);
-    console.log(state);
-    setIsEditing(false);
+
+    if (!uploadUrl || !file || file.length === 0) {
+      setIsEditing(false);
+      return;
+    }
+
+    const accessToken = localStorage.getItem("accessToken") ?? "";
+
+    try {
+      const fileToUpload = file[0];
+
+      const uploadRes = await fetch(uploadUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": contentType || fileToUpload.type,
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: fileToUpload,
+      });
+
+      if (!uploadRes.ok) {
+        throw new Error("Image upload failed");
+      }
+
+      // 3. 업로드 성공 후 실제 사용할 URL 반환
+      setIsEditing(false);
+      return fileUrl;
+    } catch (err) {
+      setIsEditing(false);
+      throw err;
+    }
   };
 
   return {
@@ -63,5 +104,7 @@ export const useCourtsDetailPage = () => {
     saveEdit,
     isEditing,
     onChangeHandler,
+    file,
+    onChangeSaveImageHandler,
   };
 };

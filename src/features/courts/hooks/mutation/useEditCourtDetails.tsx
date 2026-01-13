@@ -1,10 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { patchCourtsDetails } from "../../api/courts";
 
-interface UseEditCourtDetailsProps {
-  courtId: number;
-}
-
 // Patchable fields
 interface CourtPatchPayload {
   name?: string;

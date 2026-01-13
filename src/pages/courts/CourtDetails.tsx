@@ -6,10 +6,19 @@ import CoordinatesField from "../../features/courts/components/details/Coordinat
 import { useCourtsDetailPage } from "../../features/courts/hooks/useCourtsDetailPage";
 
 import UpdateDetailsForm from "../../features/courts/components/details/UpdateDetailsForm";
+import { useImageUploadHook } from "../../features/courts/hooks/useImageUploadHook";
 
 export default function CourtDetails() {
-  const { gameDetailsData, startEdit, cancelEdit, isEditing, saveEdit, draft } =
-    useCourtsDetailPage();
+  const {
+    gameDetailsData,
+    startEdit,
+    cancelEdit,
+    isEditing,
+    saveEdit,
+    draft,
+    file,
+    onChangeSaveImageHandler,
+  } = useCourtsDetailPage();
 
   if (!gameDetailsData) {
     return (
@@ -47,6 +56,8 @@ export default function CourtDetails() {
               gameDetailsData={gameDetailsData}
               saveEdit={saveEdit}
               cancelEdit={cancelEdit}
+              file={file}
+              onChangeSaveImageHandler={onChangeSaveImageHandler}
             />
           )}
 

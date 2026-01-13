@@ -4,13 +4,19 @@ interface UpdateDetailsFormProps {
   gameDetailsData: any;
   cancelEdit: () => void;
   saveEdit: (data: any) => void;
+  file?: FileList | null;
+  onChangeSaveImageHandler?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const UpdateDetailsForm = ({
   gameDetailsData,
   cancelEdit,
   saveEdit,
+  file,
+  onChangeSaveImageHandler,
 }: UpdateDetailsFormProps) => {
+  console.log(file ? file[0] : null);
+
   const [formState, setFormState] = useState({
     name: "",
     // address: "",
@@ -71,7 +77,6 @@ const UpdateDetailsForm = ({
           placeholder={gameDetailsData?.address_detail ?? ""}
         />
       </label>
-
       {/* 정보 */}
       <label className="flex flex-col gap-1 sm:col-span-2">
         <span className="text-[11px] text-gray-400">정보</span>
@@ -82,6 +87,29 @@ const UpdateDetailsForm = ({
           className={textareaCls}
           placeholder={gameDetailsData?.info ?? ""}
         />
+      </label>
+      {/* imaages upload */}
+      <label className="flex flex-col gap-2 sm:col-span-2">
+        <span className="text-[11px] text-gray-400">이미지 업로드</span>
+
+        <div className="flex items-center gap-3">
+          <label className="inline-flex items-center px-3 h-9 rounded-md bg-gray-700 hover:bg-gray-600 text-xs text-gray-100 cursor-pointer">
+            파일 선택
+            <input
+              type="file"
+              accept="image/png"
+              onChange={onChangeSaveImageHandler}
+              multiple
+              className="hidden"
+            />
+          </label>
+
+          <div className="text-[11px] text-gray-400">선택된 파일 없음</div>
+        </div>
+
+        <div className="flex flex-wrap gap-2 mt-3">
+          {/* 썸네일 프리뷰가 있으면 여기에 렌더링 */}
+        </div>
       </label>
 
       <div className="flex items-center gap-2">

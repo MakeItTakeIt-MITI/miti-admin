@@ -1,6 +1,3 @@
-import { Edit } from "lucide-react";
-import EditImagesField from "./EditImagesField";
-
 interface CourtDetailsContainerProps {
   gameDetailsData: {
     id?: string;
@@ -66,6 +63,27 @@ const CourtDetailsContainer = ({
         <span className="text-[11px] text-gray-400">정보</span>
         <textarea rows={4} className={textareaCls} value={display.info ?? ""} />
       </label>
+
+      {/* images */}
+      {display.images && display.images.length > 0 ? (
+        <div className="sm:col-span-2">
+          <span className="text-[11px] text-gray-400">이미지</span>
+          <div className="mt-1 flex flex-wrap gap-3">
+            {display.images.map((imgUrl, idx) => (
+              <img
+                key={idx}
+                src={imgUrl}
+                alt={`Court Image ${idx + 1}`}
+                className="w-24 h-24 object-cover rounded-md border border-gray-700"
+              />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <p className="sm:col-span-2 text-xs text-gray-200 ">
+          등록된 이미지가 없습니다.
+        </p>
+      )}
 
       {/* 이미지 미리보기 */}
     </div>

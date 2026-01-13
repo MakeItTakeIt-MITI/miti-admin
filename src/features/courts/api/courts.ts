@@ -48,7 +48,7 @@ export const patchCourtsDetails = async (
 //파일 업로드 url 조회 API																			
 export const getFileUploadUrl = async () => {
     try {
-        const response = await axiosUrl.get('/file-upload-url?category=court_image&webp=10')
+        const response = await axiosUrl.get('/file-upload-url?category=court_image&png=1')
         return response.data
     } catch (error) {
         console.log(error)
