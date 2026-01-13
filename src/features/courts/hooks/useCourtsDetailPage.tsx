@@ -36,6 +36,7 @@ export const useCourtsDetailPage = () => {
   const uploadUrl = urlData?.data.png[0].upload_url;
   const fileUrl = urlData?.data.png[0].file_url;
   const contentType = urlData?.data.png[0].content_type;
+  console.log(urlData);
 
   const [draft, setDraft] = useState({
     name: gameDetailsData?.name,
@@ -52,29 +53,20 @@ export const useCourtsDetailPage = () => {
   const cancelEdit = () => {
     setIsEditing(false);
   };
-
   const saveEdit = async (state: {
     name: string;
     info: string;
     images: string[];
   }) => {
-    mutateCourtDetails(state);
+    let uploadedImageUrl: string | null = null;
 
-    if (!uploadUrl || !file || file.length === 0) {
-      setIsEditing(false);
-      return;
-    }
-
-    const accessToken = localStorage.getItem("accessToken") ?? "";
-
-    try {
+    if (uploadUrl && file && file.length > 0) {
       const fileToUpload = file[0];
 
       const uploadRes = await fetch(uploadUrl, {
         method: "PUT",
         headers: {
           "Content-Type": contentType || fileToUpload.type,
-          Authorization: `Bearer ${accessToken}`,
         },
         body: fileToUpload,
       });
@@ -83,13 +75,15 @@ export const useCourtsDetailPage = () => {
         throw new Error("Image upload failed");
       }
 
-      // 3. 업로드 성공 후 실제 사용할 URL 반환
-      setIsEditing(false);
-      return fileUrl;
-    } catch (err) {
-      setIsEditing(false);
-      throw err;
+      uploadedImageUrl = fileUrl!;
     }
+
+    mutateCourtDetails({
+      ...state,
+      images: uploadedImageUrl ? [uploadedImageUrl] : state.images,
+    });
+
+    setIsEditing(false);
   };
 
   return {
