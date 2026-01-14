@@ -3,6 +3,7 @@ import { useCourtsDetails } from "./query/useCourtsDetails";
 import { useState } from "react";
 import { useEditCourtDetails } from "./mutation/useEditCourtDetails";
 import { useGetFileUrl } from "./query/useGetFileUrl";
+import axios from "axios";
 
 export const useCourtsDetailPage = () => {
   const [searchParams] = useSearchParams();
@@ -61,23 +62,22 @@ export const useCourtsDetailPage = () => {
     let uploadedImageUrl: string | null = null;
 
     if (uploadUrl && file && file.length > 0) {
-      const fileToUpload = file[0];
+      const fileToUpload = file.item;
+      // alert(fileToUpload.type);
 
-      const uploadRes = await fetch(uploadUrl, {
-        method: "PUT",
-        headers: {
-          "Content-Type": contentType || fileToUpload.type,
-        },
-        body: fileToUpload,
-      });
+      try {
+        await axios.put(uploadUrl, fileToUpload, {
+          headers: {
+            "Content-Type": contentType,
+          },
+          withCredentials: false,
+        });
 
-      if (!uploadRes.ok) {
+        uploadedImageUrl = fileUrl!;
+      } catch (error) {
         throw new Error("Image upload failed");
       }
-
-      uploadedImageUrl = fileUrl!;
     }
-
     mutateCourtDetails({
       ...state,
       images: uploadedImageUrl ? [uploadedImageUrl] : state.images,
