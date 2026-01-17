@@ -99,7 +99,6 @@ const UpdateDetailsForm = ({
               type="file"
               accept="image/png"
               onChange={onChangeSaveImageHandler}
-              multiple
               className="hidden"
             />
           </label>
@@ -109,6 +108,13 @@ const UpdateDetailsForm = ({
 
         <div className="flex flex-wrap gap-2 mt-3">
           {/* 썸네일 프리뷰가 있으면 여기에 렌더링 */}
+          {file && file.length > 0 && (
+            <img
+              src={URL.createObjectURL(file[0])}
+              alt="Selected Preview"
+              className="w-20 h-20 object-cover rounded-md border border-gray-700"
+            />
+          )}
         </div>
       </label>
 

@@ -6,7 +6,7 @@ import CoordinatesField from "../../features/courts/components/details/Coordinat
 import { useCourtsDetailPage } from "../../features/courts/hooks/useCourtsDetailPage";
 
 import UpdateDetailsForm from "../../features/courts/components/details/UpdateDetailsForm";
-import { useImageUploadHook } from "../../features/courts/hooks/useImageUploadHook";
+// import { useImageUploadHook } from "../../features/courts/hooks/useImageUploadHook";
 
 export default function CourtDetails() {
   const {
