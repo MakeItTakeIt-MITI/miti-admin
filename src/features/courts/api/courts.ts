@@ -20,8 +20,10 @@ export const getCourtsList = async (cursor: null | string, size: number, search:
 export const getCourtsDetails = async (courtId: null | number) => {
     try {
         const response = await axiosUrl.get(`/admin/courts/${courtId}`)
+        console.log(response)
         return response.data
     } catch (error) {
+        console.log(error)
         console.log(error)
         throw new Error('Failed to fetch court details')
 

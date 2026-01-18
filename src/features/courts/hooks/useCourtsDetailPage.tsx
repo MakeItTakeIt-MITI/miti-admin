@@ -3,7 +3,7 @@ import { useCourtsDetails } from "./query/useCourtsDetails";
 import { useState } from "react";
 import { useEditCourtDetails } from "./mutation/useEditCourtDetails";
 import { useGetFileUrl } from "./query/useGetFileUrl";
-import axios from "axios";
+import { useUploadImage } from "./useUploadImage";
 
 export const useCourtsDetailPage = () => {
   const [searchParams] = useSearchParams();
@@ -13,7 +13,8 @@ export const useCourtsDetailPage = () => {
 
   const gameDetailsData = data?.data;
 
-  const [_fileNames, setFileNames] = useState<string[]>([]);
+  const [fileNames, setFileNames] = useState<string[]>([]);
+  console.log("fileNames:", fileNames);
 
   const onChangeHandler = (files: FileList | null) => {
     if (!files) return;
@@ -35,9 +36,8 @@ export const useCourtsDetailPage = () => {
 
   const { data: urlData } = useGetFileUrl();
   const uploadUrl = urlData?.data.png[0].upload_url;
-  const fileUrl = urlData?.data.png[0].file_url;
+  // const fileUrl = urlData?.data.png[0].file_url;
   const contentType = urlData?.data.png[0].content_type;
-  console.log(urlData);
 
   const [draft, setDraft] = useState({
     name: gameDetailsData?.name,
@@ -47,6 +47,8 @@ export const useCourtsDetailPage = () => {
     info: gameDetailsData?.info,
     // images: gameDetailsData?.images || fileNames,
   });
+
+  const { mutate: uploadImg } = useUploadImage();
 
   const startEdit = () => {
     setIsEditing(true);
@@ -60,23 +62,22 @@ export const useCourtsDetailPage = () => {
     images: string[];
   }) => {
     let uploadedImageUrl: string | null = null;
-
     if (uploadUrl && file && file.length > 0) {
       const fileToUpload = file.item;
       // alert(fileToUpload.type);
+      uploadImg({ uploadUrl, fileToUpload, contentType });
 
-      try {
-        await axios.put(uploadUrl, fileToUpload, {
-          headers: {
-            "Content-Type": contentType,
-          },
-          withCredentials: false,
-        });
+      // try {
+      //   await axios.put(uploadUrl, fileToUpload, {
+      //     headers: {
+      //       "Content-Type": contentType,
+      //     },
 
-        uploadedImageUrl = fileUrl!;
-      } catch (error) {
-        throw new Error("Image upload failed");
-      }
+      //     withCredentials: false,
+      //   });
+
+      //   uploadedImageUrl = fileUrl!;
+      // } catch (error) {}
     }
     mutateCourtDetails({
       ...state,
