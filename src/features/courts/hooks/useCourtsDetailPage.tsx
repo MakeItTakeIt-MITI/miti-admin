@@ -13,22 +13,25 @@ export const useCourtsDetailPage = () => {
 
   const gameDetailsData = data?.data;
 
-  const [fileNames, setFileNames] = useState<string[]>([]);
-  console.log("fileNames:", fileNames);
+  // const [fileNames, setFileNames] = useState<string[]>([]);
 
-  const onChangeHandler = (files: FileList | null) => {
-    if (!files) return;
+  // const onChangeHandler = (files: FileList | null) => {
+  //   if (!files) return;
 
-    const names = Array.from(files).map((file) => file.name);
+  //   const names = Array.from(files).map((file) => file.name);
 
-    setFileNames(names);
-  };
+  //   setFileNames(names);
+  // };
   const [isEditing, setIsEditing] = useState(false);
 
   const { mutate: mutateCourtDetails } = useEditCourtDetails(courtId);
 
   //
   const [file, setFile] = useState<FileList | null>(null);
+  const formData = new FormData();
+  if (file) {
+    formData.append("file", file[0]);
+  }
 
   const onChangeSaveImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFile(e.target.files);
@@ -36,6 +39,8 @@ export const useCourtsDetailPage = () => {
 
   const { data: urlData } = useGetFileUrl();
   const uploadUrl = urlData?.data.png[0].upload_url;
+
+  console.log("UPLOADURL", uploadUrl);
   // const fileUrl = urlData?.data.png[0].file_url;
   const contentType = urlData?.data.png[0].content_type;
 
@@ -48,7 +53,16 @@ export const useCourtsDetailPage = () => {
     // images: gameDetailsData?.images || fileNames,
   });
 
-  const { mutate: uploadImg } = useUploadImage();
+  const { mutate: uploadImg } = useUploadImage(uploadUrl, contentType);
+
+  const uploadImgToNaverHandler = () => {
+    if (file && uploadUrl && contentType) {
+      const fileToUpload = file[0] as File;
+      if (fileToUpload) {
+        uploadImg(fileToUpload);
+      }
+    }
+  };
 
   const startEdit = () => {
     setIsEditing(true);
@@ -56,33 +70,23 @@ export const useCourtsDetailPage = () => {
   const cancelEdit = () => {
     setIsEditing(false);
   };
-  const saveEdit = async (state: {
+  const saveEdit = (state: {
     name: string;
     info: string;
     images: string[];
   }) => {
-    let uploadedImageUrl: string | null = null;
-    if (uploadUrl && file && file.length > 0) {
-      const fileToUpload = file.item;
-      // alert(fileToUpload.type);
-      uploadImg({ uploadUrl, fileToUpload, contentType });
+    // let uploadedImageUrl: string | null = null;
+    // if (file && uploadUrl && contentType) {
+    //   const fileToUpload = file[0] as File;
+    //   if (fileToUpload) {
+    //     uploadImg(fileToUpload);
+    //   }
+    // }
 
-      // try {
-      //   await axios.put(uploadUrl, fileToUpload, {
-      //     headers: {
-      //       "Content-Type": contentType,
-      //     },
-
-      //     withCredentials: false,
-      //   });
-
-      //   uploadedImageUrl = fileUrl!;
-      // } catch (error) {}
-    }
-    mutateCourtDetails({
-      ...state,
-      images: uploadedImageUrl ? [uploadedImageUrl] : state.images,
-    });
+    // mutateCourtDetails({
+    //   ...state,
+    //   images: uploadedImageUrl ? [uploadedImageUrl] : state.images,
+    // });
 
     setIsEditing(false);
   };
@@ -98,8 +102,8 @@ export const useCourtsDetailPage = () => {
     draft,
     saveEdit,
     isEditing,
-    onChangeHandler,
     file,
     onChangeSaveImageHandler,
+    uploadImgToNaverHandler,
   };
 };

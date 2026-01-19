@@ -1,12 +1,14 @@
 import axios from "axios";
 
-export const uploadNcpFile = async (uploadUrl: string, file: string | null, contentType: string) => {
+export const uploadNcpFile = async (uploadUrl: string, file: File, contentType: string) => {
     try {
-        await axios.put(uploadUrl, file, {
+        const res = await axios.put(uploadUrl, file, {
             headers: {
                 'Content-Type': contentType,
             },
         });
+        console.log('NCP RES:', res)
+        return res
     } catch (error) {
         console.log(error);
         throw new Error('NCP 업로드 실패');

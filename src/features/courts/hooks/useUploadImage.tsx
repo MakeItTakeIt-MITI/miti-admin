@@ -1,16 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 import { uploadNcpFile } from "../api/ncp";
 
-export const useUploadImage = () => {
+export const useUploadImage = (uploadUrl: string, contentType: "image/png") => {
   return useMutation({
-    mutationFn: ({
-      uploadUrl,
-      file,
-      contentType,
-    }: {
-      uploadUrl: string;
-      file: string | null;
-      contentType: string;
-    }) => uploadNcpFile(uploadUrl, file, contentType),
+    mutationFn: (file: File) => uploadNcpFile(uploadUrl, file, contentType),
   });
 };

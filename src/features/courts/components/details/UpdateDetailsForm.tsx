@@ -6,6 +6,7 @@ interface UpdateDetailsFormProps {
   saveEdit: (data: any) => void;
   file?: FileList | null;
   onChangeSaveImageHandler?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  uploadImgToNaverHandler?: () => void;
 }
 
 const UpdateDetailsForm = ({
@@ -14,6 +15,7 @@ const UpdateDetailsForm = ({
   saveEdit,
   file,
   onChangeSaveImageHandler,
+  uploadImgToNaverHandler,
 }: UpdateDetailsFormProps) => {
   console.log(file ? file[0] : null);
 
@@ -119,6 +121,13 @@ const UpdateDetailsForm = ({
       </label>
 
       <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={uploadImgToNaverHandler}
+          className="text-[11px] px-3 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white"
+        >
+          NCP 업로드 테스트
+        </button>
         <button
           type="button"
           onClick={() => saveEdit(formState)}

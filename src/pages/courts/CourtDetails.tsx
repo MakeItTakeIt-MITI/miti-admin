@@ -18,6 +18,7 @@ export default function CourtDetails() {
     draft,
     file,
     onChangeSaveImageHandler,
+    uploadImgToNaverHandler,
   } = useCourtsDetailPage();
 
   if (!gameDetailsData) {
@@ -58,6 +59,7 @@ export default function CourtDetails() {
               cancelEdit={cancelEdit}
               file={file}
               onChangeSaveImageHandler={onChangeSaveImageHandler}
+              uploadImgToNaverHandler={uploadImgToNaverHandler}
             />
           )}
 
