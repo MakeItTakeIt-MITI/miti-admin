@@ -1,147 +1,72 @@
-import { Link, useSearchParams } from "react-router-dom";
-import { useUsersListHook } from "../../hook/useUsersListHook";
-
-import PersonSearchIcon from "@mui/icons-material/PersonSearch";
-
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  Row,
-  useReactTable,
-} from "@tanstack/react-table";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../../components/ui/table";
-import { UserField } from "../../interface/users";
-import { PaginationWithLinks } from "../../components/common/PaginationWithLinks";
+import { useMemo } from "react";
 import SearchField from "../../components/common/SearchField";
+import useUsersPage from "../../features/users/hooks/useUsersPage";
+import { Link } from "react-router-dom";
+import NextPageLoader from "../../features/common/NextPageLoader";
 
 const UserList = () => {
-  const [searchParams] = useSearchParams();
-  const page = searchParams.get("page");
-  const pageNow = page ? parseInt(page) : 1;
+  const { usersDataPage, hasNextPage, fetchNextPage } = useUsersPage();
 
-  const { data } = useUsersListHook(pageNow);
-  const currentPage = data?.data?.current_index;
-  const endIndex = data?.data?.end_index;
+  const rows = useMemo(() => {
+    if (!usersDataPage) return [];
+    if (Array.isArray(usersDataPage)) return usersDataPage;
 
-  const columns: ColumnDef<UserField>[] = [
-    {
-      accessorKey: `id`,
-      header: `ID`,
-      cell: ({ row }) => (
-        <Link to={`${row.original.id}`}>{row.getValue("id")}</Link>
-      ),
-    },
-    {
-      accessorKey: "signup_method",
-      header: "가임수단",
-    },
-    {
-      accessorKey: "nickname",
-      header: "닉네임",
-    },
-    {
-      accessorKey: "birthday",
-      header: "생년월일",
-    },
-    {
-      accessorKey: "email",
-      header: "이메일",
-    },
-
-    {
-      accessorKey: "phone",
-      header: "전화번호",
-    },
-    {
-      accessorKey: "info",
-      header: "상세",
-      cell: ({ row }: { row: Row<UserField> }) => (
-        <Link to={`detail?userId=${row.original.id}`}>
-          <PersonSearchIcon />
-        </Link>
-      ),
-    },
-  ];
-  const table = useReactTable({
-    data: data?.data.page_content || [],
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    enableRowSelection: true,
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-  });
+    return usersDataPage;
+  }, [usersDataPage]);
 
   return (
-    <section className="w-full  p-8  flex flex-col justify-between bg-black">
+    <section className="w-full  p-8  flex flex-col gap-4 bg-black">
       <div className="space-y-4">
         <h1 className="text-white font-bold text-2xl">회원 목록</h1>
-        <SearchField />
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+        <SearchField paramKey={"search"} />
       </div>
 
-      <PaginationWithLinks
-        page={currentPage}
-        pageSize={5}
-        totalCount={endIndex}
-      />
+      {/* table */}
+      <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
+        <table className="min-w-[900px] w-full text-xs">
+          <thead className="bg-gray-800 text-gray-200">
+            <tr className="text-left">
+              <th className="px-4 py-3 font-medium">ID</th>
+              <th className="px-4 py-3 font-medium">이메일</th>
+              <th className="px-4 py-3 font-medium">닉네임</th>
+              <th className="px-4 py-3 font-medium">이름</th>
+              <th className="px-4 py-3 font-medium">생년월일</th>
+              <th className="px-4 py-3 font-medium">가입수단</th>
+              <th className="px-4 py-3 font-medium">전화번호</th>
+              <th className="px-4 py-3 font-medium">상세</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((u) => (
+              <tr
+                key={u.id}
+                className="border-t border-gray-700 hover:bg-gray-800 transition-colors"
+              >
+                <td className="px-4 py-2 text-white">{u.id}</td>
+                <td className="px-4 py-2 text-gray-300">{u.email}</td>
+                <td className="px-4 py-2 text-gray-300">{u.nickname}</td>
+                <td className="px-4 py-2 text-gray-300">{u.name || "-"}</td>
+                <td className="px-4 py-2 text-gray-300">{u.birthday || "-"}</td>
+                <td className="px-4 py-2">
+                  <span className="inline-block rounded bg-gray-700 px-2 py-1 text-xs text-gray-200">
+                    {u.signup_method || "-"}
+                  </span>
+                </td>
+                <td className="px-4 py-2 text-gray-300">{u.phone || "-"}</td>
+                <td className="px-4 py-2">
+                  <Link
+                    to={`detail?userId=${u.id}`}
+                    className="text-blue-400 hover:underline"
+                  >
+                    보기
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <NextPageLoader hasNextPage={hasNextPage} fetchNextPage={fetchNextPage} />
     </section>
   );
 };

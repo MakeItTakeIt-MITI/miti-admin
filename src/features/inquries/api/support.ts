@@ -1,8 +1,8 @@
 import axiosUrl from "../../../utils/axios";
 
-export const fetchInquiryList = async (page: number) => {
+export const fetchInquiryList = async (cursor: number | null, size: number, search: string | null) => {
     try {
-        const response = await axiosUrl.get(`/admin/user-questions?page=${page}`)
+        const response = await axiosUrl.get(`/admin/user-questions`, { params: { cursor, size, search } })
         return response.data
     } catch {
         throw new Error

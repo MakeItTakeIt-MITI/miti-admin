@@ -1,166 +1,104 @@
-import { useReportsListHook } from "../../features/reports/hook/useReportsListHook";
-import { Link, useSearchParams } from "react-router-dom";
-
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  Row,
-  useReactTable,
-} from "@tanstack/react-table";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../../components/ui/table";
+import { Link } from "react-router-dom";
 import SearchField from "../../components/common/SearchField";
-import { ReportsField } from "../../features/reports/interface/reports";
-import { NotepadText } from "lucide-react";
-import { PaginationWithLinks } from "../../components/common/PaginationWithLinks";
+import { useReportsPage } from "../../features/reports/hook/useReportsPage";
+import NextPageLoader from "../../features/common/NextPageLoader";
 
 const ReportsList = () => {
-  // const [currentPage, setCurrentPage] = useState<number>(1);
+  const { rows, hasNextPage, fetchNextPage } = useReportsPage();
 
-  const [searchParams] = useSearchParams();
-  const page = searchParams.get("page");
-  const pageNow = page ? parseInt(page) : 1;
-
-  const { data } = useReportsListHook(pageNow);
-  const currentPage = data?.data?.current_index;
-
-  const endIndex = data?.data.end_index;
-
-  const columns: ColumnDef<ReportsField>[] = [
-    {
-      accessorKey: `participation_id`,
-      header: `참가 ID`,
-    },
-    {
-      accessorKey: "game_id",
-      header: "경기 ID",
-    },
-    {
-      accessorKey: "game_status",
-      header: "경기 상태",
-    },
-    {
-      accessorKey: "game_title",
-      header: "경기 재목",
-    },
-    {
-      accessorKey: "startdate",
-      header: "경기 시작일",
-    },
-    {
-      accessorKey: "starttime",
-      header: "경기 시작 시간",
-    },
-
-    {
-      accessorKey: "email",
-      header: "피신고자 이메일",
-    },
-    {
-      accessorKey: "nickname",
-      header: "피신고자 닉네임",
-    },
-    {
-      accessorKey: "name",
-      header: "피신고자 이름",
-    },
-    {
-      accessorKey: "phone",
-      header: "피신고자 연락처",
-    },
-    {
-      accessorKey: "num_of_guest_reports",
-      header: "신고 개수",
-    },
-    {
-      accessorKey: "info",
-      header: "상세",
-      cell: ({ row }: { row: Row<ReportsField> }) => (
-        <Link to={`${row.original.id}`}>
-          <NotepadText />
-        </Link>
-      ),
-    },
-  ];
-
-  const table = useReactTable({
-    data: data?.data.page_content || [],
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    enableRowSelection: true,
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-  });
+  // 상태 뱃지 클래스
+  const statusBadge = (s: string) =>
+    s === "completed"
+      ? "bg-emerald-600/20 text-emerald-300 ring-1 ring-inset ring-emerald-500/30"
+      : s === "waiting"
+      ? "bg-amber-600/20 text-amber-300 ring-1 ring-inset ring-amber-500/30"
+      : "bg-rose-600/20 text-rose-300 ring-1 ring-inset ring-rose-500/30";
 
   return (
-    <section className="w-full  p-8  flex flex-col justify-between bg-black">
+    <section className="w-full  p-8  flex flex-col gap-4 bg-black">
       <div className="space-y-4">
-        <h1 className="text-white font-bold text-2xl">신고 목록</h1>
-        <SearchField />
-        <Table className=" ">
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+        <h1 className="text-white font-bold text-2xl">회원 목록</h1>
+        <SearchField paramKey={"search"} />
       </div>
-      <PaginationWithLinks
-        page={currentPage}
-        pageSize={5}
-        totalCount={endIndex}
-      />
+
+      {/* table */}
+      <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
+        <table className="min-w-[1100px] w-full text-xs">
+          <thead className="bg-gray-800 text-gray-200">
+            <tr className="text-left">
+              <th className="px-4 py-3 font-medium">신고 ID</th>
+              <th className="px-4 py-3 font-medium">상태</th>
+              <th className="px-4 py-3 font-medium">타입</th>
+              <th className="px-4 py-3 font-medium">사유</th>
+              <th className="px-4 py-3 font-medium">피신고자 닉네임</th>
+              <th className="px-4 py-3 font-medium">피신고자 이메일</th>
+              <th className="px-4 py-3 font-medium">신고자 닉네임</th>
+              <th className="px-4 py-3 font-medium">신고자 이메일</th>
+              <th className="px-4 py-3 font-medium">신고일</th>
+              <th className="px-4 py-3 font-medium">상세</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.length === 0 && (
+              <tr>
+                <td
+                  colSpan={10}
+                  className="px-4 py-10 text-center text-gray-400"
+                >
+                  결과가 없습니다.
+                </td>
+              </tr>
+            )}
+            {rows.map((r) => (
+              <tr
+                key={r?.id}
+                className="border-t border-gray-700 hover:bg-gray-800 transition-colors"
+              >
+                <td className="px-4 py-2 text-white">{r?.id}</td>
+                <td className="px-4 py-2">
+                  <span
+                    className={`inline-flex rounded-full px-2 py-0.5 text-[10px] font-medium ${statusBadge(
+                      r?.report_status
+                    )}`}
+                  >
+                    {r?.report_status}
+                  </span>
+                </td>
+                <td className="px-4 py-2 text-gray-300">{r?.report_type}</td>
+                <td className="px-4 py-2 text-gray-300 truncate max-w-[160px]">
+                  {r?.report_reason}
+                </td>
+                <td className="px-4 py-2 text-gray-300">
+                  {r?.reportee?.nickname}
+                </td>
+                <td className="px-4 py-2 text-gray-300">
+                  {r?.reportee?.email}
+                </td>
+                <td className="px-4 py-2 text-gray-300">
+                  {r?.reporter?.nickname}
+                </td>
+                <td className="px-4 py-2 text-gray-300">
+                  {r?.reporter?.email}
+                </td>
+                <td className="px-4 py-2 text-gray-300">
+                  {r?.created_at
+                    ? new Date(r.created_at).toLocaleString()
+                    : "-"}
+                </td>
+                <td className="px-4 py-2">
+                  <Link
+                    to={`detail?reportId=${r?.id}`}
+                    className="text-blue-400 hover:underline"
+                  >
+                    보기
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <NextPageLoader hasNextPage={hasNextPage} fetchNextPage={fetchNextPage} />
     </section>
   );
 };

@@ -12,13 +12,16 @@ import ReportsList from "./pages/reports/ReportsList.tsx";
 import GamesList from "./pages/games/GamesList.tsx";
 import UserInquriesList from "./pages/inquiries/UserInquriesList.tsx";
 import GameDetails from "./pages/games/GameDetails.tsx";
-import ReportDetails from "./pages/ReportDetails.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import GamePayments from "./pages/GamePayments.tsx";
 import { UserDetails } from "./pages/users/UserDetails.tsx";
 import { InquiryDetails } from "./pages/inquiries/InquiryDetails.tsx";
 import PrivateRoute from "./pages/PrivateRoute.tsx";
 import Home from "./pages/Home.tsx";
+import PrivateInquires from "./pages/inquiries/PrivateInquires.tsx";
+import PrivateInquiryDetails from "./pages/inquiries/PrivateInquiryDetails.tsx";
+import CourtsList from "./pages/courts/CourtsList.tsx";
+import CourtDetails from "./pages/courts/CourtDetails.tsx";
 
 const queryClient = new QueryClient();
 
@@ -44,15 +47,15 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/reports",
+        path: "courts",
         children: [
-          { path: "", element: <ReportsList /> },
-
-          {
-            path: ":reportId",
-            element: <ReportDetails />,
-          },
+          { path: "", element: <CourtsList /> },
+          { path: "detail", element: <CourtDetails /> },
         ],
+      },
+      {
+        path: "/reports",
+        children: [{ path: "", element: <ReportsList /> }],
       },
       {
         path: "settlements",
@@ -60,10 +63,17 @@ const router = createBrowserRouter([
       },
       { path: "payments", element: <GamePayments /> },
       {
-        path: "support",
+        path: "inquiry",
         children: [
           { path: "", element: <UserInquriesList /> },
           { path: ":id", element: <InquiryDetails /> },
+        ],
+      },
+      {
+        path: "anonymous-inquiry",
+        children: [
+          { path: "", element: <PrivateInquires /> },
+          { path: ":inquiryId", element: <PrivateInquiryDetails /> },
         ],
       },
     ],
