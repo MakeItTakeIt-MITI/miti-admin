@@ -25,10 +25,10 @@ const textareaCls =
 
 const CourtDetailsContainer = ({
   gameDetailsData,
-  isEditing,
-  draft,
-}: CourtDetailsContainerProps) => {
-  const display = isEditing ? draft ?? {} : gameDetailsData ?? {};
+}: // isEditing,
+// draft,
+CourtDetailsContainerProps) => {
+  const display = gameDetailsData ?? {};
 
   return (
     <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -84,8 +84,6 @@ const CourtDetailsContainer = ({
           등록된 이미지가 없습니다.
         </p>
       )}
-
-      {/* 이미지 미리보기 */}
     </div>
   );
 };

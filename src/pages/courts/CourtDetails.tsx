@@ -6,7 +6,6 @@ import CoordinatesField from "../../features/courts/components/details/Coordinat
 import { useCourtsDetailPage } from "../../features/courts/hooks/useCourtsDetailPage";
 
 import UpdateDetailsForm from "../../features/courts/components/details/UpdateDetailsForm";
-// import { useImageUploadHook } from "../../features/courts/hooks/useImageUploadHook";
 
 export default function CourtDetails() {
   const {
@@ -15,16 +14,28 @@ export default function CourtDetails() {
     cancelEdit,
     isEditing,
     saveEdit,
-    draft,
     file,
     onChangeSaveImageHandler,
     uploadImgToNaverHandler,
+    uploadImgPending,
   } = useCourtsDetailPage();
 
   if (!gameDetailsData) {
     return (
       <div className="w-full p-8 text-white">
         경기장 정보를 불러오는 중입니다...
+      </div>
+    );
+  }
+
+  // NCP 이미지 업로드 로딩 화면
+  if (uploadImgPending) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-4 border-t-transparent border-white rounded-full animate-spin" />
+          <div className="text-sm text-white">이미지 업로드 중...</div>
+        </div>
       </div>
     );
   }
@@ -50,7 +61,7 @@ export default function CourtDetails() {
             <CourtDetailsContainer
               gameDetailsData={gameDetailsData}
               isEditing={isEditing}
-              draft={draft}
+              // draft={draft}
             />
           ) : (
             <UpdateDetailsForm

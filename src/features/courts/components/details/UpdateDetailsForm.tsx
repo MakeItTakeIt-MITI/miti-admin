@@ -17,12 +17,9 @@ const UpdateDetailsForm = ({
   onChangeSaveImageHandler,
   uploadImgToNaverHandler,
 }: UpdateDetailsFormProps) => {
-  console.log(file ? file[0] : null);
-
   const [formState, setFormState] = useState({
     name: "",
-    // address: "",
-    // address_detail: "",
+
     info: "",
   });
 
@@ -31,8 +28,6 @@ const UpdateDetailsForm = ({
 
     setFormState({
       name: gameDetailsData.name,
-      // address: gameDetailsData.address,
-      // address_detail: gameDetailsData.address_detail,
       info: gameDetailsData.info,
     });
   }, [gameDetailsData]);
@@ -58,10 +53,6 @@ const UpdateDetailsForm = ({
         <span className="text-[11px] text-gray-400">주소</span>
         <input
           disabled
-          // value={formState.address}
-          // onChange={(e) =>
-          //   setFormState({ ...formState, address: e.target.value })
-          // }
           className={inputCls}
           placeholder={gameDetailsData?.address ?? ""}
         />
@@ -70,10 +61,6 @@ const UpdateDetailsForm = ({
       <label className="flex flex-col gap-1 sm:col-span-2">
         <span className="text-[11px] text-gray-400">상세 주소</span>
         <input
-          // value={formState.address_detail}
-          // onChange={(e) =>
-          //   setFormState({ ...formState, address_detail: e.target.value })
-          // }
           disabled
           className={inputCls}
           placeholder={gameDetailsData?.address_detail ?? ""}
@@ -99,7 +86,7 @@ const UpdateDetailsForm = ({
             파일 선택
             <input
               type="file"
-              accept="image/png"
+              accept="image/png, image/jpeg"
               onChange={onChangeSaveImageHandler}
               className="hidden"
             />
@@ -118,6 +105,26 @@ const UpdateDetailsForm = ({
             />
           )}
         </div>
+
+        {gameDetailsData.images && gameDetailsData.images.length > 0 ? (
+          <div className="sm:col-span-2">
+            <span className="text-[11px] text-gray-400">이미지</span>
+            <div className="mt-1 flex flex-wrap gap-3">
+              {gameDetailsData.images.map((imgUrl: string, idx: number) => (
+                <img
+                  key={idx}
+                  src={imgUrl}
+                  alt={`Court Image ${idx + 1}`}
+                  className="w-24 h-24 object-cover rounded-md border border-gray-700"
+                />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <p className="sm:col-span-2 text-xs text-gray-200 ">
+            등록된 이미지가 없습니다.
+          </p>
+        )}
       </label>
 
       <div className="flex items-center gap-2">
@@ -126,7 +133,7 @@ const UpdateDetailsForm = ({
           onClick={uploadImgToNaverHandler}
           className="text-[11px] px-3 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white"
         >
-          NCP 업로드 테스트
+          NCP 이미지 업로드
         </button>
         <button
           type="button"

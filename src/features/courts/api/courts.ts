@@ -46,10 +46,10 @@ export const patchCourtsDetails = async (
     return response.data;
 };
 
-//파일 업로드 url 조회 API																			
-export const getFileUploadUrl = async () => {
+//파일 업로드 url 조회 API
+export const getFileUploadUrl = async (imageType: string) => {
     try {
-        const response = await axiosUrl.get('/file-upload-url?category=court_image&png=1')
+        const response = await axiosUrl.get(`/file-upload-url?category=court_image&${imageType}=1`)
         return response.data
     } catch (error) {
         console.log(error)

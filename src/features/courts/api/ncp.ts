@@ -7,8 +7,8 @@ export const uploadNcpFile = async (uploadUrl: string, file: File, contentType: 
                 'Content-Type': contentType,
             },
         });
-        console.log('NCP RES:', res)
-        return res
+        console.log(res);
+        return res;
     } catch (error) {
         console.log(error);
         throw new Error('NCP 업로드 실패');

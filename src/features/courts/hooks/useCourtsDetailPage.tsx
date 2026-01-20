@@ -6,6 +6,8 @@ import { useGetFileUrl } from "./query/useGetFileUrl";
 import { useUploadImage } from "./useUploadImage";
 
 export const useCourtsDetailPage = () => {
+  const [responseUploadUrl, setResponseUploadUrl] = useState<string[]>([]);
+
   const [searchParams] = useSearchParams();
   const courtId = Number(searchParams.get("courtId"));
 
@@ -13,15 +15,6 @@ export const useCourtsDetailPage = () => {
 
   const gameDetailsData = data?.data;
 
-  // const [fileNames, setFileNames] = useState<string[]>([]);
-
-  // const onChangeHandler = (files: FileList | null) => {
-  //   if (!files) return;
-
-  //   const names = Array.from(files).map((file) => file.name);
-
-  //   setFileNames(names);
-  // };
   const [isEditing, setIsEditing] = useState(false);
 
   const { mutate: mutateCourtDetails } = useEditCourtDetails(courtId);
@@ -37,29 +30,32 @@ export const useCourtsDetailPage = () => {
     setFile(e.target.files);
   };
 
-  const { data: urlData } = useGetFileUrl();
-  const uploadUrl = urlData?.data.png[0].upload_url;
+  const fileType =
+    (file && file[0].type.slice("image/".length)) || "png" || "jpg";
 
-  console.log("UPLOADURL", uploadUrl);
-  // const fileUrl = urlData?.data.png[0].file_url;
-  const contentType = urlData?.data.png[0].content_type;
+  const { data: urlData } = useGetFileUrl(fileType);
+  const uploadUrl = urlData?.data[fileType]?.[0]?.upload_url;
+  const contentType = urlData?.data[fileType]?.[0]?.content_type;
+  const fileUrl = urlData?.data[fileType]?.[0]?.file_url;
 
-  const [draft, setDraft] = useState({
-    name: gameDetailsData?.name,
-    address: gameDetailsData?.address,
-    address_detail: "details",
-    // address_detail: gameDetailsData?.address_detail || "",
-    info: gameDetailsData?.info,
-    // images: gameDetailsData?.images || fileNames,
-  });
-
-  const { mutate: uploadImg } = useUploadImage(uploadUrl, contentType);
+  const { mutate: uploadImg, isPending: uploadImgPending } = useUploadImage(
+    uploadUrl,
+    contentType
+  );
 
   const uploadImgToNaverHandler = () => {
     if (file && uploadUrl && contentType) {
       const fileToUpload = file[0] as File;
       if (fileToUpload) {
-        uploadImg(fileToUpload);
+        uploadImg(fileToUpload, {
+          onSuccess: (data) => {
+            const isSuccess = data.status === 200;
+
+            if (isSuccess) {
+              setResponseUploadUrl((prev) => [...prev, fileUrl]);
+            }
+          },
+        });
       }
     }
   };
@@ -75,18 +71,17 @@ export const useCourtsDetailPage = () => {
     info: string;
     images: string[];
   }) => {
-    // let uploadedImageUrl: string | null = null;
-    // if (file && uploadUrl && contentType) {
-    //   const fileToUpload = file[0] as File;
-    //   if (fileToUpload) {
-    //     uploadImg(fileToUpload);
-    //   }
-    // }
+    const existing = gameDetailsData?.images ?? [];
+    const fromState = state.images ?? [];
+    const uploaded = responseUploadUrl ?? [];
+    const combined = Array.from(
+      new Set([...existing, ...fromState, ...uploaded])
+    ).filter(Boolean);
 
-    // mutateCourtDetails({
-    //   ...state,
-    //   images: uploadedImageUrl ? [uploadedImageUrl] : state.images,
-    // });
+    mutateCourtDetails({
+      ...state,
+      images: combined,
+    });
 
     setIsEditing(false);
   };
@@ -98,8 +93,7 @@ export const useCourtsDetailPage = () => {
     mutateCourtDetails,
     startEdit,
     cancelEdit,
-    setDraft,
-    draft,
+    uploadImgPending,
     saveEdit,
     isEditing,
     file,
