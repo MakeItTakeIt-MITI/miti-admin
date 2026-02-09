@@ -26,6 +26,7 @@ export const useCourtsDetailPage = () => {
     setIsEditing(true);
   };
   const cancelEdit = () => {
+    setFile(null);
     setIsEditing(false);
   };
   const saveEdit = (state: {
@@ -33,23 +34,15 @@ export const useCourtsDetailPage = () => {
     info: string;
     images: string[];
   }) => {
-    // const existing = gameDetailsData?.images ?? [];
-    // const fromState = state.images ?? [];
-    // const uploaded = responseUploadUrl ?? [];
-    // const combined = Array.from(
-    //   new Set([...existing, ...fromState, ...uploaded])
-    // ).filter(Boolean);
-
     mutateCourtDetails({
       name: state.name,
       info: state.info,
       images: responseUploadUrl.length > 0 ? responseUploadUrl : state.images,
     });
+    setFile(null);
 
     setIsEditing(false);
   };
-
-  // Image Upload Logic
 
   const formData = new FormData();
   if (file) {
@@ -61,7 +54,11 @@ export const useCourtsDetailPage = () => {
   };
 
   const fileType =
-    (file && file[0].type.slice("image/".length)) || "png" || "jpg";
+    (file && file[0].type.slice("image/".length)) ||
+    "png" ||
+    "jpg" ||
+    "jpeg" ||
+    "webp";
 
   const { data: urlData } = useGetFileUrl(fileType);
   const uploadUrl = urlData?.data[fileType]?.[0]?.upload_url;

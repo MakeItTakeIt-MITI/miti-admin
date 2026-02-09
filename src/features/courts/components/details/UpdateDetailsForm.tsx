@@ -77,7 +77,7 @@ const UpdateDetailsForm = ({
             파일 선택
             <input
               type="file"
-              accept="image/png, image/jpeg, image/jpg"
+              accept="image/png, image/jpeg, image/jpg, image/webp"
               onChange={onChangeSaveImageHandler}
               className="hidden"
             />

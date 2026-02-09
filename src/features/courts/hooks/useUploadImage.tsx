@@ -3,7 +3,7 @@ import { uploadNcpFile } from "../api/ncp";
 
 export const useUploadImage = (
   uploadUrl: string,
-  contentType: "image/png" | "image/jpeg" | "image/jpg"
+  contentType: "image/png" | "image/jpeg" | "image/jpg" | "image/webp"
 ) => {
   const queryClient = useQueryClient();
 
