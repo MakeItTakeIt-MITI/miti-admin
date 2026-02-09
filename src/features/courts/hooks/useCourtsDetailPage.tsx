@@ -8,17 +8,13 @@ import { useUploadImage } from "./useUploadImage";
 export const useCourtsDetailPage = () => {
   const [responseUploadUrl, setResponseUploadUrl] = useState<string[]>([]);
   const [file, setFile] = useState<FileList | null>(null);
-  // const [responseUploadUrl, setResponseUploadUrl] = useState<string[]>([]);
-  console.log(responseUploadUrl);
+  const [isEditing, setIsEditing] = useState(false);
 
   const [searchParams] = useSearchParams();
   const courtId = Number(searchParams.get("courtId"));
 
   const { data, isLoading, error } = useCourtsDetails({ courtId });
-
   const gameDetailsData = data?.data;
-
-  const [isEditing, setIsEditing] = useState(false);
 
   const { mutate: mutateCourtDetails } = useEditCourtDetails(courtId);
 
@@ -37,7 +33,10 @@ export const useCourtsDetailPage = () => {
     mutateCourtDetails({
       name: state.name,
       info: state.info,
-      images: responseUploadUrl.length > 0 ? responseUploadUrl : state.images,
+      images:
+        responseUploadUrl.length > 0
+          ? gameDetailsData.images.concat(responseUploadUrl)
+          : state.images,
     });
     setFile(null);
 
