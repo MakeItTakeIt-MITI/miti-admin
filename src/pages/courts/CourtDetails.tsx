@@ -14,9 +14,9 @@ export default function CourtDetails() {
     cancelEdit,
     isEditing,
     saveEdit,
-    file,
     onChangeSaveImageHandler,
     uploadImgToNaverHandler,
+    file,
     uploadImgPending,
   } = useCourtsDetailPage();
 

@@ -1,12 +1,15 @@
 import { useSearchParams } from "react-router-dom";
 import { useCourtsDetails } from "./query/useCourtsDetails";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useEditCourtDetails } from "./mutation/useEditCourtDetails";
 import { useGetFileUrl } from "./query/useGetFileUrl";
 import { useUploadImage } from "./useUploadImage";
 
 export const useCourtsDetailPage = () => {
   const [responseUploadUrl, setResponseUploadUrl] = useState<string[]>([]);
+  const [file, setFile] = useState<FileList | null>(null);
+  // const [responseUploadUrl, setResponseUploadUrl] = useState<string[]>([]);
+  console.log(responseUploadUrl);
 
   const [searchParams] = useSearchParams();
   const courtId = Number(searchParams.get("courtId"));
@@ -19,8 +22,35 @@ export const useCourtsDetailPage = () => {
 
   const { mutate: mutateCourtDetails } = useEditCourtDetails(courtId);
 
-  //
-  const [file, setFile] = useState<FileList | null>(null);
+  const startEdit = () => {
+    setIsEditing(true);
+  };
+  const cancelEdit = () => {
+    setIsEditing(false);
+  };
+  const saveEdit = (state: {
+    name: string;
+    info: string;
+    images: string[];
+  }) => {
+    // const existing = gameDetailsData?.images ?? [];
+    // const fromState = state.images ?? [];
+    // const uploaded = responseUploadUrl ?? [];
+    // const combined = Array.from(
+    //   new Set([...existing, ...fromState, ...uploaded])
+    // ).filter(Boolean);
+
+    mutateCourtDetails({
+      name: state.name,
+      info: state.info,
+      images: responseUploadUrl.length > 0 ? responseUploadUrl : state.images,
+    });
+
+    setIsEditing(false);
+  };
+
+  // Image Upload Logic
+
   const formData = new FormData();
   if (file) {
     formData.append("file", file[0]);
@@ -43,14 +73,13 @@ export const useCourtsDetailPage = () => {
     contentType
   );
 
-  const uploadImgToNaverHandler = () => {
+  const uploadImgToNaverHandler = useCallback(() => {
     if (file && uploadUrl && contentType) {
-      const fileToUpload = file[0] as File;
+      const fileToUpload = file[0];
       if (fileToUpload) {
         uploadImg(fileToUpload, {
           onSuccess: (data) => {
             const isSuccess = data.status === 200;
-
             if (isSuccess) {
               setResponseUploadUrl((prev) => [...prev, fileUrl]);
             }
@@ -58,33 +87,7 @@ export const useCourtsDetailPage = () => {
         });
       }
     }
-  };
-
-  const startEdit = () => {
-    setIsEditing(true);
-  };
-  const cancelEdit = () => {
-    setIsEditing(false);
-  };
-  const saveEdit = (state: {
-    name: string;
-    info: string;
-    images: string[];
-  }) => {
-    const existing = gameDetailsData?.images ?? [];
-    const fromState = state.images ?? [];
-    const uploaded = responseUploadUrl ?? [];
-    const combined = Array.from(
-      new Set([...existing, ...fromState, ...uploaded])
-    ).filter(Boolean);
-
-    mutateCourtDetails({
-      ...state,
-      images: combined,
-    });
-
-    setIsEditing(false);
-  };
+  }, [file, uploadUrl, contentType, uploadImg, fileUrl]); // Dependencies for the callback
 
   return {
     gameDetailsData,
@@ -93,11 +96,11 @@ export const useCourtsDetailPage = () => {
     mutateCourtDetails,
     startEdit,
     cancelEdit,
-    uploadImgPending,
     saveEdit,
     isEditing,
-    file,
     onChangeSaveImageHandler,
     uploadImgToNaverHandler,
+    file,
+    uploadImgPending,
   };
 };
