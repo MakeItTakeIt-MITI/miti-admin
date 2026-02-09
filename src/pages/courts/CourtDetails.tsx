@@ -68,7 +68,6 @@ export default function CourtDetails() {
             <CourtDetailsContainer
               gameDetailsData={gameDetailsData}
               isEditing={isEditing}
-              // draft={draft}
             />
           ) : (
             <UpdateDetailsForm
