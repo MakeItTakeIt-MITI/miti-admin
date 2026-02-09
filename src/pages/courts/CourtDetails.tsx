@@ -6,17 +6,19 @@ import CoordinatesField from "../../features/courts/components/details/Coordinat
 import { useCourtsDetailPage } from "../../features/courts/hooks/useCourtsDetailPage";
 
 import UpdateDetailsForm from "../../features/courts/components/details/UpdateDetailsForm";
+import { Spinner } from "../../features/common/Spinner";
 
 export default function CourtDetails() {
   const {
     gameDetailsData,
     startEdit,
     cancelEdit,
+    isLoading,
     isEditing,
     saveEdit,
-    file,
     onChangeSaveImageHandler,
     uploadImgToNaverHandler,
+    file,
     uploadImgPending,
   } = useCourtsDetailPage();
 
@@ -28,20 +30,25 @@ export default function CourtDetails() {
     );
   }
 
-  // NCP 이미지 업로드 로딩 화면
-  if (uploadImgPending) {
+  if (isLoading) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-t-transparent border-white rounded-full animate-spin" />
-          <div className="text-sm text-white">이미지 업로드 중...</div>
-        </div>
+      <div className="w-full h-full flex items-center justify-center p-8">
+        <Spinner className="h-10 w-10" />
       </div>
     );
   }
 
   return (
     <section className="w-full p-8 flex flex-col gap-6 bg-black">
+      {uploadImgPending && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+          <div className="flex flex-col items-center gap-3">
+            <Spinner className="h-10 w-10" />
+            <p className="text-sm text-muted-foreground">이미지 업로드 중...</p>
+          </div>
+        </div>
+      )}
+
       <div className="flex items-center justify-between">
         <h1 className="text-white font-bold text-2xl">
           경기장 상세 - ID ({gameDetailsData?.id})
@@ -61,7 +68,6 @@ export default function CourtDetails() {
             <CourtDetailsContainer
               gameDetailsData={gameDetailsData}
               isEditing={isEditing}
-              // draft={draft}
             />
           ) : (
             <UpdateDetailsForm

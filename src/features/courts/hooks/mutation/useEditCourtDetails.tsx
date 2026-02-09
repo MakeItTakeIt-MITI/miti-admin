@@ -4,7 +4,6 @@ import { patchCourtsDetails } from "../../api/courts";
 // Patchable fields
 interface CourtPatchPayload {
   name?: string;
-
   info?: string;
   images?: string[];
 }

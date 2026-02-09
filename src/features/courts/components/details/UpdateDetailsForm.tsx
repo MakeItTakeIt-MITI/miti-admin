@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface UpdateDetailsFormProps {
   gameDetailsData: any;
@@ -18,19 +18,10 @@ const UpdateDetailsForm = ({
   uploadImgToNaverHandler,
 }: UpdateDetailsFormProps) => {
   const [formState, setFormState] = useState({
-    name: "",
-
-    info: "",
+    name: gameDetailsData.name,
+    info: gameDetailsData.info,
+    images: gameDetailsData.images ?? [], // Initialize with existing images
   });
-
-  useEffect(() => {
-    if (!gameDetailsData) return;
-
-    setFormState({
-      name: gameDetailsData.name,
-      info: gameDetailsData.info,
-    });
-  }, [gameDetailsData]);
 
   const inputCls =
     "h-9 rounded-md bg-gray-800 border border-gray-700 px-3 text-xs text-gray-200 outline-none disabled:opacity-80";
@@ -86,7 +77,7 @@ const UpdateDetailsForm = ({
             파일 선택
             <input
               type="file"
-              accept="image/png, image/jpeg"
+              accept="image/png, image/jpeg, image/jpg, image/webp"
               onChange={onChangeSaveImageHandler}
               className="hidden"
             />
