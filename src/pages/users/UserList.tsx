@@ -4,6 +4,18 @@ import useUsersPage from "../../features/users/hooks/useUsersPage";
 import { Link } from "react-router-dom";
 import NextPageLoader from "../../features/common/NextPageLoader";
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../../components/ui/table";
+
+import { Badge } from "../..//components/ui/badge";
+import { Button } from "../../components/ui/button";
+
 const UserList = () => {
   const { usersDataPage, hasNextPage, fetchNextPage } = useUsersPage();
 
@@ -23,48 +35,48 @@ const UserList = () => {
 
       {/* table */}
       <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
-        <table className="min-w-[900px] w-full text-xs">
-          <thead className="bg-gray-800 text-gray-200">
-            <tr className="text-left">
-              <th className="px-4 py-3 font-medium">ID</th>
-              <th className="px-4 py-3 font-medium">이메일</th>
-              <th className="px-4 py-3 font-medium">닉네임</th>
-              <th className="px-4 py-3 font-medium">이름</th>
-              <th className="px-4 py-3 font-medium">생년월일</th>
-              <th className="px-4 py-3 font-medium">가입수단</th>
-              <th className="px-4 py-3 font-medium">전화번호</th>
-              <th className="px-4 py-3 font-medium">상세</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((u) => (
-              <tr
-                key={u.id}
-                className="border-t border-gray-700 hover:bg-gray-800 transition-colors"
-              >
-                <td className="px-4 py-2 text-white">{u.id}</td>
-                <td className="px-4 py-2 text-gray-300">{u.email}</td>
-                <td className="px-4 py-2 text-gray-300">{u.nickname}</td>
-                <td className="px-4 py-2 text-gray-300">{u.name || "-"}</td>
-                <td className="px-4 py-2 text-gray-300">{u.birthday || "-"}</td>
-                <td className="px-4 py-2">
-                  <span className="inline-block rounded bg-gray-700 px-2 py-1 text-xs text-gray-200">
-                    {u.signup_method || "-"}
-                  </span>
-                </td>
-                <td className="px-4 py-2 text-gray-300">{u.phone || "-"}</td>
-                <td className="px-4 py-2">
-                  <Link
-                    to={`detail?userId=${u.id}`}
-                    className="text-blue-400 hover:underline"
-                  >
-                    보기
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>ID</TableHead>
+              <TableHead>이메일</TableHead>
+              <TableHead>닉네임</TableHead>
+              <TableHead>이름</TableHead>
+              <TableHead>생년월일</TableHead>
+              <TableHead>가입수단</TableHead>
+              <TableHead>전화번호</TableHead>
+              <TableHead className=" text-white text-right">상세</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rows.length > 0 ? (
+              rows.map((u) => (
+                <TableRow key={u.id}>
+                  <TableCell className="font-medium">{u.id}</TableCell>
+                  <TableCell>{u.email}</TableCell>
+                  <TableCell>{u.nickname}</TableCell>
+                  <TableCell>{u.name || "-"}</TableCell>
+                  <TableCell>{u.birthday || "-"}</TableCell>
+                  <TableCell>
+                    <Badge variant="secondary">{u.signup_method || "-"}</Badge>
+                  </TableCell>
+                  <TableCell>{u.phone || "-"}</TableCell>
+                  <TableCell className="text-right">
+                    <Button variant="link" asChild className="p-0  text-white">
+                      <Link to={`detail?userId=${u.id}`}>보기</Link>
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={8} className="h-24 text-center">
+                  결과가 없습니다.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
       <NextPageLoader hasNextPage={hasNextPage} fetchNextPage={fetchNextPage} />
     </section>

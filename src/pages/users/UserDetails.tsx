@@ -1,12 +1,16 @@
 import { useGetUserDetails } from "../../features/users/hooks/query/useGetUserDetails";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useSuspendUser } from "../../features/users/hooks/mutation/useSuspendUser";
 import { useState } from "react";
+
+import { Spinner } from "../../features/common/Spinner";
+
 import {
   Card,
-  CardTitle,
-  // CardDescription,
+  CardContent,
+  CardDescription,
   CardHeader,
+  CardTitle,
 } from "../../components/ui/card";
 import {
   Avatar,
@@ -15,6 +19,42 @@ import {
 } from "../../components/ui/avatar";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
+import { Badge } from "../../components/ui/badge";
+import { Separator } from "../../components/ui/separator";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../../components/ui/dialog";
+
+const formatKoreanPhone = (phone?: string) => {
+  if (!phone) return "연락처 없음";
+  let digits = phone.replace(/\D/g, "");
+  if (digits.startsWith("82")) digits = "0" + digits.slice(2);
+  if (digits.length === 11)
+    return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
+  if (digits.length === 10)
+    return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
+  return phone;
+};
+
+const InfoRow = ({
+  label,
+  value,
+}: {
+  label: string;
+  value: React.ReactNode;
+}) => (
+  <div className="flex justify-between items-center text-sm">
+    <span className="text-muted-foreground">{label}</span>
+    <span className="font-medium">{value || "N/A"}</span>
+  </div>
+);
 
 export const UserDetails = () => {
   const [suspendDays, setSuspendDays] = useState(0);
@@ -37,139 +77,136 @@ export const UserDetails = () => {
   };
   const userData = data?.data;
 
-  // UI helpers (only UI additions)
-  const formatKoreanPhone = (phone?: string) => {
-    if (!phone) return "연락처 없음";
-    let digits = phone.replace(/\D/g, "");
-    if (digits.startsWith("82")) digits = "0" + digits.slice(2);
-    if (digits.length === 11)
-      return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
-    if (digits.length === 10)
-      return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
-    return phone;
-  };
   const badgeCls =
     "inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-gray-700 text-gray-200 ring-1 ring-inset ring-gray-600";
 
   if (isLoading) {
     return (
-      <section className="min-h-screen w-full flex items-center justify-center">
-        <div className="text-gray-400 text-sm">불러오는 중...</div>
+      <section className="w-full h-full flex items-center justify-center p-8">
+        <Spinner className="h-10 w-10" />
+      </section>
+    );
+  }
+
+  if (!userData) {
+    return (
+      <section className="w-full p-8 text-center text-muted-foreground">
+        사용자 정보를 찾을 수 없습니다.
       </section>
     );
   }
 
   return (
-    <section className="min-h-screen w-full flex items-center justify-center bg-black">
-      <Card className="w-[820px] min-h-[760px] bg-gray-800 text-white border border-gray-700 shadow-xl flex flex-col">
-        {/* Header */}
-        <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 p-8 border-b border-gray-700">
-          <div className="flex items-center gap-6">
-            <Avatar className="h-20 w-20 ring-2 ring-blue-600/40">
-              <AvatarImage
-                src={
-                  userData?.profile_image_url || "https://github.com/shadcn.png"
-                }
-              />
-              <AvatarFallback className="bg-gray-700 text-lg font-semibold">
-                {userData?.nickname?.slice(0, 2).toUpperCase() || "NA"}
-              </AvatarFallback>
-            </Avatar>
-            <div className="space-y-2">
-              <CardTitle className="text-3xl font-bold flex items-center gap-3">
-                {userData?.nickname || "닉네임 없음"}
-                {userData?.signup_method && (
-                  <span className={badgeCls}>{userData.signup_method}</span>
-                )}
-              </CardTitle>
-              <div className="flex flex-wrap gap-2 text-xs text-gray-300">
-                <span>
-                  가입일: {userData?.created_at?.slice(0, 10) || "없음"}
-                </span>
-                <span>생년월일: {userData?.birthday || "없음"}</span>
-                <span>사용자 ID: {userData?.id ?? "-"}</span>
+    <section className="w-full p-8 flex flex-col gap-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">사용자 상세 정보</h1>
+        <Button variant="outline" asChild>
+          <Link to="/users">목록으로</Link>
+        </Button>
+      </div>
+
+      <Card>
+        <CardHeader className="flex flex-row items-start gap-6 p-6">
+          <Avatar className="h-24 w-24 border">
+            <AvatarImage src={userData.profile_image_url || ""} />
+            <AvatarFallback className="text-2xl">
+              {userData.nickname?.slice(0, 2).toUpperCase() || "NA"}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex-1 space-y-1">
+            <CardTitle className="text-2xl">{userData.nickname}</CardTitle>
+            <CardDescription>{userData.email}</CardDescription>
+            <div className="pt-2 flex flex-wrap gap-2 text-xs">
+              <Badge variant="secondary">{userData.signup_method}</Badge>
+              <Badge variant="outline">
+                가입일: {userData.created_at?.slice(0, 10)}
+              </Badge>
+              <Badge variant="outline">ID: {userData.id}</Badge>
+            </div>
+          </div>
+          {/* --- Suspend User Dialog --- */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="destructive">사용자 정지</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>사용자를 정지하시겠습니까?</DialogTitle>
+                <DialogDescription>
+                  정지할 일 수를 입력하고 확인 버튼을 누르세요. 이 작업은 되돌릴
+                  수 없습니다.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <Input
+                  id="suspendDays"
+                  type="number"
+                  value={suspendDays}
+                  onChange={(e) => setSuspendDays(Number(e.target.value))}
+                  placeholder="정지 일수 (예: 7)"
+                  min={1}
+                />
               </div>
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 bg-gray-700 rounded-lg px-3 py-2">
-              <Input
-                type="number"
-                value={suspendDays}
-                onChange={handleSuspendDays}
-                placeholder="정지 일수"
-                min={0}
-                className="h-8 w-24 bg-gray-800 border-gray-600 text-xs"
-              />
-              <Button
-                variant="destructive"
-                type="button"
-                onClick={handleSuspendUser}
-                className="h-8 text-xs font-semibold"
-              >
-                사용자 정지
-              </Button>
-            </div>
-          </div>
+              <DialogFooter>
+                <Button
+                  type="submit"
+                  onClick={handleSuspendUser}
+                  disabled={suspendDays <= 0}
+                >
+                  정지 확인
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </CardHeader>
 
-        {/* Content */}
-        <div className="p-8 space-y-8 flex-1 overflow-y-auto">
-          {/* Basic Info & Player Profile */}
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="rounded-lg border border-gray-700 bg-gray-900 p-5 space-y-4">
-              <h3 className="text-sm font-semibold tracking-wide text-gray-200">
-                기본 정보
-              </h3>
-              <ul className="space-y-2 text-xs text-gray-300">
-                <li>
-                  <span className="font-medium text-gray-400">이름:</span>{" "}
-                  {userData?.name || "이름 없음"}
-                </li>
-                <li>
-                  <span className="font-medium text-gray-400">이메일:</span>{" "}
-                  {userData?.email || "이메일 없음"}
-                </li>
-                <li>
-                  <span className="font-medium text-gray-400">연락처:</span>{" "}
-                  {formatKoreanPhone(userData?.phone)}
-                </li>
-                <li>
-                  <span className="font-medium text-gray-400">생년월일:</span>{" "}
-                  {userData?.birthday || "없음"}
-                </li>
-              </ul>
-            </div>
+        <CardContent className="p-6 pt-0 grid md:grid-cols-2 gap-6">
+          {/* --- Basic Info Card --- */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">기본 정보</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <InfoRow label="이름" value={userData.name} />
+              <InfoRow
+                label="연락처"
+                value={formatKoreanPhone(userData.phone)}
+              />
+              <InfoRow label="생년월일" value={userData.birthday} />
+            </CardContent>
+          </Card>
 
-            <div className="rounded-lg border border-gray-700 bg-gray-900 p-5 space-y-4">
-              <h3 className="text-sm font-semibold tracking-wide text-gray-200">
-                선수 프로필
-              </h3>
-              <ul className="space-y-2 text-xs text-gray-300">
-                <li>
-                  <span className="font-medium text-gray-400">성별:</span>{" "}
-                  {userData?.player_profile?.gender || "없음"}
-                </li>
-                <li>
-                  <span className="font-medium text-gray-400">체중:</span>{" "}
-                  {userData?.player_profile?.weight || "없음"}
-                </li>
-                <li>
-                  <span className="font-medium text-gray-400">신장:</span>{" "}
-                  {userData?.player_profile?.height || "없음"}
-                </li>
-                <li>
-                  <span className="font-medium text-gray-400">포지션:</span>{" "}
-                  {userData?.player_profile?.position || "없음"}
-                </li>
-                <li>
-                  <span className="font-medium text-gray-400">역할:</span>{" "}
-                  {userData?.player_profile?.role || "없음"}
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+          {/* --- Player Profile Card --- */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">선수 프로필</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <InfoRow label="성별" value={userData.player_profile?.gender} />
+              <InfoRow
+                label="신장"
+                value={
+                  userData.player_profile?.height
+                    ? `${userData.player_profile.height} cm`
+                    : null
+                }
+              />
+              <InfoRow
+                label="체중"
+                value={
+                  userData.player_profile?.weight
+                    ? `${userData.player_profile.weight} kg`
+                    : null
+                }
+              />
+              <InfoRow
+                label="포지션"
+                value={userData.player_profile?.position}
+              />
+              <InfoRow label="주 역할" value={userData.player_profile?.role} />
+            </CardContent>
+          </Card>
+        </CardContent>
       </Card>
     </section>
   );
