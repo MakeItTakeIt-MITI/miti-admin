@@ -1,8 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import { useGameParticipantsHook } from "../hooks/useGameParticipantsHook";
-import { Button } from "../../../components/ui/button";
 
 interface ParticipantsProps {
   gameId: number;
@@ -74,24 +72,19 @@ export const Participants = ({ gameId }: ParticipantsProps) => {
   const formatKoreanPhone = (phone?: string) => {
     if (!phone) return "-";
     let digits = phone.replace(/\D/g, "");
-    // 국제번호(+82) 처리
     if (digits.startsWith("82")) {
       digits = "0" + digits.slice(2);
     }
-    // 011/016 등 예전 식도 그대로 3-3-4 또는 3-4-4
     if (digits.length === 11) {
-      // 3-4-4
       return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
     }
     if (digits.length === 10) {
-      // 3-3-4
       return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
     }
     if (digits.length === 9) {
-      // 2-3-4 (지역번호 가능)
       return `${digits.slice(0, 2)}-${digits.slice(2, 5)}-${digits.slice(5)}`;
     }
-    return phone; // 기타는 원본 유지
+    return phone;
   };
 
   return (
@@ -100,30 +93,27 @@ export const Participants = ({ gameId }: ParticipantsProps) => {
         <span className="text-xs text-gray-300">
           참가자 {participants.length}명
         </span>
-        <Button
-          variant="secondary"
+        <button
           type="button"
-          className="h-8 px-3 text-xs bg-gray-700 text-gray-200"
+          className="h-8 px-3 text-xs bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500"
           onClick={() => toggleSort("id")}
         >
           ID {sortKey === "id" && (asc ? "▲" : "▼")}
-        </Button>
-        <Button
-          variant="secondary"
+        </button>
+        <button
           type="button"
-          className="h-8 px-3 text-xs bg-gray-700 text-gray-200"
+          className="h-8 px-3 text-xs bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500"
           onClick={() => toggleSort("participation_status")}
         >
           상태 {sortKey === "participation_status" && (asc ? "▲" : "▼")}
-        </Button>
-        <Button
-          variant="secondary"
+        </button>
+        <button
           type="button"
-          className="h-8 px-3 text-xs bg-gray-700 text-gray-200"
+          className="h-8 px-3 text-xs bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500"
           onClick={() => toggleSort("nickname")}
         >
           닉네임 {sortKey === "nickname" && (asc ? "▲" : "▼")}
-        </Button>
+        </button>
       </div>
 
       <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
@@ -149,7 +139,7 @@ export const Participants = ({ gameId }: ParticipantsProps) => {
                   className="px-4 py-10 text-center text-gray-400"
                   colSpan={10}
                 >
-                  No results.
+                  참가자가 없습니다.
                 </td>
               </tr>
             )}
@@ -164,13 +154,31 @@ export const Participants = ({ gameId }: ParticipantsProps) => {
                     {p.user?.id ? (
                       <Link
                         to={`/users/detail?userId=${p.user.id}`}
-                        className="text-blue-400 hover:underline text-xs flex items-center gap-1"
+                        className="text-blue-400 hover:text-blue-300 hover:underline text-xs inline-flex items-center gap-1"
                       >
-                        <PersonSearchIcon fontSize="small" />
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                          />
+                        </svg>
                         보기
                       </Link>
                     ) : (
-                      "-"
+                      <span className="text-gray-500">-</span>
                     )}
                   </td>
                   <td className="px-4 py-2">

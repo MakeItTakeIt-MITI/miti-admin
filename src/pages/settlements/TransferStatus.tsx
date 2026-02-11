@@ -1,7 +1,5 @@
-import CloseIcon from "@mui/icons-material/Close";
 import { useTransferStatusesPage } from "../../features/transactions/hooks/useTransactionsPage.ts";
 import { useTransactionDetailsContainer } from "../../features/transactions/hooks/useTransactionDetailsContainer.ts";
-import { Button } from "../../components/ui/button.tsx";
 import NextPageLoader from "../../features/common/NextPageLoader.tsx";
 
 export default function TransferStatus() {
@@ -145,7 +143,7 @@ export default function TransferStatus() {
             type="button"
             aria-label="Close panel"
           >
-            <CloseIcon fontSize="small" />
+            <span>x</span>
           </button>
         </div>
 
@@ -328,7 +326,7 @@ export default function TransferStatus() {
                       {detailData?.transfer_status}
                     </span>
                   </div>
-                  <Button
+                  <button
                     type="button"
                     // handleUpdateStatus from hook
                     onClick={() =>
@@ -339,7 +337,7 @@ export default function TransferStatus() {
                     className="h-8 px-3 text-[11px] font-medium bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                     상태 저장
-                  </Button>
+                  </button>
                 </div>
               </section>
             </>

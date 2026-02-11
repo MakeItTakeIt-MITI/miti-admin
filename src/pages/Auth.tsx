@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useUserStore } from "../store/useUserStore";
 import { useLoginHook } from "../features/auth/hooks/useLoginHook";
-import { Button } from "../components/ui/button";
 
 type Inputs = {
   email: string;
@@ -65,14 +64,13 @@ const Auth = () => {
             autoComplete="off"
             className="bg-white px-3 py-2 text-sm rounded-lg border border-gray-200"
           />
-          <Button
+          <button
             disabled={!email || !password ? true : false}
             type="submit"
-            variant="default"
             className="w-full"
           >
             로그인
-          </Button>
+          </button>
 
           <div className="text-sm text-center text-[#999] font-[500]">
             <span>관리자가 아니신가요? </span>

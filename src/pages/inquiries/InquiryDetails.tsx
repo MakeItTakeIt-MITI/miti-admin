@@ -1,6 +1,4 @@
 import { InquiryAnswerField } from "../../features/inquries/interface/inquries";
-import { Button } from "../../components/ui/button";
-import { Textarea } from "../../components/ui/textarea";
 import { useInquiryDetailPage } from "../../features/inquries/hooks/useInquiryDetailPage";
 
 export const InquiryDetails = () => {
@@ -15,11 +13,12 @@ export const InquiryDetails = () => {
   } = useInquiryDetailPage();
 
   return (
-    <section className="w-full min-h-screen p-8 flex flex-col gap-6 bg-black text-white">
+    <section className="w-full min-h-screen p-8 flex flex-col gap-6 bg-gray-950">
+      {/* Header Card */}
       <div className="rounded-lg border border-gray-700 bg-gray-800 p-6 flex flex-col gap-4">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div className="space-y-2">
-            <h1 className="text-xl font-semibold truncate">
+            <h1 className="text-xl font-semibold text-white truncate">
               문의 제목: {data?.title || "-"}
             </h1>
             <div className="flex flex-wrap gap-3 text-xs">
@@ -34,7 +33,7 @@ export const InquiryDetails = () => {
               >
                 {answerStatus}
               </span>
-              <span className="inline-flex rounded-full bg-gray-700 px-3 py-1 text-[11px] font-medium">
+              <span className="inline-flex rounded-full bg-gray-700 px-3 py-1 text-[11px] font-medium text-gray-200">
                 답변 수: {data?.num_of_answers ?? 0}
               </span>
             </div>
@@ -42,6 +41,7 @@ export const InquiryDetails = () => {
         </div>
       </div>
 
+      {/* User Info Table */}
       <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
         <table className="min-w-[900px] w-full text-xs">
           <thead className="bg-gray-800 text-gray-200">
@@ -89,46 +89,49 @@ export const InquiryDetails = () => {
         </table>
       </div>
 
+      {/* Inquiry Content */}
       <div className="rounded-lg border border-gray-700 bg-gray-800 p-6">
-        <h2 className="text-sm font-semibold mb-3">문의 내용</h2>
+        <h2 className="text-sm font-semibold mb-3 text-white">문의 내용</h2>
         <div
-          className="text-sm leading-relaxed whitespace-pre-line max-h-[320px] overflow-y-auto scrollbar-thin scrollbar-track-gray-900 scrollbar-thumb-gray-600 pr-2"
+          className="text-sm leading-relaxed whitespace-pre-line max-h-[320px] overflow-y-auto text-gray-200 pr-2"
           style={{ scrollbarWidth: "thin" }}
         >
           {data?.content || "문의 내용이 없습니다."}
         </div>
       </div>
 
+      {/* Reply Section */}
       <div className="grid md:grid-cols-2 gap-6">
+        {/* Reply Form */}
         <div className="rounded-lg border border-gray-700 bg-gray-800 p-6 flex flex-col gap-4">
-          <h2 className="text-sm font-semibold">관리자 답변 작성</h2>
-          <Textarea
+          <h2 className="text-sm font-semibold text-white">관리자 답변 작성</h2>
+          <textarea
             placeholder="답변을 입력하세요..."
-            value={replyContent} // 값 바인딩
+            value={replyContent}
             onChange={(e) => setReplyContent(e.target.value)}
-            className="min-h-[180px] text-sm"
+            className="min-h-[180px] w-full rounded-md bg-gray-900 border border-gray-700 px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
           />
-          <Button
-            variant="destructive"
+          <button
             type="button"
             onClick={async () => {
               await handleSubmitReply();
               setReplyContent("");
             }}
             disabled={!replyContent?.trim()}
-            className="w-full h-10 text-sm font-semibold disabled:opacity-50"
+            className="w-full h-10 px-4 bg-rose-600 hover:bg-rose-700 disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-lg text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-rose-500"
           >
             답변하기
-          </Button>
+          </button>
         </div>
 
+        {/* Answer History */}
         <div className="rounded-lg border border-gray-700 bg-gray-800 p-6 flex flex-col gap-4 max-h-[360px] overflow-y-auto">
-          <h2 className="text-sm font-semibold">
+          <h2 className="text-sm font-semibold text-white">
             답변 내역 ({data?.num_of_answers ?? 0})
           </h2>
           <ul className="space-y-3">
             {data?.num_of_answers === 0 && (
-              <li className="text-center text-gray-400 text-xs">
+              <li className="text-center text-gray-400 text-xs py-4">
                 아직 관리자 답변이 없습니다.
               </li>
             )}

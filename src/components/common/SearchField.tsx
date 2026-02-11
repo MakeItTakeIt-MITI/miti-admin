@@ -1,6 +1,4 @@
 import { useSearchParams } from "react-router-dom";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 import { useCallback, useState } from "react";
 
 interface SearchFieldProps {
@@ -47,17 +45,22 @@ export default function SearchField({ paramKey }: SearchFieldProps) {
   };
 
   return (
-    <div className="flex w-full max-w-sm items-center space-x-2">
-      <Input
+    <div className="flex w-full max-w-sm items-center gap-2">
+      <input
         type="text"
         placeholder="검색"
-        className="text-white"
+        value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         onKeyDown={handleKeyDown}
+        className="flex-1 h-10 px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
       />
-      <Button variant="secondary" type="submit" onClick={handleSearch}>
+      <button
+        type="submit"
+        onClick={handleSearch}
+        className="h-10 px-4 bg-gray-800 hover:bg-gray-700 text-white rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-gray-600"
+      >
         검색
-      </Button>
+      </button>
     </div>
   );
 }

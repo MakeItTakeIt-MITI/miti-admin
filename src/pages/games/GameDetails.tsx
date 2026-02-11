@@ -5,9 +5,6 @@ import { Reports } from "../../features/games/components/Reports";
 import { Participants } from "../../features/games/components/Participants";
 import { usePatchGameDetailsHook } from "../../features/games/hooks/usePatchGameDetailsHook";
 
-import CloseIcon from "@mui/icons-material/Close";
-
-import { Button } from "../../components/ui/button";
 import { GameInfo } from "../../features/games/components/GameInfo";
 
 const GameDetails = () => {
@@ -67,7 +64,7 @@ const GameDetails = () => {
               className="absolute right-4 top-4"
               type="button"
             >
-              <CloseIcon />
+              x
             </button>
             <div className="text-center space-y-4">
               <h1 className="text-center font-bold text-lg">경기 정보 수정</h1>
@@ -119,7 +116,7 @@ const GameDetails = () => {
                 />
               </div>
             </div>
-            <Button
+            <button
               type="submit"
               onClick={handleSubmitUpdate}
               disabled={minPlayers >= maxPlayers}
@@ -130,7 +127,7 @@ const GameDetails = () => {
               }  rounded-lg  font-semibold`}
             >
               수정하기
-            </Button>
+            </button>
           </div>
         </div>
       )}

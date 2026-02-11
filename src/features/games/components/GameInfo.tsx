@@ -1,4 +1,3 @@
-import { Button } from "../../../components/ui/button";
 interface GameDetailField {
   id: number;
   game_status: string;
@@ -41,6 +40,7 @@ const statusClass = (s: string) =>
     : s === "pending"
     ? "bg-amber-600/20 text-amber-300 ring-1 ring-inset ring-amber-500/30"
     : "bg-blue-600/20 text-blue-300 ring-1 ring-inset ring-blue-500/30";
+
 export const GameInfo = ({
   data,
   handleDisplayEditContainer,
@@ -52,6 +52,7 @@ export const GameInfo = ({
           Math.round((data?.num_of_participations / data?.max_invitation) * 100)
         )
       : 0;
+
   return (
     <article className="bg-gray-800 text-white rounded-lg border border-gray-700 overflow-hidden">
       {/* Header */}
@@ -72,16 +73,15 @@ export const GameInfo = ({
               </span>
             </div>
           </div>
-          <Button
-            variant="secondary"
+          <button
             type="button"
             onClick={handleDisplayEditContainer}
-            size="sm"
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             경기 정보 수정
-          </Button>
+          </button>
         </div>
+
         {/* Progress */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs text-gray-300">
@@ -197,7 +197,7 @@ export const GameInfo = ({
             상세 정보
           </h2>
           <div
-            className="text-sm leading-relaxed whitespace-pre-line max-h-[320px] overflow-y-auto scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-gray-600 pr-1"
+            className="text-sm leading-relaxed whitespace-pre-line max-h-[320px] overflow-y-auto pr-1 text-gray-300"
             style={{ scrollbarWidth: "thin" }}
           >
             {data?.info || "상세 정보가 없습니다."}
