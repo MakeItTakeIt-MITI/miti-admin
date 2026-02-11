@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useUserStore } from "../store/useUserStore";
-import Sidebar from "../components/common/Sidebar";
+import Navbar from "../components/common/Navbar";
 import { useEffect } from "react";
 
 export default function PrivateRoute() {
@@ -16,7 +16,7 @@ export default function PrivateRoute() {
 
   return (
     <div className="flex md:space-y-0 space-y-14">
-      <Sidebar />
+      <Navbar />
       <Outlet />;
     </div>
   );
