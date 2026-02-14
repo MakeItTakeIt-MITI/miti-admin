@@ -49,7 +49,7 @@ const Navbar = () => {
         <ul className="space-y-1">
           {NAVIGATION.map((nav) => {
             const active = isActive(nav.path);
-            const Icon = nav.icon;
+            // const Icon = nav.icon;
 
             return (
               <li key={nav.path}>
@@ -61,11 +61,6 @@ const Navbar = () => {
                       : "text-gray-400 hover:text-white hover:bg-gray-800/50"
                   }`}
                 >
-                  <Icon
-                    className={`h-5 w-5 ${
-                      active ? "text-blue-400" : "text-gray-500"
-                    }`}
-                  />
                   <span>{nav.title}</span>
                 </Link>
               </li>
