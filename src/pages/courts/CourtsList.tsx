@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect } from "react";
 import SearchField from "../../components/common/SearchField";
 import { Spinner } from "../../components/common/Spinner";
 import NextPageLoader from "../../features/common/NextPageLoader";
@@ -14,6 +15,23 @@ export default function CourtsList() {
     province,
     isLoading,
   } = useCourtsPage();
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <section className="w-full min-h-screen p-8 bg-gray-950">
@@ -33,36 +51,82 @@ export default function CourtsList() {
         {/* Filters Bar */}
         <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
           <div className="flex flex-wrap items-end gap-4">
-            {/* Province Filter */}
-            <div className="flex-1 min-w-[200px] space-y-2">
-              <label
-                htmlFor="province"
-                className="text-xs font-medium text-gray-300 block"
-              >
+            {/* Province Filter - Custom Dropdown */}
+            <div className="flex-1 min-w-[200px] max-w-[400px] space-y-2">
+              <label className="text-xs font-medium text-gray-300 block">
                 지역 필터
               </label>
               <div className="flex gap-2">
-                <select
-                  id="province"
-                  value={province ?? ""}
-                  onChange={(e) => {
-                    const v = e.target.value;
-                    setProvince(v === "" ? null : v);
-                  }}
-                  className="flex-1 h-10 rounded-lg bg-gray-800 border border-gray-700 px-3 text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                >
-                  <option value="">전체 지역</option>
-                  {PROVINCE_LIST.map((p) => (
-                    <option key={p} value={p}>
-                      {p}
-                    </option>
-                  ))}
-                </select>
+                <div ref={dropdownRef} className="relative flex-1">
+                  <button
+                    type="button"
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className="w-full h-10 px-4 rounded-lg bg-gray-800 border border-gray-700 text-left text-sm text-gray-200 hover:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all flex items-center justify-between"
+                  >
+                    <span className={province ? "text-white" : "text-gray-400"}>
+                      {province || "전체 지역"}
+                    </span>
+                    <svg
+                      className={`w-4 h-4 text-gray-400 transition-transform ${
+                        isDropdownOpen ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {isDropdownOpen && (
+                    <div className="absolute z-10 w-full mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-xl max-h-64 overflow-y-auto">
+                      <div className="p-1">
+                        <button
+                          onClick={() => {
+                            setProvince(null);
+                            setIsDropdownOpen(false);
+                          }}
+                          className={`w-full px-3 py-2 text-left text-sm rounded-md transition-colors ${
+                            !province
+                              ? "bg-blue-600/20 text-blue-400 font-medium"
+                              : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                          }`}
+                        >
+                          전체 지역
+                        </button>
+                        {PROVINCE_LIST.map((p) => (
+                          <button
+                            key={p}
+                            onClick={() => {
+                              setProvince(p);
+                              setIsDropdownOpen(false);
+                            }}
+                            className={`w-full px-3 py-2 text-left text-sm rounded-md transition-colors ${
+                              province === p
+                                ? "bg-blue-600/20 text-blue-400 font-medium"
+                                : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                            }`}
+                          >
+                            {p}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
                 {province && (
                   <button
                     type="button"
                     onClick={() => setProvince(null)}
-                    className="h-10 px-4 text-sm rounded-lg border border-gray-700 bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                    className="h-10 w-10 flex items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                    title="필터 초기화"
                   >
                     <svg
                       className="w-4 h-4"
