@@ -3,6 +3,8 @@ import { useUserStore } from "../../../store/useUserStore";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useLoginHook } from "./useLoginHook";
+import { toast } from "react-toastify";
+
 type Inputs = {
   email: string;
   password: string;
@@ -16,9 +18,7 @@ const useAuthPage = () => {
   const email = watch("email");
   const password = watch("password");
 
-  const { mutate, data, isPending } = useLoginHook();
-  const statusCode = data?.status_code;
-  const errorCode = data?.error_code;
+  const { mutate, isPending } = useLoginHook();
 
   const onSubmit = () => mutate({ email: email, password: password });
 
@@ -33,8 +33,7 @@ const useAuthPage = () => {
     register,
     handleSubmit,
     onSubmit,
-    statusCode,
-    errorCode,
+
     isPending,
     isLoggedIn,
   };

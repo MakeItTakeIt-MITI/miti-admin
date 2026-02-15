@@ -33,16 +33,7 @@ axiosUrl.interceptors.response.use(
         return response;
     },
     (error) => {
-        const statusCode = error.response?.data?.status_code;
-        const errorCode = error.response?.data?.error_code;
-
-        console.log(errorCode);
-        console.log(statusCode);
-
-        // if (statusCode === 401) {
-        //     logoutUser();
-        // }
-
+        console.error("API call failed:", error);
         return Promise.reject(error);
     }
 );

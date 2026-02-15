@@ -1,15 +1,8 @@
 import useAuthPage from "../features/auth/hooks/useAuthPage";
 
 const Auth = () => {
-  const {
-    register,
-    handleSubmit,
-    onSubmit,
-    statusCode,
-    errorCode,
-    isPending,
-    isLoggedIn,
-  } = useAuthPage();
+  const { register, handleSubmit, onSubmit, isPending, isLoggedIn } =
+    useAuthPage();
 
   if (isLoggedIn) {
     return null;
@@ -56,48 +49,6 @@ const Auth = () => {
                 className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               />
             </div>
-
-            {/* Error Messages */}
-            {statusCode === 403 && errorCode === 140 && (
-              <div className="flex items-center gap-2 p-3 bg-rose-600/10 border border-rose-600/20 rounded-lg">
-                <svg
-                  className="w-4 h-4 text-rose-400 flex-shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <p className="text-xs text-rose-300">
-                  해당 이메일은 관리자 권한이 없습니다.
-                </p>
-              </div>
-            )}
-            {statusCode === 401 && errorCode === 140 && (
-              <div className="flex items-center gap-2 p-3 bg-rose-600/10 border border-rose-600/20 rounded-lg">
-                <svg
-                  className="w-4 h-4 text-rose-400 flex-shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <p className="text-xs text-rose-300">
-                  해당 이메일로 등록된 회원이 없습니다.
-                </p>
-              </div>
-            )}
 
             {/* Submit Button */}
             <button

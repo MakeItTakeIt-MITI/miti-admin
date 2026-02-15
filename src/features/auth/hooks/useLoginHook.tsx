@@ -17,6 +17,8 @@ export const useLoginHook = () => {
 
         login(response?.data);
         navigate("/");
+      } else {
+        console.error("Login failed with status code:", response.status_code);
       }
     },
   });

@@ -9,6 +9,7 @@ import UserList from "./pages/users/UserList.tsx";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 import TransferStatus from "./pages/settlements/TransferStatus.tsx";
 import ReportsList from "./pages/reports/ReportsList.tsx";
 import GamesList from "./pages/games/GamesList.tsx";
@@ -87,7 +88,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
-      <RouterProvider router={router}></RouterProvider>
+      <RouterProvider router={router} />
       <ToastContainer
         position="top-center"
         autoClose={3000}
