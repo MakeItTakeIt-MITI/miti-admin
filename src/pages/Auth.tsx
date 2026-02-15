@@ -1,7 +1,5 @@
 import miti from "../assets/logo.svg";
-import "../components/auth/animate.css";
 import { useEffect } from "react";
-
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useUserStore } from "../store/useUserStore";
@@ -21,7 +19,7 @@ const Auth = () => {
   const email = watch("email");
   const password = watch("password");
 
-  const { mutate, data } = useLoginHook();
+  const { mutate, data, isPending } = useLoginHook();
   const statusCode = data?.status_code;
   const errorCode = data?.error_code;
 
@@ -34,65 +32,106 @@ const Auth = () => {
   }, [isLoggedIn, navigate]);
 
   return (
-    <section className="min-h-screen w-full flex items-center">
-      <div className="min-h-screen w-full bg-black flex items-center justify-center">
-        <img src={miti} alt="miti" className="size-[100px] turn-scale" />
-      </div>
-      {/* <Login /> */}
+    <section className="min-h-screen w-full flex items-center justify-center bg-gray-950">
+      <div className="w-full max-w-md px-8 flex flex-col gap-10">
+        <div className="text-center space-y-2">
+          <h1 className="text-3xl font-bold text-white">MITI Admin</h1>
+          <p className="text-sm text-gray-400">관리자 로그인</p>
+        </div>
 
-      <div className="bg-white min-h-screen   w-[70rem]  flex flex-col gap-12 items-center justify-center px-[8rem]">
-        <h1 className=" font-bold text-3xl ">관리자 로그인</h1>
-
-        <form
-          className="flex flex-col gap-6 w-full"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <input
-            {...register("email")}
-            value={email}
-            placeholder="이메일"
-            type="email"
-            autoComplete="email"
-            className="bg-white px-3 py-2 text-sm rounded-lg border border-gray-200"
-          />
-
-          <input
-            {...register("password")}
-            value={password}
-            placeholder="비밀번호"
-            type="password"
-            autoComplete="off"
-            className="bg-white px-3 py-2 text-sm rounded-lg border border-gray-200"
-          />
-          <button
-            disabled={!email || !password ? true : false}
-            type="submit"
-            className="w-full"
+        {/* Login Form */}
+        <div className="bg-gray-900 border border-gray-800 rounded-xl p-8 shadow-2xl">
+          <form
+            className="flex flex-col gap-5"
+            onSubmit={handleSubmit(onSubmit)}
           >
-            로그인
-          </button>
+            {/* Email Input */}
+            <div className="space-y-2">
+              <label className="text-xs font-medium text-gray-300">
+                이메일
+              </label>
+              <input
+                {...register("email")}
+                placeholder="example@makeittakeit.kr"
+                type="email"
+                autoComplete="email"
+                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              />
+            </div>
 
-          <div className="text-sm text-center text-[#999] font-[500]">
-            <span>관리자가 아니신가요? </span>
-            <a
-              href="https://www.makeittakeit.kr/support/inquiries/new"
-              className="underline text-[#999]"
-              target="_blank"
+            {/* Password Input */}
+            <div className="space-y-2">
+              <label className="text-xs font-medium text-gray-300">
+                비밀번호
+              </label>
+              <input
+                {...register("password")}
+                placeholder="••••••••"
+                type="password"
+                autoComplete="current-password"
+                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              />
+            </div>
+
+            {/* Error Messages */}
+            {statusCode === 403 && errorCode === 140 && (
+              <div className="flex items-center gap-2 p-3 bg-rose-600/10 border border-rose-600/20 rounded-lg">
+                <svg
+                  className="w-4 h-4 text-rose-400 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <p className="text-xs text-rose-300">
+                  해당 이메일은 관리자 권한이 없습니다.
+                </p>
+              </div>
+            )}
+            {statusCode === 401 && errorCode === 140 && (
+              <div className="flex items-center gap-2 p-3 bg-rose-600/10 border border-rose-600/20 rounded-lg">
+                <svg
+                  className="w-4 h-4 text-rose-400 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <p className="text-xs text-rose-300">
+                  해당 이메일로 등록된 회원이 없습니다.
+                </p>
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button
+              disabled={!email || !password || isPending}
+              type="submit"
+              className="w-full h-11 px-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-lg text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 flex items-center justify-center gap-2"
             >
-              문의하기
-            </a>
-          </div>
-          {statusCode === 403 && errorCode == 140 && (
-            <p className="text-red-500 font-[400] text-center text-[13px]">
-              해당 이메일은 관리자 권한이 없습니다.
-            </p>
-          )}
-          {statusCode === 401 && errorCode == 140 && (
-            <p className="text-red-500 font-[400] text-center text-[13px]">
-              해당 이메일로 등록된 회원이 없습니다.
-            </p>
-          )}
-        </form>
+              {isPending ? (
+                <>
+                  <div className="h-4 w-4 rounded-full border-2 border-t-transparent border-white animate-spin" />
+                  로그인 중...
+                </>
+              ) : (
+                "로그인"
+              )}
+            </button>
+          </form>
+        </div>
       </div>
     </section>
   );
