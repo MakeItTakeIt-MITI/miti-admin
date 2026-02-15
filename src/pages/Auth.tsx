@@ -1,35 +1,19 @@
-import miti from "../assets/logo.svg";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { useUserStore } from "../store/useUserStore";
-import { useLoginHook } from "../features/auth/hooks/useLoginHook";
-
-type Inputs = {
-  email: string;
-  password: string;
-};
+import useAuthPage from "../features/auth/hooks/useAuthPage";
 
 const Auth = () => {
-  const { isLoggedIn } = useUserStore();
-  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    onSubmit,
+    statusCode,
+    errorCode,
+    isPending,
+    isLoggedIn,
+  } = useAuthPage();
 
-  const { register, handleSubmit, watch } = useForm<Inputs>();
-
-  const email = watch("email");
-  const password = watch("password");
-
-  const { mutate, data, isPending } = useLoginHook();
-  const statusCode = data?.status_code;
-  const errorCode = data?.error_code;
-
-  const onSubmit = () => mutate({ email: email, password: password });
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/users?page=1");
-    }
-  }, [isLoggedIn, navigate]);
+  if (isLoggedIn) {
+    return null;
+  }
 
   return (
     <section className="min-h-screen w-full flex items-center justify-center bg-gray-950">
@@ -117,7 +101,9 @@ const Auth = () => {
 
             {/* Submit Button */}
             <button
-              disabled={!email || !password || isPending}
+              disabled={
+                !register("email") || !register("password") || isPending
+              }
               type="submit"
               className="w-full h-11 px-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-lg text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 flex items-center justify-center gap-2"
             >
