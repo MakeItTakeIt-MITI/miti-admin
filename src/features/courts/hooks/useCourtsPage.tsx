@@ -33,6 +33,7 @@ export const useCourtsPage = () => {
     data: courtsListData,
     hasNextPage,
     fetchNextPage,
+    isLoading,
   } = useCourtsList(search, province);
 
   const courtsData = courtsListData?.pages?.flatMap(
@@ -53,5 +54,6 @@ export const useCourtsPage = () => {
     setProvince,
     PROVINCE_LIST,
     province,
+    isLoading,
   };
 };
