@@ -1,18 +1,15 @@
-import { useMemo } from "react";
 import SearchField from "../../components/common/SearchField";
 import useUsersPage from "../../features/users/hooks/useUsersPage";
 import { Link } from "react-router-dom";
 import NextPageLoader from "../../features/common/NextPageLoader";
+import { Spinner } from "../../components/common/Spinner";
 
 const UserList = () => {
-  const { usersDataPage, hasNextPage, fetchNextPage } = useUsersPage();
+  const { hasNextPage, fetchNextPage, rows, isLoading } = useUsersPage();
 
-  const rows = useMemo(() => {
-    if (!usersDataPage) return [];
-    if (Array.isArray(usersDataPage)) return usersDataPage;
-
-    return usersDataPage;
-  }, [usersDataPage]);
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <section className="w-full  p-8  flex flex-col gap-4 bg-black">

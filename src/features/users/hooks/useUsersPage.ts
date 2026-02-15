@@ -2,12 +2,13 @@
 
 import { useSearchParams } from "react-router-dom";
 import { useUsersListHook } from "./query/useUsersListHook";
+import { useMemo } from "react";
 
 
 const useUsersPage = () => {
     const [searchParams] = useSearchParams();
     const search = searchParams.get("search");
-    // const pageNow = page ? parseInt(page) : 1
+
 
 
     // --- USERS LIST API/HOOK --- 
@@ -18,7 +19,14 @@ const useUsersPage = () => {
         (page) => page?.data?.items
     );
 
-    return { data, search, usersDataPage, hasNextPage, hasPreviousPage, fetchNextPage, fetchPreviousPage, isLoading }
+    const rows = useMemo(() => {
+        if (!usersDataPage) return [];
+        if (Array.isArray(usersDataPage)) return usersDataPage;
+
+        return usersDataPage;
+    }, [usersDataPage]);
+
+    return { data, search, usersDataPage, hasNextPage, hasPreviousPage, fetchNextPage, fetchPreviousPage, isLoading, rows }
 };
 
 export default useUsersPage;
