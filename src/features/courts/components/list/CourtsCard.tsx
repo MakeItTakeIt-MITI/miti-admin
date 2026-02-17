@@ -17,7 +17,7 @@ const CourtsCard = ({ u }: CourtsCardProps) => {
   return (
     <div
       key={u.id}
-      className="group rounded-lg overflow-hidden border border-gray-800 bg-gray-900"
+      className="group rounded-lg overflow-hidden border border-gray-800 bg-black  "
     >
       <div className="aspect-square bg-gray-800">
         {u.images.length === 0 ? (

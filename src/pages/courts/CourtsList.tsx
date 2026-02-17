@@ -34,7 +34,7 @@ export default function CourtsList() {
   }, []);
 
   return (
-    <section className="w-full min-h-screen p-8 bg-gray-950">
+    <section className="w-full min-h-screen p-8 ">
       <div className="max-w-[1600px] mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -49,7 +49,7 @@ export default function CourtsList() {
         </div>
 
         {/* Filters Bar */}
-        <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
+        <div className="border border-gray-800 rounded-lg p-4">
           <div className="flex flex-wrap items-end gap-4">
             {/* Province Filter - Custom Dropdown */}
             <div className="flex-1 min-w-[200px] max-w-[400px] space-y-2">
@@ -61,7 +61,7 @@ export default function CourtsList() {
                   <button
                     type="button"
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                    className="w-full h-10 px-4 rounded-lg bg-gray-800 border border-gray-700 text-left text-sm text-gray-200 hover:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all flex items-center justify-between"
+                    className="w-full h-10 px-4 rounded-lg  border border-gray-700 text-left text-sm text-gray-200 hover:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all flex items-center justify-between"
                   >
                     <span className={province ? "text-white" : "text-gray-400"}>
                       {province || "전체 지역"}
@@ -147,7 +147,7 @@ export default function CourtsList() {
             </div>
 
             {/* Search */}
-            <div className="flex-1 min-w-[300px] space-y-2">
+            <div className="flex-1 min-w-[300px] space-y-2 bg-black">
               <label className="text-xs font-medium text-gray-300 block">
                 검색
               </label>
