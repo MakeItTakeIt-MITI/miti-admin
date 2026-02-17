@@ -1,11 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getReportDetails } from "../api/report_details";
+import { useState } from "react";
 
 export const useReportDetailsPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const reportId = searchParams.get("reportId");
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ["report-detail", reportId],
