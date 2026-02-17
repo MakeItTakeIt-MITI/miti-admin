@@ -1,84 +1,16 @@
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "../../components/common/Spinner";
-import { getReportDetails } from "../../features/reports/api/report_details";
+import { useReportDetailsPage } from "../../features/reports/hook/useReportDetailsPage";
 
 export const ReportDetails = () => {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const reportId = searchParams.get("reportId");
-
-  const { data, isLoading } = useQuery({
-    queryKey: ["report-detail", reportId],
-    queryFn: () => getReportDetails(Number(reportId)),
-    enabled: !!reportId,
-  });
-
-  const report = data?.data;
-
-  // 상태 한글 변환
-  const statusLabel = (status: string) => {
-    switch (status) {
-      case "waiting":
-        return "대기중";
-      case "evidence_requested":
-        return "자료 요청";
-      case "investigation_in_progress":
-        return "조사진행중";
-      case "concluded":
-        return "처리완료";
-      default:
-        return status;
-    }
-  };
-
-  // 타입 한글 변환
-  const typeLabel = (type: string) => {
-    switch (type) {
-      case "post_report":
-        return "게시글 신고";
-      case "user_report":
-        return "사용자 신고";
-      case "comment_report":
-        return "댓글 신고";
-      case "game_report":
-        return "경기 신고";
-      default:
-        return type || "-";
-    }
-  };
-
-  // 상태 뱃지 클래스
-  const statusBadge = (status: string) => {
-    switch (status) {
-      case "concluded":
-        return "bg-emerald-600/20 text-emerald-300 ring-1 ring-inset ring-emerald-500/30";
-      case "waiting":
-        return "bg-amber-600/20 text-amber-300 ring-1 ring-inset ring-amber-500/30";
-      case "evidence_requested":
-        return "bg-blue-600/20 text-blue-300 ring-1 ring-inset ring-blue-500/30";
-      case "investigation_in_progress":
-        return "bg-purple-600/20 text-purple-300 ring-1 ring-inset ring-purple-500/30";
-      default:
-        return "bg-gray-600/20 text-gray-300 ring-1 ring-inset ring-gray-500/30";
-    }
-  };
-
-  // 타입 뱃지 클래스
-  const typeBadge = (type: string) => {
-    switch (type) {
-      case "post_report":
-        return "bg-indigo-600/20 text-indigo-300 ring-1 ring-inset ring-indigo-500/30";
-      case "user_report":
-        return "bg-rose-600/20 text-rose-300 ring-1 ring-inset ring-rose-500/30";
-      case "comment_report":
-        return "bg-yellow-600/20 text-yellow-300 ring-1 ring-inset ring-yellow-500/30";
-      case "game_report":
-        return "bg-teal-600/20 text-teal-300 ring-1 ring-inset ring-teal-500/30";
-      default:
-        return "bg-gray-600/20 text-gray-300 ring-1 ring-inset ring-gray-500/30";
-    }
-  };
+  const {
+    statusLabel,
+    typeLabel,
+    statusBadge,
+    typeBadge,
+    report,
+    isLoading,
+    navigate,
+  } = useReportDetailsPage();
 
   if (isLoading) {
     return <Spinner />;
@@ -125,23 +57,33 @@ export const ReportDetails = () => {
               </svg>
             </button>
             <div>
-              <h1 className="text-2xl font-bold text-white">{typeLabel(report.report_type)} 상세</h1>
+              <h1 className="text-2xl font-bold text-white">
+                {typeLabel(report.report_type)} 상세
+              </h1>
               <p className="text-sm text-gray-400 mt-1">
                 신고 ID: #{report.id}
               </p>
             </div>
           </div>
-
-        
         </div>
 
         {/* Actions - 최상단 */}
         <div className="flex items-center justify-end gap-3 bg-gray-900 border border-gray-800 rounded-lg p-4">
-          <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
-            상태 변경
-          </button>
-          <button className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-sm font-medium transition-colors">
-            조치하기
+          <div className="flex flex-col items-center">
+            <span className="text-xs text-gray-400 mb-1">현재 상태</span>
+            <span
+              className={`inline-flex rounded-full px-3 py-1.5 text-xs font-medium ${statusBadge(
+                report.report_status,
+              )}`}
+            >
+              {statusLabel(report.report_status)}
+            </span>
+          </div>
+          <button
+            type="button"
+            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition-colors w-[300px]"
+          >
+            신고 상태 수정
           </button>
         </div>
 
@@ -275,14 +217,14 @@ export const ReportDetails = () => {
             <div className="flex items-center gap-3">
               <span
                 className={`inline-flex rounded-full px-3 py-1.5 text-xs font-medium ${typeBadge(
-                  report.report_type
+                  report.report_type,
                 )}`}
               >
                 {typeLabel(report.report_type)}
               </span>
               <span
                 className={`inline-flex rounded-full px-3 py-1.5 text-xs font-medium ${statusBadge(
-                  report.report_status
+                  report.report_status,
                 )}`}
               >
                 {statusLabel(report.report_status)}
