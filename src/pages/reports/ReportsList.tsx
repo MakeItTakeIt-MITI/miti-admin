@@ -228,7 +228,7 @@ const ReportsList = () => {
                     {/* 상세 */}
                     <td className="px-4 py-3">
                       <Link
-                        to={`detail?reportId=${r?.id}`}
+                        to={`detail?report_type=${r?.report_type}&reportId=${r?.id}`}
                         className="text-blue-400 hover:text-blue-300 hover:underline transition-colors"
                       >
                         보기
