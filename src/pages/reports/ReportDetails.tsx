@@ -64,6 +64,22 @@ export const ReportDetails = () => {
     }
   };
 
+  // 타입 뱃지 클래스
+  const typeBadge = (type: string) => {
+    switch (type) {
+      case "post_report":
+        return "bg-indigo-600/20 text-indigo-300 ring-1 ring-inset ring-indigo-500/30";
+      case "user_report":
+        return "bg-rose-600/20 text-rose-300 ring-1 ring-inset ring-rose-500/30";
+      case "comment_report":
+        return "bg-yellow-600/20 text-yellow-300 ring-1 ring-inset ring-yellow-500/30";
+      case "game_report":
+        return "bg-teal-600/20 text-teal-300 ring-1 ring-inset ring-teal-500/30";
+      default:
+        return "bg-gray-600/20 text-gray-300 ring-1 ring-inset ring-gray-500/30";
+    }
+  };
+
   if (isLoading) {
     return <Spinner />;
   }
@@ -109,22 +125,14 @@ export const ReportDetails = () => {
               </svg>
             </button>
             <div>
-              <h1 className="text-2xl font-bold text-white">신고 상세</h1>
+              <h1 className="text-2xl font-bold text-white">{typeLabel(report.report_type)} 상세</h1>
               <p className="text-sm text-gray-400 mt-1">
                 신고 ID: #{report.id}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span
-              className={`inline-flex rounded-full px-3 py-1.5 text-xs font-medium ${statusBadge(
-                report.report_status
-              )}`}
-            >
-              {statusLabel(report.report_status)}
-            </span>
-          </div>
+        
         </div>
 
         {/* Actions - 최상단 */}
@@ -262,8 +270,24 @@ export const ReportDetails = () => {
 
         {/* Main Info Card - 신고 정보 (하단으로 이동) */}
         <div className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
-          <div className="border-b border-gray-800 bg-gray-800/50 px-6 py-4">
+          <div className="border-b border-gray-800 bg-gray-800/50 px-6 py-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold text-white">신고 정보</h2>
+            <div className="flex items-center gap-3">
+              <span
+                className={`inline-flex rounded-full px-3 py-1.5 text-xs font-medium ${typeBadge(
+                  report.report_type
+                )}`}
+              >
+                {typeLabel(report.report_type)}
+              </span>
+              <span
+                className={`inline-flex rounded-full px-3 py-1.5 text-xs font-medium ${statusBadge(
+                  report.report_status
+                )}`}
+              >
+                {statusLabel(report.report_status)}
+              </span>
+            </div>
           </div>
           <div className="p-6 space-y-4">
             <div className="grid grid-cols-2 gap-6">

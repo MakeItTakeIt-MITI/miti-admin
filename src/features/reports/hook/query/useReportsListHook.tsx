@@ -4,7 +4,7 @@ import { fetchReports } from "../../api/reports";
 export const useReportsListHook = () => {
   return useInfiniteQuery({
     queryKey: ["Reports List"],
-    queryFn: ({ pageParam }) => fetchReports(pageParam, 40),
+    queryFn: ({ pageParam }) => fetchReports(pageParam, 40,),
 
     getNextPageParam: (lastPage) => {
       const data = lastPage?.data;
