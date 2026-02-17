@@ -73,10 +73,10 @@ const ReportsList = () => {
   };
 
   return (
-    <section className="w-full min-h-screen p-8 bg-gray-950">
+    <section className="w-full min-h-screen p-8 bg-black">
       <div className="max-w-[1600px] mx-auto space-y-6">
         {/* Header */}
-        <div>
+        <div >
           <h1 className="text-2xl font-bold text-white">신고 관리</h1>
           <p className="text-sm text-gray-400 mt-1">
             총 <span className="text-blue-400 font-medium">{rows.length}</span>
@@ -85,7 +85,7 @@ const ReportsList = () => {
         </div>
 
         {/* Search */}
-        <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
+        <div className=" border border-gray-800 rounded-lg p-4">
           <div className="space-y-2">
             <label className="text-xs font-medium text-gray-300 block">
               검색
@@ -95,10 +95,10 @@ const ReportsList = () => {
         </div>
 
         {/* Table */}
-        <div className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
+      <div className="w-full rounded-lg border border-gray-700">
           <div className="overflow-x-auto">
             <table className="min-w-[1200px] w-full text-xs">
-              <thead className="bg-gray-800 text-gray-200">
+                  <thead className="bg-[#2d2d2d] text-white">
                 <tr className="text-left">
                   <th className="px-4 py-3 font-medium w-20">ID</th>
                   <th className="px-4 py-3 font-medium w-28">상태</th>
@@ -139,7 +139,7 @@ const ReportsList = () => {
                 {rows.map((r) => (
                   <tr
                     key={r?.id}
-                    className="border-t border-gray-800 hover:bg-gray-800/50 transition-colors"
+                className="border-t border-gray-700 hover:bg-gray-800 transition-colors"
                   >
                     {/* ID */}
                     <td className="px-4 py-3 text-white font-medium">

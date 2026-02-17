@@ -70,12 +70,12 @@ export const ReportDetails = () => {
 
   if (!report) {
     return (
-      <section className="w-full min-h-screen p-8 bg-gray-950 flex items-center justify-center">
+      <section className="w-full min-h-screen p-8 flex items-center justify-center">
         <div className="text-center">
           <p className="text-gray-400 mb-4">신고를 찾을 수 없습니다</p>
           <button
             onClick={() => navigate("/reports")}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition-colors"
+            className="px-4 py-2 hover:bg-blue-700 text-white rounded-lg text-sm transition-colors"
           >
             목록으로 돌아가기
           </button>
