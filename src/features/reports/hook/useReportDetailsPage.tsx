@@ -7,8 +7,18 @@ export const useReportDetailsPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const reportId = searchParams.get("reportId");
+  const reportType = searchParams.get("report_type");
+  const [isModalOpen, setIsModalOpen] = useState<"approve" | "dismiss" | null>(
+    null,
+  );
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleToggleApproveModal = () => {
+    setIsModalOpen((prev) => (prev === "approve" ? null : "approve"));
+  };
+
+  const handleToggleDismissModal = () => {
+    setIsModalOpen((prev) => (prev === "dismiss" ? null : "dismiss"));
+  };
 
   const { data, isLoading } = useQuery({
     queryKey: ["report-detail", reportId],
@@ -90,5 +100,10 @@ export const useReportDetailsPage = () => {
     report,
     isLoading,
     navigate,
+    isModalOpen,
+    handleToggleApproveModal,
+    handleToggleDismissModal,
+    reportType,
+    setIsModalOpen,
   };
 };

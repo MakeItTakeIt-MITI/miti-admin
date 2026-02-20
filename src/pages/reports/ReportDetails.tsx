@@ -1,4 +1,5 @@
 import { Spinner } from "../../components/common/Spinner";
+import { ApproveReportModal } from "../../features/reports/components/ApproveReportModal";
 import { useReportDetailsPage } from "../../features/reports/hook/useReportDetailsPage";
 
 export const ReportDetails = () => {
@@ -10,8 +11,12 @@ export const ReportDetails = () => {
     report,
     isLoading,
     navigate,
+    isModalOpen,
+    handleToggleApproveModal,
+    handleToggleDismissModal,
+    reportType,
+    setIsModalOpen,
   } = useReportDetailsPage();
-
   if (isLoading) {
     return <Spinner />;
   }
@@ -29,6 +34,16 @@ export const ReportDetails = () => {
           </button>
         </div>
       </section>
+    );
+  }
+
+  if (isModalOpen === "approve" || isModalOpen === "dismiss") {
+    return (
+      <ApproveReportModal
+        isModalOpen={isModalOpen}
+        reportType={reportType}
+        setIsModalOpen={setIsModalOpen}
+      />
     );
   }
 
@@ -81,9 +96,17 @@ export const ReportDetails = () => {
           </div>
           <button
             type="button"
-            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition-colors w-[300px]"
+            className="px-4 py-2 bg-blue-700 hover:bg-blue-600 text-gray-100 rounded-lg text-sm font-medium transition-colors w-[120px]"
+            onClick={handleToggleDismissModal}
           >
-            신고 상태 수정
+            신고 기각
+          </button>
+          <button
+            type="button"
+            className="px-4 py-2 bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-900/20 rounded-lg text-sm font-medium transition-colors w-[120px]"
+            onClick={handleToggleApproveModal}
+          >
+            신고 인정
           </button>
         </div>
 
