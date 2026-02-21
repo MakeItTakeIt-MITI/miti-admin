@@ -91,12 +91,6 @@ export const ReportActionModal = ({
               </select>
             </div>
 
-            <input
-              {...register("content", { required: true })}
-              className={selectClassName}
-              placeholder={"사유를 입력하세요 (필수)"}
-            />
-
             {/* Penalty */}
             {isModalOpen === "approve" && (
               <div>
@@ -163,6 +157,19 @@ export const ReportActionModal = ({
                 </label>
               </div>
             )}
+
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-gray-700">
+                처리 내용
+              </label>
+              <textarea
+                {...register("content", { required: true })}
+                className={
+                  "text-sm appearance-none rounded-lg border border-gray-300 bg-gray-50 p-2 w-full"
+                }
+                placeholder={"사유를 입력하세요 (필수)"}
+              />
+            </div>
           </div>
 
           {/* Footer */}
