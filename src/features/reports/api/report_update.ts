@@ -51,6 +51,6 @@ export const dismissReportStatus = async (report_type: ReportType, reportId: num
         return response.data
     } catch (error) {
         console.log(error)
-        throw new Error
+        return error
     }
 }

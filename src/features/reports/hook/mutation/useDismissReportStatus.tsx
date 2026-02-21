@@ -20,9 +20,13 @@ export const useDismissReportStatus = () => {
       data: DismissReportStatusData;
     }) => dismissReportStatus(report_type, reportId, data),
     onSuccess: (responseData) => {
+      alert("성공적으로 신고가 기각되었습니다.");
       queryClient.invalidateQueries({
         queryKey: ["Report List", "report-detail", responseData.reportId],
       });
+    },
+    onError: (error) => {
+      alert("기각 실패 " + error);
     },
   });
 };
