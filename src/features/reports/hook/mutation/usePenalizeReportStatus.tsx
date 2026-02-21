@@ -28,6 +28,10 @@ export const usePenalizeReportStatus = () => {
       queryClient.invalidateQueries({
         queryKey: ["report-details", responseData.reportId],
       });
+      alert("성공적으로 신고가 처리되었습니다.");
+    },
+    onError: (error) => {
+      alert("신고 처리 실패: " + error);
     },
   });
 };
