@@ -3,7 +3,6 @@ import { useUserStore } from "../../../store/useUserStore";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useLoginHook } from "./useLoginHook";
-import { toast } from "react-toastify";
 
 type Inputs = {
   email: string;
