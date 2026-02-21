@@ -1,5 +1,5 @@
 import { Spinner } from "../../components/common/Spinner";
-import { ApproveReportModal } from "../../features/reports/components/ApproveReportModal";
+import { ReportActionModal } from "../../features/reports/components/ReportActionModal";
 import { useReportDetailsPage } from "../../features/reports/hook/useReportDetailsPage";
 
 export const ReportDetails = () => {
@@ -37,9 +37,13 @@ export const ReportDetails = () => {
     );
   }
 
-  if (isModalOpen === "approve" || isModalOpen === "dismiss") {
+  if (
+    isModalOpen === "approve" ||
+    isModalOpen === "dismiss" ||
+    isModalOpen !== null
+  ) {
     return (
-      <ApproveReportModal
+      <ReportActionModal
         isModalOpen={isModalOpen}
         reportType={reportType}
         setIsModalOpen={setIsModalOpen}
@@ -88,7 +92,7 @@ export const ReportDetails = () => {
             <span className="text-xs text-gray-400 mb-1">현재 상태</span>
             <span
               className={`inline-flex rounded-full px-3 py-1.5 text-xs font-medium ${statusBadge(
-                report.report_status,
+                report.report_status
               )}`}
             >
               {statusLabel(report.report_status)}
@@ -240,14 +244,14 @@ export const ReportDetails = () => {
             <div className="flex items-center gap-3">
               <span
                 className={`inline-flex rounded-full px-3 py-1.5 text-xs font-medium ${typeBadge(
-                  report.report_type,
+                  report.report_type
                 )}`}
               >
                 {typeLabel(report.report_type)}
               </span>
               <span
                 className={`inline-flex rounded-full px-3 py-1.5 text-xs font-medium ${statusBadge(
-                  report.report_status,
+                  report.report_status
                 )}`}
               >
                 {statusLabel(report.report_status)}

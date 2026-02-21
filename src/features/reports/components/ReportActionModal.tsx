@@ -14,7 +14,7 @@ interface Props {
   setIsModalOpen: (arg: "approve" | "dismiss" | null) => void;
 }
 
-export const ApproveReportModal = ({
+export const ReportActionModal = ({
   isModalOpen,
   reportType,
   setIsModalOpen,
@@ -85,7 +85,7 @@ export const ApproveReportModal = ({
             {isModalOpen === "approve" && (
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                  제재 내용
+                  신고 내용
                 </label>
                 <select
                   {...register("penalty", { required: true })}
@@ -119,7 +119,7 @@ export const ApproveReportModal = ({
             {isModalOpen === "approve" && (
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                  제재 기간
+                  신고 기간
                 </label>
                 <input
                   type="text"
