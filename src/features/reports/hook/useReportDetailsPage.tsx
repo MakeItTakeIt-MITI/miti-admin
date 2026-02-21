@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { getReportDetails } from "../api/report_details";
 import { useState } from "react";
 import { useDismissReportStatus } from "./mutation/useDismissReportStatus";
+import { usePenalizeReportStatus } from "./mutation/usePenalizeReportStatus";
 
 export const useReportDetailsPage = () => {
   const [searchParams] = useSearchParams();
@@ -50,6 +51,15 @@ export const useReportDetailsPage = () => {
     }
   };
 
+  interface PenalizeReportStatusData {
+    result: string;
+    penalty: string;
+    report_status: string;
+    duration: string;
+    content: string;
+    refund_participation_payment?: boolean;
+  }
+
   const { mutate: dismissReportMutation } = useDismissReportStatus();
 
   const handleDismissReport = (payload: DismissReportStatusData) => {
@@ -59,6 +69,17 @@ export const useReportDetailsPage = () => {
       data: payload,
     });
   };
+
+  const { mutate: penalizeReportMutation } = usePenalizeReportStatus();
+
+  const handlePenalizeReport = (payload: PenalizeReportStatusData) => {
+    penalizeReportMutation({
+      report_type: reportTypeChange(),
+      reportId: Number(reportId),
+      data: payload,
+    });
+  };
+
   // 상태 한글 변환
   const statusLabel = (status: string) => {
     switch (status) {
@@ -137,5 +158,6 @@ export const useReportDetailsPage = () => {
     reportType,
     setIsModalOpen,
     handleDismissReport,
+    handlePenalizeReport,
   };
 };

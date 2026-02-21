@@ -18,6 +18,14 @@ interface Props {
     report_status: string;
     content: string;
   }) => void;
+  handlePenalizeReport: (arg: {
+    result: string;
+    penalty: string;
+    report_status: string;
+    duration: string;
+    content: string;
+    refund_participation_payment?: boolean;
+  }) => void;
 }
 
 export const ReportActionModal = ({
@@ -25,6 +33,7 @@ export const ReportActionModal = ({
   reportType,
   setIsModalOpen,
   handleDismissReport,
+  handlePenalizeReport,
 }: Props) => {
   const { register, handleSubmit } = useForm<ReportStatusFormData>();
 
@@ -36,6 +45,8 @@ export const ReportActionModal = ({
     console.log(data);
     if (isModalOpen === "dismiss") {
       handleDismissReport(data);
+    } else if (isModalOpen === "approve") {
+      handlePenalizeReport(data);
     }
     setIsModalOpen(null);
   };

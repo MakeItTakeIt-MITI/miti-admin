@@ -24,9 +24,9 @@ export const usePenalizeReportStatus = () => {
       reportId: number;
       data: PenalizeReportStatusData;
     }) => penalizerReportStatus(report_type, reportId, data),
-    onSuccess: (responseData) => {
+    onSuccess: (variables) => {
       queryClient.invalidateQueries({
-        queryKey: ["report-details", responseData.reportId],
+        queryKey: ["Report List", "report-detail", variables.reportId],
       });
       alert("성공적으로 신고가 처리되었습니다.");
     },

@@ -17,6 +17,7 @@ export const ReportDetails = () => {
     reportType,
     setIsModalOpen,
     handleDismissReport,
+    handlePenalizeReport,
   } = useReportDetailsPage();
   if (isLoading) {
     return <Spinner />;
@@ -49,6 +50,7 @@ export const ReportDetails = () => {
         reportType={reportType}
         setIsModalOpen={setIsModalOpen}
         handleDismissReport={handleDismissReport}
+        handlePenalizeReport={handlePenalizeReport}
       />
     );
   }
