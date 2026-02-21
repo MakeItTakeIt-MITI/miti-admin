@@ -6,8 +6,12 @@ interface PenalizeReportStatusData {
   penalty: string;
   report_status: string;
   duration: string;
+  content: string;
   refund_participation_payment?: boolean;
 }
+
+type ReportType = "reports" | "host-reports" | "guest-reports" | "post-reports";
+
 export const usePenalizeReportStatus = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -16,7 +20,7 @@ export const usePenalizeReportStatus = () => {
       reportId,
       data,
     }: {
-      report_type: string | null;
+      report_type: ReportType;
       reportId: number;
       data: PenalizeReportStatusData;
     }) => penalizerReportStatus(report_type, reportId, data),

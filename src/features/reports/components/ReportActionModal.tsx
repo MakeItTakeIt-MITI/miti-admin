@@ -6,18 +6,25 @@ interface ReportStatusFormData {
   report_status: string;
   duration: string;
   refund_participation_payment: boolean;
+  content: string;
 }
 
 interface Props {
   isModalOpen: "approve" | "dismiss" | null;
   reportType: string | null;
   setIsModalOpen: (arg: "approve" | "dismiss" | null) => void;
+  handleDismissReport: (arg: {
+    result: string;
+    report_status: string;
+    content: string;
+  }) => void;
 }
 
 export const ReportActionModal = ({
   isModalOpen,
   reportType,
   setIsModalOpen,
+  handleDismissReport,
 }: Props) => {
   const { register, handleSubmit } = useForm<ReportStatusFormData>();
 
@@ -27,6 +34,9 @@ export const ReportActionModal = ({
 
   const onFormSubmit: SubmitHandler<ReportStatusFormData> = (data) => {
     console.log(data);
+    if (isModalOpen === "dismiss") {
+      handleDismissReport(data);
+    }
     setIsModalOpen(null);
   };
 
@@ -76,10 +86,16 @@ export const ReportActionModal = ({
                 {isModalOpen === "approve" ? (
                   <option value="penalized">신고 인정 </option>
                 ) : (
-                  <option value="not_penalized">신고 기각 </option>
+                  <option value="dismissed">신고 기각 </option>
                 )}
               </select>
             </div>
+
+            <input
+              {...register("content", { required: true })}
+              className={selectClassName}
+              placeholder={"사유를 입력하세요 (필수)"}
+            />
 
             {/* Penalty */}
             {isModalOpen === "approve" && (

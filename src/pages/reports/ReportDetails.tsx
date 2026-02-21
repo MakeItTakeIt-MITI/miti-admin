@@ -16,6 +16,7 @@ export const ReportDetails = () => {
     handleToggleDismissModal,
     reportType,
     setIsModalOpen,
+    handleDismissReport,
   } = useReportDetailsPage();
   if (isLoading) {
     return <Spinner />;
@@ -47,6 +48,7 @@ export const ReportDetails = () => {
         isModalOpen={isModalOpen}
         reportType={reportType}
         setIsModalOpen={setIsModalOpen}
+        handleDismissReport={handleDismissReport}
       />
     );
   }

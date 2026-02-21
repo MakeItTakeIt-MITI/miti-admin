@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getReportDetails } from "../api/report_details";
 import { useState } from "react";
+import { useDismissReportStatus } from "./mutation/useDismissReportStatus";
 
 export const useReportDetailsPage = () => {
   const [searchParams] = useSearchParams();
@@ -9,7 +10,7 @@ export const useReportDetailsPage = () => {
   const reportId = searchParams.get("reportId");
   const reportType = searchParams.get("report_type");
   const [isModalOpen, setIsModalOpen] = useState<"approve" | "dismiss" | null>(
-    null,
+    null
   );
 
   const handleToggleApproveModal = () => {
@@ -28,6 +29,36 @@ export const useReportDetailsPage = () => {
 
   const report = data?.data;
 
+  interface DismissReportStatusData {
+    result: string;
+    report_status: string;
+    content: string;
+  }
+
+  const reportTypeChange = () => {
+    switch (reportType) {
+      case "host_report":
+        return "host-reports";
+      case "guest_report":
+        return "guest-reports";
+      case "post_report":
+        return "post-reports";
+      case "user_report":
+        return "reports";
+      default:
+        return "reports";
+    }
+  };
+
+  const { mutate: dismissReportMutation } = useDismissReportStatus();
+
+  const handleDismissReport = (payload: DismissReportStatusData) => {
+    dismissReportMutation({
+      report_type: reportTypeChange(),
+      reportId: Number(reportId),
+      data: payload,
+    });
+  };
   // 상태 한글 변환
   const statusLabel = (status: string) => {
     switch (status) {
@@ -105,5 +136,6 @@ export const useReportDetailsPage = () => {
     handleToggleDismissModal,
     reportType,
     setIsModalOpen,
+    handleDismissReport,
   };
 };
