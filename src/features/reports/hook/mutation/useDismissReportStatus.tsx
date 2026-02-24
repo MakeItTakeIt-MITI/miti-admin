@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { dismissReportStatus } from "../../api/report_update";
+import { toast } from "react-toastify";
 interface DismissReportStatusData {
   result: string;
   report_status: string;
@@ -20,13 +21,13 @@ export const useDismissReportStatus = () => {
       data: DismissReportStatusData;
     }) => dismissReportStatus(report_type, reportId, data),
     onSuccess: (responseData) => {
+      toast.success("신고가 기각되었습니다.");
       queryClient.invalidateQueries({
         queryKey: ["Report List", "report-detail", responseData.reportId],
       });
-      alert("성공적으로 신고가 기각되었습니다.");
     },
-    onError: (error) => {
-      alert("기각 실패 " + error);
+    onError: () => {
+      toast.error("신고 기각에 실패했습니다. 다시 시도해주세요.");
     },
   });
 };

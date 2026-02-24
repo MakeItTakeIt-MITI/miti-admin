@@ -33,6 +33,7 @@ export const penalizerReportStatus = async (report_type: ReportType, reportId: n
         return response.data
     } catch (error) {
         console.log(error)
+        throw error
     }
 }
 
@@ -51,6 +52,6 @@ export const dismissReportStatus = async (report_type: ReportType, reportId: num
         return response.data
     } catch (error) {
         console.log(error)
-        return error
+        throw error
     }
 }
