@@ -57,17 +57,11 @@ const Navbar = () => {
       <nav className="flex-1 p-4 overflow-y-auto">
         <ul className="space-y-1">
           {NAVIGATION.map((nav) => {
-            const active = isActive(nav.path);
-
             return (
               <li key={nav.path}>
                 <Link
                   to={nav.path}
-                  className={`flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                    active
-                      ? "bg-gray-800 text-white"
-                      : "text-gray-400 hover:text-white hover:bg-gray-800/50"
-                  }`}
+                  className={`flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${"text-gray-400 hover:text-white hover:bg-gray-800/50"}`}
                 >
                   <span>{nav.title}</span>
                 </Link>
