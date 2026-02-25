@@ -1,20 +1,20 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useUserStore } from "../../store/useUserStore";
 import { NAVIGATION } from "../../constants/NAVIGATION";
 
 const Navbar = () => {
   const { logout } = useUserStore();
   const navigate = useNavigate();
-  const { pathname } = useLocation();
+
+  const baseNavLinkClass =
+    "flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors";
+  const activeNavLinkClass = "text-white bg-gray-800";
+  const inactiveNavLinkClass =
+    "text-gray-400 hover:text-white hover:bg-gray-800/50";
 
   const handleLogout = () => {
     logout();
     navigate("/login");
-  };
-
-  const isActive = (path: string): boolean => {
-    if (path === "/") return pathname === "/";
-    return pathname.startsWith(path);
   };
 
   return (
@@ -56,18 +56,18 @@ const Navbar = () => {
       {/* Navigation Links */}
       <nav className="flex-1 p-4 overflow-y-auto">
         <ul className="space-y-1">
-          {NAVIGATION.map((nav) => {
-            return (
-              <li key={nav.path}>
-                <Link
-                  to={nav.path}
-                  className={`flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${"text-gray-400 hover:text-white hover:bg-gray-800/50"}`}
-                >
-                  <span>{nav.title}</span>
-                </Link>
-              </li>
-            );
-          })}
+          {NAVIGATION.map((nav) => (
+            <li key={nav.path}>
+              <NavLink
+                to={nav.path}
+                className={({ isActive }) =>
+                  `${baseNavLinkClass} ${isActive ? activeNavLinkClass : inactiveNavLinkClass}`
+                }
+              >
+                <span>{nav.title}</span>
+              </NavLink>
+            </li>
+          ))}
         </ul>
       </nav>
     </aside>
