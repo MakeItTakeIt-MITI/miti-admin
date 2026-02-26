@@ -42,7 +42,7 @@ export default function CourtsList() {
         </div>
 
         {/* Filters Bar */}
-        <div className="rounded-xl border border-gray-800 bg-gray-900/70 p-4 backdrop-blur-sm">
+        <div className="relative z-30 rounded-xl border border-gray-800 bg-gray-900/70 p-4 backdrop-blur-sm">
           <div className="flex flex-wrap items-end gap-4">
             {/* Province Filter - Custom Dropdown */}
             <div className="min-w-[200px] flex-1 space-y-2 md:max-w-[420px]">
@@ -78,7 +78,7 @@ export default function CourtsList() {
 
                   {/* Dropdown Menu */}
                   {isDropdownOpen && (
-                    <div className="absolute z-10 mt-2 max-h-64 w-full overflow-y-auto rounded-lg border border-gray-700 bg-gray-800 shadow-xl">
+                    <div className="absolute z-50 mt-2 max-h-64 w-full overflow-y-auto rounded-lg border border-gray-700 bg-gray-800 shadow-xl">
                       <div className="p-1">
                         <button
                           onClick={() => {
@@ -202,7 +202,7 @@ export default function CourtsList() {
           </div>
         ) : (
           /* Courts Grid */
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="relative z-0 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {rows.map((u) => (
               <CourtsCard key={u.id} u={u} />
             ))}
