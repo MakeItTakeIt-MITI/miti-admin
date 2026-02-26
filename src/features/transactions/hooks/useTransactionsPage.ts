@@ -16,8 +16,10 @@ export const useTransferStatusesPage = () => {
 
   const rows = useMemo(() => {
     if (!transferRequestData) return [];
-    if (Array.isArray(transferRequestData)) return transferRequestData;
-    return transferRequestData;
+    if (Array.isArray(transferRequestData)) {
+      return transferRequestData.filter((row): row is NonNullable<typeof row> => Boolean(row));
+    }
+    return transferRequestData ? [transferRequestData] : [];
   }, [transferRequestData]);
 
   return {

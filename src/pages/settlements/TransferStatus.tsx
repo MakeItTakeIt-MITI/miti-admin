@@ -5,6 +5,7 @@ import { TABLE_STYLES } from "../../components/common/tableStyles";
 
 export default function TransferStatus() {
   const { hasNextPage, fetchNextPage, rows } = useTransferStatusesPage();
+  const safeRows = rows.filter((row): row is NonNullable<typeof row> => Boolean(row));
 
   const {
     openId,
@@ -15,7 +16,6 @@ export default function TransferStatus() {
     badgeCls,
     statusValue,
     setStatusValue,
-    // editTransferStatus,
     handleUpdateStatus,
   } = useTransactionDetailsContainer();
 
@@ -41,18 +41,18 @@ export default function TransferStatus() {
             </tr>
           </thead>
           <tbody>
-            {rows.length === 0 && (
+            {safeRows.length === 0 && (
               <tr>
                 <td colSpan={9} className={TABLE_STYLES.emptyCell}>
                   결과가 없습니다.
                 </td>
               </tr>
             )}
-            {rows.map((r) => {
+            {safeRows.map((r) => {
               const statusCls =
-                r.transfer_status === "completed"
+                r?.transfer_status === "completed"
                   ? "bg-emerald-600/20 text-emerald-300 ring-1 ring-inset ring-emerald-500/30"
-                  : r.transfer_status === "waiting"
+                  : r?.transfer_status === "waiting"
                     ? "bg-amber-600/20 text-amber-300 ring-1 ring-inset ring-amber-500/30"
                     : "bg-rose-600/20 text-rose-300 ring-1 ring-inset ring-rose-500/30";
               return (
