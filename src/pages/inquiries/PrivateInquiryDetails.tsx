@@ -1,16 +1,10 @@
 import { usePrivateInquiryDetailsPage } from "../../features/private_inquries/hooks/usePrivateInquiryDetailsPage";
 
 export default function PrivateInquiryDetails() {
-  const {
-    inquiryDetailData,
-    inquiryAnswerData,
-    handleSubmitReply,
-    setReplyContent,
-    replyContent,
-  } = usePrivateInquiryDetailsPage();
+  const { inquiryDetailData, inquiryAnswerData, handleSubmitReply, setReplyContent, replyContent } =
+    usePrivateInquiryDetailsPage();
 
-  const answerStatus =
-    inquiryDetailData.num_of_answers === 0 ? "미답변" : "답변완료";
+  const answerStatus = inquiryDetailData.num_of_answers === 0 ? "미답변" : "답변완료";
   const statusCls =
     inquiryDetailData.num_of_answers === 0
       ? "bg-rose-600/20 text-rose-300 ring-1 ring-inset ring-rose-500/30"
@@ -77,43 +71,28 @@ export default function PrivateInquiryDetails() {
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-semibold text-white">답변</h2>
           <span className="text-[11px] text-gray-400">
-            총 {Array.isArray(inquiryAnswerData) ? inquiryAnswerData.length : 0}
-            개
+            총 {Array.isArray(inquiryAnswerData) ? inquiryAnswerData.length : 0}개
           </span>
         </div>
 
         {Array.isArray(inquiryAnswerData) && inquiryAnswerData.length > 0 ? (
           <ul className="space-y-4">
             {inquiryAnswerData.map(
-              (ans: {
-                id: number;
-                content: string;
-                created_at?: string;
-                modified_at?: string;
-              }) => (
-                <li
-                  key={ans.id}
-                  className="rounded-md border border-gray-700 bg-gray-900/60 p-4"
-                >
+              (ans: { id: number; content: string; created_at?: string; modified_at?: string }) => (
+                <li key={ans.id} className="rounded-md border border-gray-700 bg-gray-900/60 p-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs text-gray-400">
-                      작성일:{" "}
-                      {ans.created_at
-                        ? new Date(ans.created_at).toLocaleString()
-                        : "-"}
+                      작성일: {ans.created_at ? new Date(ans.created_at).toLocaleString() : "-"}
                     </span>
                     <span className="text-[11px] text-gray-500">
-                      수정일:{" "}
-                      {ans.modified_at
-                        ? new Date(ans.modified_at).toLocaleString()
-                        : "-"}
+                      수정일: {ans.modified_at ? new Date(ans.modified_at).toLocaleString() : "-"}
                     </span>
                   </div>
                   <div className="text-sm whitespace-pre-line text-gray-200">
                     {ans.content || "-"}
                   </div>
                 </li>
-              )
+              ),
             )}
           </ul>
         ) : (

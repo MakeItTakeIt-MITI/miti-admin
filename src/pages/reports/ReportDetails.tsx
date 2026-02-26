@@ -39,11 +39,7 @@ export const ReportDetails = () => {
     );
   }
 
-  if (
-    isModalOpen === "approve" ||
-    isModalOpen === "dismiss" ||
-    isModalOpen !== null
-  ) {
+  if (isModalOpen === "approve" || isModalOpen === "dismiss" || isModalOpen !== null) {
     return (
       <ReportActionModal
         isModalOpen={isModalOpen}
@@ -65,12 +61,7 @@ export const ReportDetails = () => {
               onClick={() => navigate("/reports")}
               className="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-700 bg-gray-900 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
             >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -83,9 +74,7 @@ export const ReportDetails = () => {
               <h1 className="text-2xl font-bold text-white">
                 {typeLabel(report.report_type)} 상세
               </h1>
-              <p className="text-sm text-gray-400 mt-1">
-                신고 ID: #{report.id}
-              </p>
+              <p className="text-sm text-gray-400 mt-1">신고 ID: #{report.id}</p>
             </div>
           </div>
         </div>
@@ -96,7 +85,7 @@ export const ReportDetails = () => {
             <span className="text-xs text-gray-400 mb-1">현재 상태</span>
             <span
               className={`inline-flex rounded-full px-3 py-1.5 text-xs font-medium ${statusBadge(
-                report.report_status
+                report.report_status,
               )}`}
             >
               {statusLabel(report.report_status)}
@@ -128,52 +117,28 @@ export const ReportDetails = () => {
             <div className="p-6">
               <div className="space-y-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-gray-400">
-                    닉네임
-                  </label>
-                  <p className="text-sm text-white">
-                    {report.reporter?.nickname || "-"}
-                  </p>
+                  <label className="text-xs font-medium text-gray-400">닉네임</label>
+                  <p className="text-sm text-white">{report.reporter?.nickname || "-"}</p>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-gray-400">
-                    이메일
-                  </label>
-                  <p className="text-sm text-white">
-                    {report.reporter?.email || "-"}
-                  </p>
+                  <label className="text-xs font-medium text-gray-400">이메일</label>
+                  <p className="text-sm text-white">{report.reporter?.email || "-"}</p>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-gray-400">
-                    이름
-                  </label>
-                  <p className="text-sm text-white">
-                    {report.reporter?.name || "-"}
-                  </p>
+                  <label className="text-xs font-medium text-gray-400">이름</label>
+                  <p className="text-sm text-white">{report.reporter?.name || "-"}</p>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-gray-400">
-                    전화번호
-                  </label>
-                  <p className="text-sm text-white">
-                    {report.reporter?.phone || "-"}
-                  </p>
+                  <label className="text-xs font-medium text-gray-400">전화번호</label>
+                  <p className="text-sm text-white">{report.reporter?.phone || "-"}</p>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-gray-400">
-                    생년월일
-                  </label>
-                  <p className="text-sm text-white">
-                    {report.reporter?.birthday || "-"}
-                  </p>
+                  <label className="text-xs font-medium text-gray-400">생년월일</label>
+                  <p className="text-sm text-white">{report.reporter?.birthday || "-"}</p>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-gray-400">
-                    가입 방법
-                  </label>
-                  <p className="text-sm text-white">
-                    {report.reporter?.signup_method || "-"}
-                  </p>
+                  <label className="text-xs font-medium text-gray-400">가입 방법</label>
+                  <p className="text-sm text-white">{report.reporter?.signup_method || "-"}</p>
                 </div>
               </div>
             </div>
@@ -182,59 +147,33 @@ export const ReportDetails = () => {
           {/* Reportee Info - 피신고자 */}
           <div className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
             <div className="border-b border-gray-800 bg-gray-800/50 px-6 py-4">
-              <h2 className="text-lg font-semibold text-white">
-                피신고자 정보
-              </h2>
+              <h2 className="text-lg font-semibold text-white">피신고자 정보</h2>
             </div>
             <div className="p-6">
               <div className="space-y-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-gray-400">
-                    닉네임
-                  </label>
-                  <p className="text-sm text-white">
-                    {report.reportee?.nickname || "-"}
-                  </p>
+                  <label className="text-xs font-medium text-gray-400">닉네임</label>
+                  <p className="text-sm text-white">{report.reportee?.nickname || "-"}</p>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-gray-400">
-                    이메일
-                  </label>
-                  <p className="text-sm text-white">
-                    {report.reportee?.email || "-"}
-                  </p>
+                  <label className="text-xs font-medium text-gray-400">이메일</label>
+                  <p className="text-sm text-white">{report.reportee?.email || "-"}</p>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-gray-400">
-                    이름
-                  </label>
-                  <p className="text-sm text-white">
-                    {report.reportee?.name || "-"}
-                  </p>
+                  <label className="text-xs font-medium text-gray-400">이름</label>
+                  <p className="text-sm text-white">{report.reportee?.name || "-"}</p>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-gray-400">
-                    전화번호
-                  </label>
-                  <p className="text-sm text-white">
-                    {report.reportee?.phone || "-"}
-                  </p>
+                  <label className="text-xs font-medium text-gray-400">전화번호</label>
+                  <p className="text-sm text-white">{report.reportee?.phone || "-"}</p>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-gray-400">
-                    생년월일
-                  </label>
-                  <p className="text-sm text-white">
-                    {report.reportee?.birthday || "-"}
-                  </p>
+                  <label className="text-xs font-medium text-gray-400">생년월일</label>
+                  <p className="text-sm text-white">{report.reportee?.birthday || "-"}</p>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-gray-400">
-                    가입 방법
-                  </label>
-                  <p className="text-sm text-white">
-                    {report.reportee?.signup_method || "-"}
-                  </p>
+                  <label className="text-xs font-medium text-gray-400">가입 방법</label>
+                  <p className="text-sm text-white">{report.reportee?.signup_method || "-"}</p>
                 </div>
               </div>
             </div>
@@ -248,14 +187,14 @@ export const ReportDetails = () => {
             <div className="flex items-center gap-3">
               <span
                 className={`inline-flex rounded-full px-3 py-1.5 text-xs font-medium ${typeBadge(
-                  report.report_type
+                  report.report_type,
                 )}`}
               >
                 {typeLabel(report.report_type)}
               </span>
               <span
                 className={`inline-flex rounded-full px-3 py-1.5 text-xs font-medium ${statusBadge(
-                  report.report_status
+                  report.report_status,
                 )}`}
               >
                 {statusLabel(report.report_status)}
@@ -265,17 +204,11 @@ export const ReportDetails = () => {
           <div className="p-6 space-y-4">
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-1">
-                <label className="text-xs font-medium text-gray-400">
-                  신고 유형
-                </label>
-                <p className="text-sm text-white">
-                  {typeLabel(report.report_type)}
-                </p>
+                <label className="text-xs font-medium text-gray-400">신고 유형</label>
+                <p className="text-sm text-white">{typeLabel(report.report_type)}</p>
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-medium text-gray-400">
-                  신고 일시
-                </label>
+                <label className="text-xs font-medium text-gray-400">신고 일시</label>
                 <p className="text-sm text-white">
                   {new Date(report.created_at).toLocaleString("ko-KR", {
                     year: "numeric",
@@ -289,18 +222,12 @@ export const ReportDetails = () => {
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-medium text-gray-400">
-                신고 사유
-              </label>
-              <p className="text-sm text-white">
-                {report.report_reason || "-"}
-              </p>
+              <label className="text-xs font-medium text-gray-400">신고 사유</label>
+              <p className="text-sm text-white">{report.report_reason || "-"}</p>
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-medium text-gray-400">
-                신고 내용
-              </label>
+              <label className="text-xs font-medium text-gray-400">신고 내용</label>
               <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700 min-h-[120px]">
                 <p className="text-sm text-gray-300 whitespace-pre-wrap leading-relaxed">
                   {report.content || "내용 없음"}

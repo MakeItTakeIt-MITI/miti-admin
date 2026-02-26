@@ -32,11 +32,9 @@ interface Participant {
 
 export const Participants = ({ gameId }: ParticipantsProps) => {
   const { data } = useGameParticipantsHook(gameId);
-  const participants: Participant[] = data?.data || [];
+  const participants = useMemo<Participant[]>(() => data?.data ?? [], [data?.data]);
 
-  const [sortKey, setSortKey] = useState<
-    "id" | "participation_status" | "nickname"
-  >("id");
+  const [sortKey, setSortKey] = useState<"id" | "participation_status" | "nickname">("id");
   const [asc, setAsc] = useState(true);
 
   const toggleSort = (key: typeof sortKey) => {
@@ -54,14 +52,14 @@ export const Participants = ({ gameId }: ParticipantsProps) => {
         sortKey === "nickname"
           ? a.user?.nickname || ""
           : sortKey === "participation_status"
-          ? a.participation_status || ""
-          : a.id;
+            ? a.participation_status || ""
+            : a.id;
       const vb =
         sortKey === "nickname"
           ? b.user?.nickname || ""
           : sortKey === "participation_status"
-          ? b.participation_status || ""
-          : b.id;
+            ? b.participation_status || ""
+            : b.id;
       if (va < vb) return asc ? -1 : 1;
       if (va > vb) return asc ? 1 : -1;
       return 0;
@@ -90,9 +88,7 @@ export const Participants = ({ gameId }: ParticipantsProps) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
-        <span className="text-xs text-gray-300">
-          참가자 {participants.length}명
-        </span>
+        <span className="text-xs text-gray-300">참가자 {participants.length}명</span>
         <button
           type="button"
           className="h-8 px-3 text-xs bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500"
@@ -135,10 +131,7 @@ export const Participants = ({ gameId }: ParticipantsProps) => {
           <tbody>
             {sorted.length === 0 && (
               <tr>
-                <td
-                  className="px-4 py-10 text-center text-gray-400"
-                  colSpan={10}
-                >
+                <td className="px-4 py-10 text-center text-gray-400" colSpan={10}>
                   참가자가 없습니다.
                 </td>
               </tr>
@@ -187,27 +180,13 @@ export const Participants = ({ gameId }: ParticipantsProps) => {
                     </span>
                   </td>
                   <td className="px-4 py-2 text-white">{p.id}</td>
-                  <td className="px-4 py-2 text-gray-300">
-                    {p.user?.nickname || "-"}
-                  </td>
-                  <td className="px-4 py-2 text-gray-300">
-                    {p.user?.email || "-"}
-                  </td>
-                  <td className="px-4 py-2 text-gray-300">
-                    {p.user?.birthday || "-"}
-                  </td>
-                  <td className="px-4 py-2 text-gray-300">
-                    {formatKoreanPhone(p.user?.phone)}
-                  </td>
-                  <td className="px-4 py-2 text-gray-300">
-                    {p.user?.name ?? "-"}
-                  </td>
-                  <td className="px-4 py-2 text-gray-300">
-                    {profile?.height ?? "-"}
-                  </td>
-                  <td className="px-4 py-2 text-gray-300">
-                    {profile?.weight ?? "-"}
-                  </td>
+                  <td className="px-4 py-2 text-gray-300">{p.user?.nickname || "-"}</td>
+                  <td className="px-4 py-2 text-gray-300">{p.user?.email || "-"}</td>
+                  <td className="px-4 py-2 text-gray-300">{p.user?.birthday || "-"}</td>
+                  <td className="px-4 py-2 text-gray-300">{formatKoreanPhone(p.user?.phone)}</td>
+                  <td className="px-4 py-2 text-gray-300">{p.user?.name ?? "-"}</td>
+                  <td className="px-4 py-2 text-gray-300">{profile?.height ?? "-"}</td>
+                  <td className="px-4 py-2 text-gray-300">{profile?.weight ?? "-"}</td>
                 </tr>
               );
             })}

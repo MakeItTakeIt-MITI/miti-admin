@@ -15,10 +15,7 @@ const CourtsCard = ({ u }: CourtsCardProps) => {
     images && images.length > 0 ? images[0] : "court placeholder";
 
   return (
-    <div
-      key={u.id}
-      className="group rounded-lg overflow-hidden border border-gray-800 bg-black  "
-    >
+    <div key={u.id} className="group rounded-lg overflow-hidden border border-gray-800 bg-black  ">
       <div className="aspect-square bg-gray-800">
         {u.images.length === 0 ? (
           <div className="h-full w-full flex items-center justify-center text-gray-600">
@@ -35,19 +32,14 @@ const CourtsCard = ({ u }: CourtsCardProps) => {
 
       <div className="p-3 flex flex-col gap-1">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-white truncate">
-            {u.name}
-          </h3>
+          <h3 className="text-sm font-semibold text-white truncate">{u.name}</h3>
           <span className="text-[10px] text-gray-400">ID {u.id}</span>
         </div>
         <p className="text-[11px] text-gray-300 line-clamp-2">
           {u.address} {u.address_detail ?? ""}
         </p>
         <div>
-          <Link
-            to={`detail?courtId=${u.id}`}
-            className="text-blue-400 hover:text-blue-300 text-xs"
-          >
+          <Link to={`detail?courtId=${u.id}`} className="text-blue-400 hover:text-blue-300 text-xs">
             상세 보기
           </Link>
         </div>

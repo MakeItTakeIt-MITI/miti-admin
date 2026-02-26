@@ -1,10 +1,10 @@
 export interface HostInfoField {
-    id: number;
-    name: string;
-    nickname: string;
-    email: string;
-    birthday: string;
-    phone: number
+  id: number;
+  name: string;
+  nickname: string;
+  email: string;
+  birthday: string;
+  phone: number;
 }
 
 /**

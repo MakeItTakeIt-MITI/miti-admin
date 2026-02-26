@@ -4,8 +4,7 @@ import { useGamesPage } from "../../features/games/hooks/useGamesPage";
 import { Link } from "react-router-dom";
 
 const GamesList = () => {
-  const { hasNextPage, fetchNextPage, rows, status, setStatus } =
-    useGamesPage();
+  const { hasNextPage, fetchNextPage, rows, status, setStatus } = useGamesPage();
 
   return (
     <section className="w-full  p-8  flex flex-col gap-4 bg-black">
@@ -15,10 +14,7 @@ const GamesList = () => {
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
-        <label
-          htmlFor="game_status"
-          className="text-[11px] font-medium text-gray-300"
-        >
+        <label htmlFor="game_status" className="text-[11px] font-medium text-gray-300">
           상태 필터
         </label>
         <select
@@ -57,25 +53,22 @@ const GamesList = () => {
           <tbody>
             {rows.length === 0 && (
               <tr>
-                <td
-                  colSpan={10}
-                  className="px-4 py-10 text-center text-gray-400"
-                >
+                <td colSpan={10} className="px-4 py-10 text-center text-gray-400">
                   결과가 없습니다.
                 </td>
               </tr>
             )}
-            {rows?.map((g: any) => {
+            {rows?.map((g) => {
               const statusCls =
                 g.game_status === "completed"
                   ? "bg-emerald-600/20 text-emerald-300 ring-1 ring-inset ring-emerald-500/30"
                   : g.game_status === "canceled"
-                  ? "bg-red-600/20 text-red-300 ring-1 ring-inset ring-red-500/30"
-                  : g.game_status === "closed"
-                  ? "bg-amber-600/20 text-amber-300 ring-1 ring-inset ring-amber-500/30"
-                  : g.game_status === "open"
-                  ? "bg-blue-600/20 text-blue-300 ring-1 ring-inset ring-blue-500/30"
-                  : "bg-blue-600/20 text-blue-300 ring-1 ring-inset ring-blue-500/30";
+                    ? "bg-red-600/20 text-red-300 ring-1 ring-inset ring-red-500/30"
+                    : g.game_status === "closed"
+                      ? "bg-amber-600/20 text-amber-300 ring-1 ring-inset ring-amber-500/30"
+                      : g.game_status === "open"
+                        ? "bg-blue-600/20 text-blue-300 ring-1 ring-inset ring-blue-500/30"
+                        : "bg-blue-600/20 text-blue-300 ring-1 ring-inset ring-blue-500/30";
 
               const statusLabelMap: Record<string, string> = {
                 open: "모집중",
@@ -84,8 +77,7 @@ const GamesList = () => {
                 completed: "경기 완료",
               };
 
-              const statusLabel =
-                statusLabelMap[g.game_status] ?? g.game_status;
+              const statusLabel = statusLabelMap[g.game_status] ?? g.game_status;
 
               return (
                 <tr
@@ -110,16 +102,12 @@ const GamesList = () => {
                   <td className="px-4 py-2 text-gray-300">
                     {g.min_invitation}/{g.max_invitation}
                   </td>
-                  <td className="px-4 py-2 text-gray-300">
-                    {g.num_of_participations}
-                  </td>
+                  <td className="px-4 py-2 text-gray-300">{g.num_of_participations}</td>
                   <td className="px-4 py-2 text-gray-300">
                     {g.fee ? `${g.fee.toLocaleString()}원` : "무료"}
                   </td>
                   <td className="px-4 py-2 text-gray-300">
-                    {g.created_at
-                      ? new Date(g.created_at).toLocaleString()
-                      : "-"}
+                    {g.created_at ? new Date(g.created_at).toLocaleString() : "-"}
                   </td>
                   <td className="px-4 py-2">
                     <Link

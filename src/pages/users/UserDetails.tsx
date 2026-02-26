@@ -7,10 +7,8 @@ const formatKoreanPhone = (phone?: string) => {
   if (!phone) return "연락처 없음";
   let digits = phone.replace(/\D/g, "");
   if (digits.startsWith("82")) digits = "0" + digits.slice(2);
-  if (digits.length === 11)
-    return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
-  if (digits.length === 10)
-    return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
+  if (digits.length === 11) return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
+  if (digits.length === 10) return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
   return phone;
 };
 
@@ -47,9 +45,7 @@ export const UserDetails = () => {
   if (!userData) {
     return (
       <section className="min-h-screen w-full flex items-center justify-center bg-gray-950">
-        <div className="text-gray-400 text-sm">
-          사용자 정보를 찾을 수 없습니다.
-        </div>
+        <div className="text-gray-400 text-sm">사용자 정보를 찾을 수 없습니다.</div>
       </section>
     );
   }
@@ -77,10 +73,7 @@ export const UserDetails = () => {
                 {/* Avatar */}
                 <div className="relative">
                   <img
-                    src={
-                      userData.profile_image_url ||
-                      "https://via.placeholder.com/80"
-                    }
+                    src={userData.profile_image_url || "https://via.placeholder.com/80"}
                     alt={userData.nickname || "User"}
                     className="h-20 w-20 rounded-full ring-2 ring-blue-600/40 object-cover"
                     onError={(e) => {
@@ -102,9 +95,7 @@ export const UserDetails = () => {
                     )}
                   </div>
                   <div className="flex flex-wrap gap-3 text-xs text-gray-400">
-                    <span>
-                      가입일: {userData.created_at?.slice(0, 10) || "없음"}
-                    </span>
+                    <span>가입일: {userData.created_at?.slice(0, 10) || "없음"}</span>
                     <span>•</span>
                     <span>생년월일: {userData.birthday || "없음"}</span>
                     <span>•</span>
@@ -139,21 +130,15 @@ export const UserDetails = () => {
             <div className="grid gap-6 md:grid-cols-2">
               {/* Basic Info */}
               <div className="rounded-lg border border-gray-800 bg-gray-800/50 p-6 space-y-4">
-                <h3 className="text-sm font-semibold tracking-wide text-gray-200">
-                  기본 정보
-                </h3>
+                <h3 className="text-sm font-semibold tracking-wide text-gray-200">기본 정보</h3>
                 <dl className="space-y-3 text-sm">
                   <div className="flex justify-between">
                     <dt className="text-gray-400">이름</dt>
-                    <dd className="text-gray-200 font-medium">
-                      {userData.name || "이름 없음"}
-                    </dd>
+                    <dd className="text-gray-200 font-medium">{userData.name || "이름 없음"}</dd>
                   </div>
                   <div className="flex justify-between">
                     <dt className="text-gray-400">이메일</dt>
-                    <dd className="text-gray-200 font-medium">
-                      {userData.email || "이메일 없음"}
-                    </dd>
+                    <dd className="text-gray-200 font-medium">{userData.email || "이메일 없음"}</dd>
                   </div>
                   <div className="flex justify-between">
                     <dt className="text-gray-400">연락처</dt>
@@ -163,18 +148,14 @@ export const UserDetails = () => {
                   </div>
                   <div className="flex justify-between">
                     <dt className="text-gray-400">생년월일</dt>
-                    <dd className="text-gray-200 font-medium">
-                      {userData.birthday || "없음"}
-                    </dd>
+                    <dd className="text-gray-200 font-medium">{userData.birthday || "없음"}</dd>
                   </div>
                 </dl>
               </div>
 
               {/* Player Profile */}
               <div className="rounded-lg border border-gray-800 bg-gray-800/50 p-6 space-y-4">
-                <h3 className="text-sm font-semibold tracking-wide text-gray-200">
-                  선수 프로필
-                </h3>
+                <h3 className="text-sm font-semibold tracking-wide text-gray-200">선수 프로필</h3>
                 <dl className="space-y-3 text-sm">
                   <div className="flex justify-between">
                     <dt className="text-gray-400">성별</dt>

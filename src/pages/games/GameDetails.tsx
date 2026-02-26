@@ -17,21 +17,14 @@ const GameDetails = () => {
   // PATCH GAME INFO
   const { mutate } = usePatchGameDetailsHook(Number(gameId));
 
-  const handleDisplayEditContainer = () =>
-    setShowEditContainer(!showEditContainer);
+  const handleDisplayEditContainer = () => setShowEditContainer(!showEditContainer);
 
-  const [minPlayers, setMinPlayers] = useState<number>(
-    data?.data.min_invitation
-  );
-  const [maxPlayers, setMaxPlayers] = useState<number>(
-    data?.data.max_invitation
-  );
+  const [minPlayers, setMinPlayers] = useState<number>(data?.data.min_invitation);
+  const [maxPlayers, setMaxPlayers] = useState<number>(data?.data.max_invitation);
   const [gameInfo, setGameInfo] = useState(data?.data.info);
   const [showEditContainer, setShowEditContainer] = useState(false);
 
-  const handleSetTab = (
-    selected: "gameInfo" | "participants" | "hostReportInfo"
-  ) => {
+  const handleSetTab = (selected: "gameInfo" | "participants" | "hostReportInfo") => {
     setSearchParams((prev) => {
       const params = new URLSearchParams(prev);
       params.set("tab", selected);
@@ -50,7 +43,7 @@ const GameDetails = () => {
         onSuccess: () => {
           setShowEditContainer(false);
         },
-      }
+      },
     );
   };
 
@@ -69,9 +62,7 @@ const GameDetails = () => {
             <div className="text-center space-y-4">
               <h1 className="text-center font-bold text-lg">경기 정보 수정</h1>
               {minPlayers >= maxPlayers && (
-                <p className="text-xs text-red-600">
-                  최소 인원은 최대 인원보다 작아야 합니다.
-                </p>
+                <p className="text-xs text-red-600">최소 인원은 최대 인원보다 작아야 합니다.</p>
               )}
             </div>
             {/* <hr /> */}
@@ -121,9 +112,7 @@ const GameDetails = () => {
               onClick={handleSubmitUpdate}
               disabled={minPlayers >= maxPlayers}
               className={`w-full h-10 ${
-                minPlayers >= maxPlayers
-                  ? "bg-gray-200 text-gray-400"
-                  : " bg-blue-600 text-white"
+                minPlayers >= maxPlayers ? "bg-gray-200 text-gray-400" : " bg-blue-600 text-white"
               }  rounded-lg  font-semibold`}
             >
               수정하기
@@ -153,9 +142,7 @@ const GameDetails = () => {
                     role="tab"
                     aria-selected={active}
                     onClick={() =>
-                      handleSetTab(
-                        t.key as "gameInfo" | "participants" | "hostReportInfo"
-                      )
+                      handleSetTab(t.key as "gameInfo" | "participants" | "hostReportInfo")
                     }
                     className={`px-4 py-3 text-xs font-semibold flex items-center justify-center transition-colors
                       ${
@@ -166,9 +153,7 @@ const GameDetails = () => {
                   >
                     <span className="flex items-center gap-2">
                       {t.label}
-                      {active && (
-                        <span className="inline-block h-2 w-2 rounded-full bg-blue-500" />
-                      )}
+                      {active && <span className="inline-block h-2 w-2 rounded-full bg-blue-500" />}
                     </span>
                   </button>
                 );
@@ -179,10 +164,7 @@ const GameDetails = () => {
           {/* Tab content container */}
           <div className="rounded-lg border border-gray-700 bg-gray-800 p-6">
             {tab === "gameInfo" && (
-              <GameInfo
-                data={data?.data}
-                handleDisplayEditContainer={handleDisplayEditContainer}
-              />
+              <GameInfo data={data?.data} handleDisplayEditContainer={handleDisplayEditContainer} />
             )}
             {tab === "participants" && <Participants gameId={Number(gameId)} />}
             {tab === "hostReportInfo" && <Reports gameId={Number(gameId)} />}

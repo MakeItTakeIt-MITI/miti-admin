@@ -42,21 +42,18 @@ export default function TransferStatus() {
           <tbody>
             {rows.length === 0 && (
               <tr>
-                <td
-                  colSpan={9}
-                  className="px-4 py-10 text-center text-gray-400"
-                >
+                <td colSpan={9} className="px-4 py-10 text-center text-gray-400">
                   결과가 없습니다.
                 </td>
               </tr>
             )}
-            {rows.map((r: any) => {
+            {rows.map((r) => {
               const statusCls =
                 r.transfer_status === "completed"
                   ? "bg-emerald-600/20 text-emerald-300 ring-1 ring-inset ring-emerald-500/30"
                   : r.transfer_status === "waiting"
-                  ? "bg-amber-600/20 text-amber-300 ring-1 ring-inset ring-amber-500/30"
-                  : "bg-rose-600/20 text-rose-300 ring-1 ring-inset ring-rose-500/30";
+                    ? "bg-amber-600/20 text-amber-300 ring-1 ring-inset ring-amber-500/30"
+                    : "bg-rose-600/20 text-rose-300 ring-1 ring-inset ring-rose-500/30";
               return (
                 <tr
                   key={r.id}
@@ -74,19 +71,11 @@ export default function TransferStatus() {
                   <td className="px-4 py-2 text-gray-300">
                     {r.amount ? `${r.amount.toLocaleString()}원` : "-"}
                   </td>
+                  <td className="px-4 py-2 text-gray-300">{r.account_bank || "-"}</td>
+                  <td className="px-4 py-2 text-gray-300">{r.account_holder || "-"}</td>
+                  <td className="px-4 py-2 text-gray-300">{r.account_number || "-"}</td>
                   <td className="px-4 py-2 text-gray-300">
-                    {r.account_bank || "-"}
-                  </td>
-                  <td className="px-4 py-2 text-gray-300">
-                    {r.account_holder || "-"}
-                  </td>
-                  <td className="px-4 py-2 text-gray-300">
-                    {r.account_number || "-"}
-                  </td>
-                  <td className="px-4 py-2 text-gray-300">
-                    {r.created_at
-                      ? new Date(r.created_at).toLocaleString()
-                      : "-"}
+                    {r.created_at ? new Date(r.created_at).toLocaleString() : "-"}
                   </td>
                   <td className="px-4 py-2">
                     <button
@@ -105,9 +94,7 @@ export default function TransferStatus() {
 
       <div
         className={`fixed inset-0 z-50 transition-opacity duration-300 ${
-          openId !== null
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
+          openId !== null ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         onClick={handleClose}
       >
@@ -130,7 +117,7 @@ export default function TransferStatus() {
             {detailData && (
               <span
                 className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${badgeCls(
-                  detailData.transfer_status
+                  detailData.transfer_status,
                 )}`}
               >
                 {detailData.transfer_status}
@@ -148,26 +135,18 @@ export default function TransferStatus() {
         </div>
 
         <div className="flex-1 overflow-y-auto px-6 py-6 space-y-8 text-xs scrollbar-thin scrollbar-track-gray-900 scrollbar-thumb-gray-700">
-          {!detailData && (
-            <div className="text-gray-400 text-center py-24">
-              항목을 선택하세요.
-            </div>
-          )}
+          {!detailData && <div className="text-gray-400 text-center py-24">항목을 선택하세요.</div>}
 
           {detailData && (
             <>
               {/* 기본 정보 */}
               <section className="space-y-3">
-                <h3 className="text-xs font-semibold text-gray-200">
-                  기본 정보
-                </h3>
+                <h3 className="text-xs font-semibold text-gray-200">기본 정보</h3>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="flex flex-col gap-0.5">
                     <span className="text-gray-400">금액</span>
                     <span className="text-gray-200 font-medium">
-                      {detailData.amount
-                        ? `${detailData.amount.toLocaleString()}원`
-                        : "-"}
+                      {detailData.amount ? `${detailData.amount.toLocaleString()}원` : "-"}
                     </span>
                   </div>
                   <div className="flex flex-col gap-0.5">
@@ -183,27 +162,19 @@ export default function TransferStatus() {
 
               {/* 계좌 정보 */}
               <section className="space-y-3">
-                <h3 className="text-xs font-semibold text-gray-200">
-                  계좌 정보
-                </h3>
+                <h3 className="text-xs font-semibold text-gray-200">계좌 정보</h3>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="flex flex-col gap-0.5">
                     <span className="text-gray-400">은행</span>
-                    <span className="text-gray-300">
-                      {detailData.account_bank || "-"}
-                    </span>
+                    <span className="text-gray-300">{detailData.account_bank || "-"}</span>
                   </div>
                   <div className="flex flex-col gap-0.5">
                     <span className="text-gray-400">예금주</span>
-                    <span className="text-gray-300">
-                      {detailData.account_holder || "-"}
-                    </span>
+                    <span className="text-gray-300">{detailData.account_holder || "-"}</span>
                   </div>
                   <div className="col-span-2 flex flex-col gap-0.5">
                     <span className="text-gray-400">계좌번호</span>
-                    <span className="text-gray-300">
-                      {detailData.account_number || "-"}
-                    </span>
+                    <span className="text-gray-300">{detailData.account_number || "-"}</span>
                   </div>
                 </div>
               </section>
@@ -211,21 +182,15 @@ export default function TransferStatus() {
               {/* 계정 상세 */}
 
               <section className="space-y-3">
-                <h3 className="text-xs font-semibold text-gray-200">
-                  계정 상세
-                </h3>
+                <h3 className="text-xs font-semibold text-gray-200">계정 상세</h3>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="flex flex-col gap-0.5">
                     <span className="text-gray-400">계정 ID</span>
-                    <span className="text-gray-300">
-                      {detailData.account.id}
-                    </span>
+                    <span className="text-gray-300">{detailData.account.id}</span>
                   </div>
                   <div className="flex flex-col gap-0.5">
                     <span className="text-gray-400">타입</span>
-                    <span className="text-gray-300">
-                      {detailData.account.account_type}
-                    </span>
+                    <span className="text-gray-300">{detailData.account.account_type}</span>
                   </div>
                   <div className="flex flex-col gap-0.5">
                     <span className="text-gray-400">잔액</span>
@@ -237,15 +202,11 @@ export default function TransferStatus() {
                   </div>
                   <div className="flex flex-col gap-0.5">
                     <span className="text-gray-400">포인트</span>
-                    <span className="text-gray-300">
-                      {detailData.account.point}
-                    </span>
+                    <span className="text-gray-300">{detailData.account.point}</span>
                   </div>
                   <div className="col-span-2 flex flex-col gap-0.5">
                     <span className="text-gray-400">상태</span>
-                    <span className="text-gray-300">
-                      {detailData.account.status}
-                    </span>
+                    <span className="text-gray-300">{detailData.account.status}</span>
                   </div>
                 </div>
               </section>
@@ -253,33 +214,23 @@ export default function TransferStatus() {
               {/* 사용자 정보 */}
               {detailData.account?.user && (
                 <section className="space-y-3">
-                  <h3 className="text-xs font-semibold text-gray-200">
-                    사용자 정보
-                  </h3>
+                  <h3 className="text-xs font-semibold text-gray-200">사용자 정보</h3>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="flex flex-col gap-0.5">
                       <span className="text-gray-400">ID</span>
-                      <span className="text-gray-300">
-                        {detailData.account.user.id}
-                      </span>
+                      <span className="text-gray-300">{detailData.account.user.id}</span>
                     </div>
                     <div className="flex flex-col gap-0.5">
                       <span className="text-gray-400">닉네임</span>
-                      <span className="text-gray-300">
-                        {detailData.account.user.nickname}
-                      </span>
+                      <span className="text-gray-300">{detailData.account.user.nickname}</span>
                     </div>
                     <div className="flex flex-col gap-0.5">
                       <span className="text-gray-400">이름</span>
-                      <span className="text-gray-300">
-                        {detailData.account.user.name}
-                      </span>
+                      <span className="text-gray-300">{detailData.account.user.name}</span>
                     </div>
                     <div className="flex flex-col gap-0.5">
                       <span className="text-gray-400">이메일</span>
-                      <span className="text-gray-300">
-                        {detailData.account.user.email}
-                      </span>
+                      <span className="text-gray-300">{detailData.account.user.email}</span>
                     </div>
                     <div className="flex flex-col gap-0.5">
                       <span className="text-gray-400">연락처</span>
@@ -289,23 +240,17 @@ export default function TransferStatus() {
                     </div>
                     <div className="flex flex-col gap-0.5">
                       <span className="text-gray-400">생년월일</span>
-                      <span className="text-gray-300">
-                        {detailData.account.user.birthday}
-                      </span>
+                      <span className="text-gray-300">{detailData.account.user.birthday}</span>
                     </div>
                     <div className="col-span-2 flex flex-col gap-0.5">
                       <span className="text-gray-400">가입수단</span>
-                      <span className="text-gray-300">
-                        {detailData.account.user.signup_method}
-                      </span>
+                      <span className="text-gray-300">{detailData.account.user.signup_method}</span>
                     </div>
                   </div>
                 </section>
               )}
               <section className="space-y-2">
-                <h3 className="text-xs font-semibold text-gray-200">
-                  이체 상태 변경
-                </h3>
+                <h3 className="text-xs font-semibold text-gray-200">이체 상태 변경</h3>
                 <select
                   // value={statusValue}
                   onChange={(e) => setStatusValue(e.target.value)}
@@ -320,7 +265,7 @@ export default function TransferStatus() {
                     현재 상태:
                     <span
                       className={`inline-flex rounded-full px-2 py-0.5 font-medium ${badgeCls(
-                        detailData?.transfer_status
+                        detailData?.transfer_status,
                       )}`}
                     >
                       {detailData?.transfer_status}
@@ -330,9 +275,7 @@ export default function TransferStatus() {
                     type="button"
                     // handleUpdateStatus from hook
                     onClick={() =>
-                      handleUpdateStatus(
-                        statusValue as "completed" | "pending" | "declined"
-                      )
+                      handleUpdateStatus(statusValue as "completed" | "pending" | "declined")
                     }
                     className="h-8 px-3 text-[11px] font-medium bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-40 disabled:cursor-not-allowed"
                   >

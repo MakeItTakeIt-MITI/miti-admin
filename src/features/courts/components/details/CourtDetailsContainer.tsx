@@ -80,9 +80,7 @@ CourtDetailsContainerProps) => {
           </div>
         </div>
       ) : (
-        <p className="sm:col-span-2 text-xs text-gray-200 ">
-          등록된 이미지가 없습니다.
-        </p>
+        <p className="sm:col-span-2 text-xs text-gray-200 ">등록된 이미지가 없습니다.</p>
       )}
     </div>
   );

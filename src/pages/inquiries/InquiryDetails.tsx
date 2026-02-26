@@ -22,9 +22,7 @@ export const InquiryDetails = () => {
               문의 제목: {data?.title || "-"}
             </h1>
             <div className="flex flex-wrap gap-3 text-xs">
-              <span className="text-gray-300">
-                생성일: {data?.created_at?.slice(0, 10) || "-"}
-              </span>
+              <span className="text-gray-300">생성일: {data?.created_at?.slice(0, 10) || "-"}</span>
               <span className="text-gray-300">
                 수정일: {data?.modified_at?.slice(0, 10) || "-"}
               </span>
@@ -60,20 +58,14 @@ export const InquiryDetails = () => {
               <tr className="border-t border-gray-700 hover:bg-gray-800 transition-colors">
                 <td className="px-4 py-2 text-white">{data.user.id}</td>
                 <td className="px-4 py-2 text-gray-300">{data.user.email}</td>
-                <td className="px-4 py-2 text-gray-300">
-                  {data.user.nickname || "-"}
-                </td>
-                <td className="px-4 py-2 text-gray-300">
-                  {data.user.birthday || "-"}
-                </td>
+                <td className="px-4 py-2 text-gray-300">{data.user.nickname || "-"}</td>
+                <td className="px-4 py-2 text-gray-300">{data.user.birthday || "-"}</td>
                 <td className="px-4 py-2">
                   <span className="inline-block rounded bg-gray-700 px-2 py-1 text-[10px] text-gray-200">
                     {data.user.signup_method || "-"}
                   </span>
                 </td>
-                <td className="px-4 py-2 text-gray-300">
-                  {formatKoreanPhone(data.user.phone)}
-                </td>
+                <td className="px-4 py-2 text-gray-300">{formatKoreanPhone(data.user.phone)}</td>
                 <td className="px-4 py-2 text-gray-300">
                   {data.user.created_at?.slice(0, 10) || "-"}
                 </td>
@@ -141,12 +133,9 @@ export const InquiryDetails = () => {
                 className="border border-gray-600 rounded-md p-3 text-xs bg-gray-900 flex flex-col gap-1"
               >
                 <span className="font-bold text-gray-200">
-                  {answer.created_at.slice(0, 10)}{" "}
-                  {answer.created_at.slice(11, 16)}
+                  {answer.created_at.slice(0, 10)} {answer.created_at.slice(11, 16)}
                 </span>
-                <span className="text-gray-300 whitespace-pre-line">
-                  {answer.content}
-                </span>
+                <span className="text-gray-300 whitespace-pre-line">{answer.content}</span>
               </li>
             ))}
           </ul>

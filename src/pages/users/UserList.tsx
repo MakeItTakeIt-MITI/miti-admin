@@ -51,10 +51,7 @@ const UserList = () => {
                 </td>
                 <td className="px-4 py-2 text-gray-300">{u.phone || "-"}</td>
                 <td className="px-4 py-2">
-                  <Link
-                    to={`detail?userId=${u.id}`}
-                    className="text-blue-400 hover:underline"
-                  >
+                  <Link to={`detail?userId=${u.id}`} className="text-blue-400 hover:underline">
                     보기
                   </Link>
                 </td>

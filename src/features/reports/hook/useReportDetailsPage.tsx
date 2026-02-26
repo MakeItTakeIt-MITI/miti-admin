@@ -10,9 +10,7 @@ export const useReportDetailsPage = () => {
   const navigate = useNavigate();
   const reportId = searchParams.get("reportId");
   const reportType = searchParams.get("report_type");
-  const [isModalOpen, setIsModalOpen] = useState<"approve" | "dismiss" | null>(
-    null
-  );
+  const [isModalOpen, setIsModalOpen] = useState<"approve" | "dismiss" | null>(null);
 
   const handleToggleApproveModal = () => {
     setIsModalOpen((prev) => (prev === "approve" ? null : "approve"));

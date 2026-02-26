@@ -5,13 +5,8 @@ import { toast } from "react-toastify";
 export const useInquiryReplyHook = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({
-      questionId,
-      content,
-    }: {
-      questionId: number;
-      content: string;
-    }) => addInquiryReply(questionId, content),
+    mutationFn: ({ questionId, content }: { questionId: number; content: string }) =>
+      addInquiryReply(questionId, content),
     onSuccess: (res) => {
       if (res.status_code === 201) {
         toast.success("답변이 등록되었습니다.");

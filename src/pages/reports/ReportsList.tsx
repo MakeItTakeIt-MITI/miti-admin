@@ -76,7 +76,7 @@ const ReportsList = () => {
     <section className="w-full min-h-screen p-8 bg-black">
       <div className="max-w-[1600px] mx-auto space-y-6">
         {/* Header */}
-        <div >
+        <div>
           <h1 className="text-2xl font-bold text-white">신고 관리</h1>
           <p className="text-sm text-gray-400 mt-1">
             총 <span className="text-blue-400 font-medium">{rows.length}</span>
@@ -87,18 +87,16 @@ const ReportsList = () => {
         {/* Search */}
         <div className=" border border-gray-800 rounded-lg p-4">
           <div className="space-y-2">
-            <label className="text-xs font-medium text-gray-300 block">
-              검색
-            </label>
+            <label className="text-xs font-medium text-gray-300 block">검색</label>
             <SearchField paramKey="search" />
           </div>
         </div>
 
         {/* Table */}
-      <div className="w-full rounded-lg border border-gray-700">
+        <div className="w-full rounded-lg border border-gray-700">
           <div className="overflow-x-auto">
             <table className="min-w-[1200px] w-full text-xs">
-                  <thead className="bg-[#2d2d2d] text-white">
+              <thead className="bg-[#2d2d2d] text-white">
                 <tr className="text-left">
                   <th className="px-4 py-3 font-medium w-20">ID</th>
                   <th className="px-4 py-3 font-medium w-28">상태</th>
@@ -129,9 +127,7 @@ const ReportsList = () => {
                             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
                           />
                         </svg>
-                        <p className="text-gray-400 text-sm">
-                          신고 내역이 없습니다
-                        </p>
+                        <p className="text-gray-400 text-sm">신고 내역이 없습니다</p>
                       </div>
                     </td>
                   </tr>
@@ -139,18 +135,16 @@ const ReportsList = () => {
                 {rows.map((r) => (
                   <tr
                     key={r?.id}
-                className="border-t border-gray-700 hover:bg-gray-800 transition-colors"
+                    className="border-t border-gray-700 hover:bg-gray-800 transition-colors"
                   >
                     {/* ID */}
-                    <td className="px-4 py-3 text-white font-medium">
-                      #{r?.id}
-                    </td>
+                    <td className="px-4 py-3 text-white font-medium">#{r?.id}</td>
 
                     {/* 상태 */}
                     <td className="px-4 py-3">
                       <span
                         className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-medium ${statusBadge(
-                          r?.report_status
+                          r?.report_status,
                         )}`}
                       >
                         {statusLabel(r?.report_status)}
@@ -161,7 +155,7 @@ const ReportsList = () => {
                     <td className="px-4 py-3">
                       <span
                         className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-medium ${typeBadge(
-                          r?.report_type
+                          r?.report_type,
                         )}`}
                       >
                         {typeLabel(r?.report_type)}
@@ -170,20 +164,14 @@ const ReportsList = () => {
 
                     {/* 신고 사유 */}
                     <td className="px-4 py-3 text-gray-300">
-                      <div
-                        className="max-w-[150px] truncate"
-                        title={r?.report_reason}
-                      >
+                      <div className="max-w-[150px] truncate" title={r?.report_reason}>
                         {r?.report_reason || "-"}
                       </div>
                     </td>
 
                     {/* 신고 내용 */}
                     <td className="px-4 py-3 text-gray-300">
-                      <div
-                        className="max-w-[200px] truncate"
-                        title={r?.content}
-                      >
+                      <div className="max-w-[200px] truncate" title={r?.content}>
                         {r?.content || "-"}
                       </div>
                     </td>
@@ -191,24 +179,16 @@ const ReportsList = () => {
                     {/* 피신고자 */}
                     <td className="px-4 py-3">
                       <div className="space-y-1">
-                        <div className="text-white font-medium">
-                          {r?.reportee?.nickname || "-"}
-                        </div>
-                        <div className="text-gray-400 text-[10px]">
-                          {r?.reportee?.email || "-"}
-                        </div>
+                        <div className="text-white font-medium">{r?.reportee?.nickname || "-"}</div>
+                        <div className="text-gray-400 text-[10px]">{r?.reportee?.email || "-"}</div>
                       </div>
                     </td>
 
                     {/* 신고자 */}
                     <td className="px-4 py-3">
                       <div className="space-y-1">
-                        <div className="text-white font-medium">
-                          {r?.reporter?.nickname || "-"}
-                        </div>
-                        <div className="text-gray-400 text-[10px]">
-                          {r?.reporter?.email || "-"}
-                        </div>
+                        <div className="text-white font-medium">{r?.reporter?.nickname || "-"}</div>
+                        <div className="text-gray-400 text-[10px]">{r?.reporter?.email || "-"}</div>
                       </div>
                     </td>
 
@@ -242,12 +222,7 @@ const ReportsList = () => {
         </div>
 
         {/* Load More */}
-        {hasNextPage && (
-          <NextPageLoader
-            hasNextPage={hasNextPage}
-            fetchNextPage={fetchNextPage}
-          />
-        )}
+        {hasNextPage && <NextPageLoader hasNextPage={hasNextPage} fetchNextPage={fetchNextPage} />}
       </div>
     </section>
   );

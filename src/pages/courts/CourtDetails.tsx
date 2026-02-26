@@ -23,11 +23,7 @@ export default function CourtDetails() {
   } = useCourtsDetailPage();
 
   if (!gameDetailsData) {
-    return (
-      <div className="w-full p-8 text-white">
-        경기장 정보를 불러오는 중입니다...
-      </div>
-    );
+    return <div className="w-full p-8 text-white">경기장 정보를 불러오는 중입니다...</div>;
   }
 
   if (isLoading) {
@@ -39,9 +35,7 @@ export default function CourtDetails() {
       {uploadImgPending && <Spinner />}
 
       <div className="flex items-center justify-between">
-        <h1 className="text-white font-bold text-2xl">
-          경기장 상세 - ID ({gameDetailsData?.id})
-        </h1>
+        <h1 className="text-white font-bold text-2xl">경기장 상세 - ID ({gameDetailsData?.id})</h1>
 
         <Link to="/courts" className="text-xs text-gray-400 hover:text-white">
           목록으로
@@ -54,10 +48,7 @@ export default function CourtDetails() {
 
         <div className="p-4 flex flex-col items-start gap-3">
           {!isEditing ? (
-            <CourtDetailsContainer
-              gameDetailsData={gameDetailsData}
-              isEditing={isEditing}
-            />
+            <CourtDetailsContainer gameDetailsData={gameDetailsData} isEditing={isEditing} />
           ) : (
             <UpdateDetailsForm
               gameDetailsData={gameDetailsData}

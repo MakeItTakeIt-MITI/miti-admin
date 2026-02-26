@@ -28,17 +28,13 @@ export default function PrivateInquires() {
           <tbody>
             {rows?.length === 0 && (
               <tr>
-                <td
-                  className="px-4 py-10 text-center text-gray-400"
-                  colSpan={8}
-                >
+                <td className="px-4 py-10 text-center text-gray-400" colSpan={8}>
                   결과가 없습니다.
                 </td>
               </tr>
             )}
             {rows?.map((i) => {
-              const answerStatus =
-                i.num_of_answers === 0 ? "미답변" : "답변완료";
+              const answerStatus = i.num_of_answers === 0 ? "미답변" : "답변완료";
               const statusCls =
                 i.num_of_answers === 0
                   ? "bg-rose-600/20 text-rose-300 ring-1 ring-inset ring-rose-500/30"
@@ -51,13 +47,9 @@ export default function PrivateInquires() {
                   <td className="px-4 py-2 text-white">{i.id}</td>
                   <td className="px-4 py-2 text-gray-300">{i.title}</td>
                   <td className="px-4 py-2 text-gray-300">{i.nickname}</td>
+                  <td className="px-4 py-2 text-gray-300">{i.num_of_answers}</td>
                   <td className="px-4 py-2 text-gray-300">
-                    {i.num_of_answers}
-                  </td>
-                  <td className="px-4 py-2 text-gray-300">
-                    {i.created_at
-                      ? new Date(i.created_at).toLocaleString()
-                      : "-"}
+                    {i.created_at ? new Date(i.created_at).toLocaleString() : "-"}
                   </td>
                   <td className="px-4 py-2">
                     <span
@@ -67,10 +59,7 @@ export default function PrivateInquires() {
                     </span>
                   </td>
                   <td className="px-4 py-2">
-                    <Link
-                      to={`detail?inquiryId=${i.id}`}
-                      className="text-blue-400 hover:underline"
-                    >
+                    <Link to={`detail?inquiryId=${i.id}`} className="text-blue-400 hover:underline">
                       보기
                     </Link>
                   </td>

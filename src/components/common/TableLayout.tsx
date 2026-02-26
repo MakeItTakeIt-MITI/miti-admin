@@ -20,19 +20,13 @@ export const TableLayout = ({ headers, data, context }: TableProps) => {
       <tbody>
         {data.length === 0 ? (
           <tr>
-            <td
-              colSpan={headers.length}
-              className="text-center py-10 text-gray-800 font-bold"
-            >
+            <td colSpan={headers.length} className="text-center py-10 text-gray-800 font-bold">
               {context}
             </td>
           </tr>
         ) : (
           data.map((row, rowIndex) => (
-            <tr
-              key={rowIndex}
-              className="bg-white h-[72px] hover:bg-gray-100 text-sm"
-            >
+            <tr key={rowIndex} className="bg-white h-[72px] hover:bg-gray-100 text-sm">
               {row.map((cell, cellIndex) => (
                 <td key={cellIndex} className="text-center px-2 truncate">
                   {cell}

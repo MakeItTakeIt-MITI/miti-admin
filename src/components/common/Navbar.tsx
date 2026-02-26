@@ -9,8 +9,7 @@ const Navbar = () => {
   const baseNavLinkClass =
     "flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors";
   const activeNavLinkClass = "text-white bg-gray-800";
-  const inactiveNavLinkClass =
-    "text-gray-400 hover:text-white hover:bg-gray-800/50";
+  const inactiveNavLinkClass = "text-gray-400 hover:text-white hover:bg-gray-800/50";
 
   const handleLogout = () => {
     logout();
@@ -36,12 +35,7 @@ const Navbar = () => {
           onClick={handleLogout}
           className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-rose-500"
         >
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"

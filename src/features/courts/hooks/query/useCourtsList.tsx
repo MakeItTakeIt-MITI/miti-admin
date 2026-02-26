@@ -1,10 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getCourtsList } from "../../api/courts";
 
-export const useCourtsList = (
-  search: string | null,
-  province: string | null
-) => {
+export const useCourtsList = (search: string | null, province: string | null) => {
   return useInfiniteQuery({
     queryKey: ["courtsList", search, province],
     queryFn: ({ pageParam }) => getCourtsList(pageParam, 40, search, province),

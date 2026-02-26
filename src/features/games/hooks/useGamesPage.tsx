@@ -7,13 +7,10 @@ export const useGamesPage = () => {
 
   const [searchParams] = useSearchParams();
   const search = searchParams.get("search");
-  const {
-    data,
-    hasNextPage,
-    hasPreviousPage,
-    fetchNextPage,
-    fetchPreviousPage,
-  } = useGamesListHook(search, status);
+  const { data, hasNextPage, hasPreviousPage, fetchNextPage, fetchPreviousPage } = useGamesListHook(
+    search,
+    status,
+  );
 
   const gamesDataPage = data?.pages?.flatMap((page) => page?.data?.items);
 

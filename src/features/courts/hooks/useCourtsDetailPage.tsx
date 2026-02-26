@@ -26,11 +26,7 @@ export const useCourtsDetailPage = () => {
     setFile(null);
     setIsEditing(false);
   };
-  const saveEdit = (state: {
-    name: string;
-    info: string;
-    images: string[];
-  }) => {
+  const saveEdit = (state: { name: string; info: string; images: string[] }) => {
     mutateCourtDetails({
       name: state.name,
       info: state.info,
@@ -53,22 +49,14 @@ export const useCourtsDetailPage = () => {
     setFile(e.target.files);
   };
 
-  const fileType =
-    (file && file[0].type.slice("image/".length)) ||
-    "png" ||
-    "jpg" ||
-    "jpeg" ||
-    "webp";
+  const fileType = file?.[0]?.type?.split("/")?.[1] ?? "png";
 
   const { data: urlData } = useGetFileUrl(fileType);
   const uploadUrl = urlData?.data[fileType]?.[0]?.upload_url;
   const contentType = urlData?.data[fileType]?.[0]?.content_type;
   const fileUrl = urlData?.data[fileType]?.[0]?.file_url;
 
-  const { mutate: uploadImg, isPending: uploadImgPending } = useUploadImage(
-    uploadUrl,
-    contentType,
-  );
+  const { mutate: uploadImg, isPending: uploadImgPending } = useUploadImage(uploadUrl, contentType);
 
   const uploadImgToNaverHandler = useCallback(() => {
     if (file && uploadUrl && contentType) {

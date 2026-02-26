@@ -3,10 +3,7 @@ interface NextPageLoaderProps {
   fetchNextPage: () => void;
 }
 
-const NextPageLoader = ({
-  hasNextPage,
-  fetchNextPage,
-}: NextPageLoaderProps) => {
+const NextPageLoader = ({ hasNextPage, fetchNextPage }: NextPageLoaderProps) => {
   return (
     <div className="flex items-center justify-center w-full">
       <button

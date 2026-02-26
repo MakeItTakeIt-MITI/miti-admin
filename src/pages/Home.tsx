@@ -7,12 +7,7 @@ export default function Home() {
       description: "회원 목록 및 상세 정보 조회",
       href: "/users",
       icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -21,20 +16,14 @@ export default function Home() {
           />
         </svg>
       ),
-      color:
-        "bg-blue-600/10 border-blue-600/20 hover:bg-blue-600/20 text-blue-400",
+      color: "bg-blue-600/10 border-blue-600/20 hover:bg-blue-600/20 text-blue-400",
     },
     {
       title: "경기 관리",
       description: "경기 목록 및 참가자 관리",
       href: "/games",
       icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -43,20 +32,14 @@ export default function Home() {
           />
         </svg>
       ),
-      color:
-        "bg-green-600/10 border-green-600/20 hover:bg-green-600/20 text-green-400",
+      color: "bg-green-600/10 border-green-600/20 hover:bg-green-600/20 text-green-400",
     },
     {
       title: "코트 관리",
       description: "코트 등록 및 수정",
       href: "/courts",
       icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -65,20 +48,14 @@ export default function Home() {
           />
         </svg>
       ),
-      color:
-        "bg-purple-600/10 border-purple-600/20 hover:bg-purple-600/20 text-purple-400",
+      color: "bg-purple-600/10 border-purple-600/20 hover:bg-purple-600/20 text-purple-400",
     },
     {
       title: "문의 관리",
       description: "사용자 문의 및 답변",
       href: "/inquiry",
       icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -87,20 +64,14 @@ export default function Home() {
           />
         </svg>
       ),
-      color:
-        "bg-amber-600/10 border-amber-600/20 hover:bg-amber-600/20 text-amber-400",
+      color: "bg-amber-600/10 border-amber-600/20 hover:bg-amber-600/20 text-amber-400",
     },
     {
       title: "익명 문의",
       description: "익명 문의 관리",
       href: "/anonymous-inquiry",
       icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -109,20 +80,14 @@ export default function Home() {
           />
         </svg>
       ),
-      color:
-        "bg-orange-600/10 border-orange-600/20 hover:bg-orange-600/20 text-orange-400",
+      color: "bg-orange-600/10 border-orange-600/20 hover:bg-orange-600/20 text-orange-400",
     },
     {
       title: "신고 관리",
       description: "신고 내역 및 처리",
       href: "/reports",
       icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -131,20 +96,14 @@ export default function Home() {
           />
         </svg>
       ),
-      color:
-        "bg-rose-600/10 border-rose-600/20 hover:bg-rose-600/20 text-rose-400",
+      color: "bg-rose-600/10 border-rose-600/20 hover:bg-rose-600/20 text-rose-400",
     },
     {
       title: "정산 관리",
       description: "정산 요청 및 처리",
       href: "/settlements",
       icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -153,8 +112,7 @@ export default function Home() {
           />
         </svg>
       ),
-      color:
-        "bg-emerald-600/10 border-emerald-600/20 hover:bg-emerald-600/20 text-emerald-400",
+      color: "bg-emerald-600/10 border-emerald-600/20 hover:bg-emerald-600/20 text-emerald-400",
     },
     // {
     //   title: "결제 내역",
@@ -186,9 +144,7 @@ export default function Home() {
         {/* Header */}
         <div className="space-y-2">
           <h1 className="text-3xl font-bold text-white">MITI Admin</h1>
-          <p className="text-sm text-gray-400">
-            관리자 페이지에 오신 것을 환영합니다
-          </p>
+          <p className="text-sm text-gray-400">관리자 페이지에 오신 것을 환영합니다</p>
         </div>
 
         {/* Quick Access Grid */}
@@ -200,9 +156,7 @@ export default function Home() {
               className={`group block border rounded-lg p-6 transition-all ${link.color}`}
             >
               <div className="flex flex-col gap-4">
-                <div className="group-hover:scale-110 transition-transform">
-                  {link.icon}
-                </div>
+                <div className="group-hover:scale-110 transition-transform">{link.icon}</div>
                 <div className="space-y-1">
                   <h3 className="text-lg font-semibold text-white group-hover:text-gray-100">
                     {link.title}
@@ -233,8 +187,8 @@ export default function Home() {
             <div className="space-y-1">
               <h3 className="text-sm font-semibold text-white">시작하기</h3>
               <p className="text-xs text-gray-400">
-                위의 메뉴에서 원하는 관리 페이지를 선택하세요. 각 페이지에서
-                필요한 작업을 수행할 수 있습니다.
+                위의 메뉴에서 원하는 관리 페이지를 선택하세요. 각 페이지에서 필요한 작업을 수행할 수
+                있습니다.
               </p>
             </div>
           </div>

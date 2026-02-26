@@ -1,9 +1,23 @@
 import { useState } from "react";
 
+interface CourtDetailsData {
+  name: string;
+  info: string;
+  images?: string[];
+  address?: string;
+  address_detail?: string;
+}
+
+interface CourtEditPayload {
+  name: string;
+  info: string;
+  images: string[];
+}
+
 interface UpdateDetailsFormProps {
-  gameDetailsData: any;
+  gameDetailsData: CourtDetailsData;
   cancelEdit: () => void;
-  saveEdit: (data: any) => void;
+  saveEdit: (data: CourtEditPayload) => void;
   file?: FileList | null;
   onChangeSaveImageHandler?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   uploadImgToNaverHandler?: () => void;
@@ -42,20 +56,12 @@ const UpdateDetailsForm = ({
       {/* 주소 */}
       <label className="flex flex-col gap-1 sm:col-span-2">
         <span className="text-[11px] text-gray-400">주소</span>
-        <input
-          disabled
-          className={inputCls}
-          placeholder={gameDetailsData?.address ?? ""}
-        />
+        <input disabled className={inputCls} placeholder={gameDetailsData?.address ?? ""} />
       </label>
       {/* 상세 주소 */}
       <label className="flex flex-col gap-1 sm:col-span-2">
         <span className="text-[11px] text-gray-400">상세 주소</span>
-        <input
-          disabled
-          className={inputCls}
-          placeholder={gameDetailsData?.address_detail ?? ""}
-        />
+        <input disabled className={inputCls} placeholder={gameDetailsData?.address_detail ?? ""} />
       </label>
       {/* 정보 */}
       <label className="flex flex-col gap-1 sm:col-span-2">
@@ -112,9 +118,7 @@ const UpdateDetailsForm = ({
             </div>
           </div>
         ) : (
-          <p className="sm:col-span-2 text-xs text-gray-200 ">
-            등록된 이미지가 없습니다.
-          </p>
+          <p className="sm:col-span-2 text-xs text-gray-200 ">등록된 이미지가 없습니다.</p>
         )}
       </label>
 

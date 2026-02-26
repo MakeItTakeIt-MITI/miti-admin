@@ -3,10 +3,7 @@ interface EditActionsButtonProps {
   startEdit: () => void;
 }
 
-const EditActionsButton = ({
-  isEditing,
-  startEdit,
-}: EditActionsButtonProps) => {
+const EditActionsButton = ({ isEditing, startEdit }: EditActionsButtonProps) => {
   return (
     <button
       type="button"

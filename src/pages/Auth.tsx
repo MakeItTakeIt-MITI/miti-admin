@@ -1,8 +1,7 @@
 import useAuthPage from "../features/auth/hooks/useAuthPage";
 
 const Auth = () => {
-  const { register, handleSubmit, onSubmit, isPending, isLoggedIn } =
-    useAuthPage();
+  const { register, handleSubmit, onSubmit, isPending, isLoggedIn } = useAuthPage();
 
   if (isLoggedIn) {
     return null;
@@ -18,15 +17,10 @@ const Auth = () => {
 
         {/* Login Form */}
         <div className="bg-gray-900 border border-gray-800 rounded-xl p-8 shadow-2xl">
-          <form
-            className="flex flex-col gap-5"
-            onSubmit={handleSubmit(onSubmit)}
-          >
+          <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
             {/* Email Input */}
             <div className="space-y-2">
-              <label className="text-xs font-medium text-gray-300">
-                이메일
-              </label>
+              <label className="text-xs font-medium text-gray-300">이메일</label>
               <input
                 {...register("email")}
                 placeholder="example@makeittakeit.kr"
@@ -38,9 +32,7 @@ const Auth = () => {
 
             {/* Password Input */}
             <div className="space-y-2">
-              <label className="text-xs font-medium text-gray-300">
-                비밀번호
-              </label>
+              <label className="text-xs font-medium text-gray-300">비밀번호</label>
               <input
                 {...register("password")}
                 placeholder="••••••••"
@@ -52,9 +44,7 @@ const Auth = () => {
 
             {/* Submit Button */}
             <button
-              disabled={
-                !register("email") || !register("password") || isPending
-              }
+              disabled={!register("email") || !register("password") || isPending}
               type="submit"
               className="w-full h-11 px-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-lg text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 flex items-center justify-center gap-2"
             >

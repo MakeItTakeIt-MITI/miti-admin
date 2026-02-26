@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 interface CourtDetailsImgCardProps {
   gameDetailsData: {
@@ -8,7 +8,7 @@ interface CourtDetailsImgCardProps {
 }
 
 const CourtDetailsImgCard = ({ gameDetailsData }: CourtDetailsImgCardProps) => {
-  const images = gameDetailsData.images ?? [];
+  const images = useMemo(() => gameDetailsData.images ?? [], [gameDetailsData.images]);
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -42,9 +42,7 @@ const CourtDetailsImgCard = ({ gameDetailsData }: CourtDetailsImgCardProps) => {
             disabled={index === 0}
             aria-label="previous"
             className={`absolute left-2 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-black/50 text-white flex items-center justify-center ${
-              index === 0
-                ? "opacity-40 cursor-not-allowed"
-                : "hover:bg-black/60"
+              index === 0 ? "opacity-40 cursor-not-allowed" : "hover:bg-black/60"
             }`}
           >
             ‹
@@ -54,9 +52,7 @@ const CourtDetailsImgCard = ({ gameDetailsData }: CourtDetailsImgCardProps) => {
             disabled={index === images.length - 1}
             aria-label="next"
             className={`absolute right-2 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-black/50 text-white flex items-center justify-center ${
-              index === images.length - 1
-                ? "opacity-40 cursor-not-allowed"
-                : "hover:bg-black/60"
+              index === images.length - 1 ? "opacity-40 cursor-not-allowed" : "hover:bg-black/60"
             }`}
           >
             ›
@@ -73,11 +69,7 @@ const CourtDetailsImgCard = ({ gameDetailsData }: CourtDetailsImgCardProps) => {
                     i === index ? "border-blue-500" : "border-transparent"
                   } focus:outline-none`}
                 >
-                  <img
-                    src={src}
-                    alt={`thumb-${i}`}
-                    className="h-full w-full object-cover"
-                  />
+                  <img src={src} alt={`thumb-${i}`} className="h-full w-full object-cover" />
                 </button>
               ))}
             </div>

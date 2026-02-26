@@ -5,14 +5,8 @@ export const usePrivateInquiriesPage = () => {
   const [searchParams] = useSearchParams();
   const search = searchParams.get("search");
 
-  const {
-    data,
-    hasNextPage,
-    fetchNextPage,
-    hasPreviousPage,
-    fetchPreviousPage,
-    isLoading,
-  } = usePrivateInquiries(search);
+  const { data, hasNextPage, fetchNextPage, hasPreviousPage, fetchPreviousPage, isLoading } =
+    usePrivateInquiries(search);
 
   const inquriesListData = data?.pages?.flatMap((page) => page?.data?.items);
 

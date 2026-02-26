@@ -38,19 +38,13 @@ const statusClass = (s: string) =>
   s === "completed"
     ? "bg-emerald-600/20 text-emerald-300 ring-1 ring-inset ring-emerald-500/30"
     : s === "pending"
-    ? "bg-amber-600/20 text-amber-300 ring-1 ring-inset ring-amber-500/30"
-    : "bg-blue-600/20 text-blue-300 ring-1 ring-inset ring-blue-500/30";
+      ? "bg-amber-600/20 text-amber-300 ring-1 ring-inset ring-amber-500/30"
+      : "bg-blue-600/20 text-blue-300 ring-1 ring-inset ring-blue-500/30";
 
-export const GameInfo = ({
-  data,
-  handleDisplayEditContainer,
-}: GameInfoProps) => {
+export const GameInfo = ({ data, handleDisplayEditContainer }: GameInfoProps) => {
   const capacityPct =
     data?.max_invitation > 0
-      ? Math.min(
-          100,
-          Math.round((data?.num_of_participations / data?.max_invitation) * 100)
-        )
+      ? Math.min(100, Math.round((data?.num_of_participations / data?.max_invitation) * 100))
       : 0;
 
   return (
@@ -63,14 +57,12 @@ export const GameInfo = ({
             <div className="flex items-center gap-3">
               <span
                 className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${statusClass(
-                  data?.game_status
+                  data?.game_status,
                 )}`}
               >
                 {data?.game_status}
               </span>
-              <span className="text-xs text-gray-400">
-                생성일: {data?.created_at.slice(0, 10)}
-              </span>
+              <span className="text-xs text-gray-400">생성일: {data?.created_at.slice(0, 10)}</span>
             </div>
           </div>
           <button
@@ -105,83 +97,67 @@ export const GameInfo = ({
         <div className="grid gap-6 md:grid-cols-3">
           {/* Host */}
           <div className="rounded-lg border border-gray-700 bg-gray-900 p-4 space-y-3">
-            <h2 className="text-sm font-semibold tracking-wide text-gray-200">
-              호스트 정보
-            </h2>
+            <h2 className="text-sm font-semibold tracking-wide text-gray-200">호스트 정보</h2>
             <ul className="space-y-1 text-xs text-gray-300">
               <li>
-                <span className="font-medium text-gray-400">ID:</span>{" "}
-                {data?.host.id}
+                <span className="font-medium text-gray-400">ID:</span> {data?.host.id}
               </li>
               <li>
-                <span className="font-medium text-gray-400">이름:</span>{" "}
-                {data?.host.name}
+                <span className="font-medium text-gray-400">이름:</span> {data?.host.name}
               </li>
               <li>
-                <span className="font-medium text-gray-400">닉네임:</span>{" "}
-                {data?.host.nickname}
+                <span className="font-medium text-gray-400">닉네임:</span> {data?.host.nickname}
               </li>
               <li>
-                <span className="font-medium text-gray-400">이메일:</span>{" "}
-                {data?.host.email}
+                <span className="font-medium text-gray-400">이메일:</span> {data?.host.email}
               </li>
               <li>
-                <span className="font-medium text-gray-400">생년월일:</span>{" "}
-                {data?.host.birthday}
+                <span className="font-medium text-gray-400">생년월일:</span> {data?.host.birthday}
               </li>
               <li>
-                <span className="font-medium text-gray-400">연락처:</span>{" "}
-                {data?.host.phone}
+                <span className="font-medium text-gray-400">연락처:</span> {data?.host.phone}
               </li>
             </ul>
           </div>
 
           {/* Court */}
           <div className="rounded-lg border border-gray-700 bg-gray-900 p-4 space-y-3">
-            <h2 className="text-sm font-semibold tracking-wide text-gray-200">
-              코트 정보
-            </h2>
+            <h2 className="text-sm font-semibold tracking-wide text-gray-200">코트 정보</h2>
             <ul className="space-y-1 text-xs text-gray-300">
               <li>
-                <span className="font-medium text-gray-400">코트 ID:</span>{" "}
-                {data?.court.id}
+                <span className="font-medium text-gray-400">코트 ID:</span> {data?.court.id}
               </li>
               <li>
-                <span className="font-medium text-gray-400">주소:</span>{" "}
-                {data?.court.address}
+                <span className="font-medium text-gray-400">주소:</span> {data?.court.address}
               </li>
               <li>
-                <span className="font-medium text-gray-400">상세 주소:</span>{" "}
-                {data?.court.name}
+                <span className="font-medium text-gray-400">상세 주소:</span> {data?.court.name}
               </li>
             </ul>
           </div>
 
           {/* Game Metrics */}
           <div className="rounded-lg border border-gray-700 bg-gray-900 p-4 space-y-3">
-            <h2 className="text-sm font-semibold tracking-wide text-gray-200">
-              경기 메타
-            </h2>
+            <h2 className="text-sm font-semibold tracking-wide text-gray-200">경기 메타</h2>
             <ul className="space-y-1 text-xs text-gray-300">
               <li>
-                <span className="font-medium text-gray-400">경기 ID:</span>{" "}
-                {data?.id}
+                <span className="font-medium text-gray-400">경기 ID:</span> {data?.id}
               </li>
               <li>
-                <span className="font-medium text-gray-400">시작:</span>{" "}
-                {data?.startdate} ({data?.starttime.slice(0, 5)})
+                <span className="font-medium text-gray-400">시작:</span> {data?.startdate} (
+                {data?.starttime.slice(0, 5)})
               </li>
               <li>
-                <span className="font-medium text-gray-400">종료:</span>{" "}
-                {data?.enddate} ({data?.endtime.slice(0, 5)})
+                <span className="font-medium text-gray-400">종료:</span> {data?.enddate} (
+                {data?.endtime.slice(0, 5)})
               </li>
               <li>
                 <span className="font-medium text-gray-400">참가비:</span>{" "}
                 {data?.fee ? `${data?.fee.toLocaleString()}원` : "무료"}
               </li>
               <li>
-                <span className="font-medium text-gray-400">최소/최대:</span>{" "}
-                {data?.min_invitation}/{data?.max_invitation}
+                <span className="font-medium text-gray-400">최소/최대:</span> {data?.min_invitation}
+                /{data?.max_invitation}
               </li>
               <li>
                 <span className="font-medium text-gray-400">현재 인원:</span>{" "}
@@ -193,9 +169,7 @@ export const GameInfo = ({
 
         {/* Detailed Info */}
         <div className="rounded-lg border border-gray-700 bg-gray-900 p-5">
-          <h2 className="text-sm font-semibold tracking-wide mb-3 text-gray-200">
-            상세 정보
-          </h2>
+          <h2 className="text-sm font-semibold tracking-wide mb-3 text-gray-200">상세 정보</h2>
           <div
             className="text-sm leading-relaxed whitespace-pre-line max-h-[320px] overflow-y-auto pr-1 text-gray-300"
             style={{ scrollbarWidth: "thin" }}

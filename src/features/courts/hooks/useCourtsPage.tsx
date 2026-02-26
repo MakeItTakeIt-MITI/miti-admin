@@ -36,9 +36,7 @@ export const useCourtsPage = () => {
     isLoading,
   } = useCourtsList(search, province);
 
-  const courtsData = courtsListData?.pages?.flatMap(
-    (page) => page?.data?.items
-  );
+  const courtsData = courtsListData?.pages?.flatMap((page) => page?.data?.items);
 
   const rows = useMemo(() => {
     if (!courtsData) return [];

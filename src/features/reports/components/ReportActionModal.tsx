@@ -13,11 +13,7 @@ interface Props {
   isModalOpen: "approve" | "dismiss" | null;
   reportType: string | null;
   setIsModalOpen: (arg: "approve" | "dismiss" | null) => void;
-  handleDismissReport: (arg: {
-    result: string;
-    report_status: string;
-    content: string;
-  }) => void;
+  handleDismissReport: (arg: { result: string; report_status: string; content: string }) => void;
   handlePenalizeReport: (arg: {
     result: string;
     penalty: string;
@@ -66,12 +62,7 @@ export const ReportActionModal = ({
             onClick={() => setIsModalOpen(null)}
             className="rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
           >
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -87,13 +78,8 @@ export const ReportActionModal = ({
           <div className="space-y-5">
             {/* Result */}
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                처리 결과
-              </label>
-              <select
-                {...register("result", { required: true })}
-                className={selectClassName}
-              >
+              <label className="mb-1.5 block text-sm font-medium text-gray-700">처리 결과</label>
+              <select {...register("result", { required: true })} className={selectClassName}>
                 {isModalOpen === "approve" ? (
                   <option value="penalized">신고 인정 </option>
                 ) : (
@@ -105,13 +91,8 @@ export const ReportActionModal = ({
             {/* Penalty */}
             {isModalOpen === "approve" && (
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                  신고 내용
-                </label>
-                <select
-                  {...register("penalty", { required: true })}
-                  className={selectClassName}
-                >
+                <label className="mb-1.5 block text-sm font-medium text-gray-700">신고 내용</label>
+                <select {...register("penalty", { required: true })} className={selectClassName}>
                   <option value="">선택안함</option>
                   <option value="suspension">이용 정지 </option>
                   <option value="warning">서비스 경고 </option>
@@ -121,9 +102,7 @@ export const ReportActionModal = ({
 
             {/* Report Status */}
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                진행 상태
-              </label>
+              <label className="mb-1.5 block text-sm font-medium text-gray-700">진행 상태</label>
               <select
                 {...register("report_status", { required: true })}
                 className={selectClassName}
@@ -139,9 +118,7 @@ export const ReportActionModal = ({
             {/* Duration */}
             {isModalOpen === "approve" && (
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                  신고 기간
-                </label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-700">신고 기간</label>
                 <input
                   type="text"
                   {...register("duration")}
@@ -170,9 +147,7 @@ export const ReportActionModal = ({
             )}
 
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                처리 내용
-              </label>
+              <label className="mb-1.5 block text-sm font-medium text-gray-700">처리 내용</label>
               <textarea
                 {...register("content", { required: true })}
                 className={

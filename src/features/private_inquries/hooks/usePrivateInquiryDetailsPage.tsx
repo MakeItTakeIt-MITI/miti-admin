@@ -11,8 +11,7 @@ export const usePrivateInquiryDetailsPage = () => {
   const inquiryId = searchParams.get("inquiryId");
   const inquiryIdNumber = Number(inquiryId);
 
-  const { mutate: privateInquiryReply } =
-    useAddPrivateInquiryAnswer(inquiryIdNumber);
+  const { mutate: privateInquiryReply } = useAddPrivateInquiryAnswer(inquiryIdNumber);
 
   const handleSubmitReply = () => {
     privateInquiryReply({

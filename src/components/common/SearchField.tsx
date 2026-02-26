@@ -35,12 +35,12 @@ export default function SearchField({ paramKey }: SearchFieldProps) {
 
       setSearchParams(newParams);
     },
-    [inputValue, paramKey, searchParams, setSearchParams]
+    [inputValue, paramKey, searchParams, setSearchParams],
   );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      handleSearch(e as any);
+      handleSearch();
     }
   };
 
