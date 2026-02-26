@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useGameParticipantsHook } from "../hooks/useGameParticipantsHook";
+import { TABLE_STYLES } from "../../../components/common/tableStyles";
 
 interface ParticipantsProps {
   gameId: number;
@@ -112,26 +113,26 @@ export const Participants = ({ gameId }: ParticipantsProps) => {
         </button>
       </div>
 
-      <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
-        <table className="min-w-[1100px] w-full text-xs">
-          <thead className="bg-gray-800 text-gray-200">
-            <tr className="text-left">
-              <th className="px-4 py-3 font-medium">상세</th>
-              <th className="px-4 py-3 font-medium">참가 상태</th>
-              <th className="px-4 py-3 font-medium">참가 ID</th>
-              <th className="px-4 py-3 font-medium">닉네임</th>
-              <th className="px-4 py-3 font-medium">이메일</th>
-              <th className="px-4 py-3 font-medium">생년월일</th>
-              <th className="px-4 py-3 font-medium">연락처</th>
-              <th className="px-4 py-3 font-medium">실명</th>
-              <th className="px-4 py-3 font-medium">신장</th>
-              <th className="px-4 py-3 font-medium">체중</th>
+      <div className={TABLE_STYLES.container}>
+        <table className={`min-w-[1100px] ${TABLE_STYLES.table}`}>
+          <thead className={TABLE_STYLES.head}>
+            <tr className={TABLE_STYLES.headerRow}>
+              <th className={TABLE_STYLES.headerCell}>상세</th>
+              <th className={TABLE_STYLES.headerCell}>참가 상태</th>
+              <th className={TABLE_STYLES.headerCell}>참가 ID</th>
+              <th className={TABLE_STYLES.headerCell}>닉네임</th>
+              <th className={TABLE_STYLES.headerCell}>이메일</th>
+              <th className={TABLE_STYLES.headerCell}>생년월일</th>
+              <th className={TABLE_STYLES.headerCell}>연락처</th>
+              <th className={TABLE_STYLES.headerCell}>실명</th>
+              <th className={TABLE_STYLES.headerCell}>신장</th>
+              <th className={TABLE_STYLES.headerCell}>체중</th>
             </tr>
           </thead>
           <tbody>
             {sorted.length === 0 && (
               <tr>
-                <td className="px-4 py-10 text-center text-gray-400" colSpan={10}>
+                <td className={TABLE_STYLES.emptyCell} colSpan={10}>
                   참가자가 없습니다.
                 </td>
               </tr>
@@ -139,11 +140,8 @@ export const Participants = ({ gameId }: ParticipantsProps) => {
             {sorted.map((p) => {
               const profile = p.user?.player_profile;
               return (
-                <tr
-                  key={p.id}
-                  className="border-t border-gray-700 hover:bg-gray-800 transition-colors"
-                >
-                  <td className="px-4 py-2">
+                <tr key={p.id} className={TABLE_STYLES.bodyRow}>
+                  <td className={TABLE_STYLES.bodyCell}>
                     {p.user?.id ? (
                       <Link
                         to={`/users/detail?userId=${p.user.id}`}
@@ -174,19 +172,19 @@ export const Participants = ({ gameId }: ParticipantsProps) => {
                       <span className="text-gray-500">-</span>
                     )}
                   </td>
-                  <td className="px-4 py-2">
+                  <td className={TABLE_STYLES.bodyCell}>
                     <span className="inline-block rounded bg-gray-700 px-2 py-1 text-xs text-gray-200">
                       {p.participation_status || "-"}
                     </span>
                   </td>
-                  <td className="px-4 py-2 text-white">{p.id}</td>
-                  <td className="px-4 py-2 text-gray-300">{p.user?.nickname || "-"}</td>
-                  <td className="px-4 py-2 text-gray-300">{p.user?.email || "-"}</td>
-                  <td className="px-4 py-2 text-gray-300">{p.user?.birthday || "-"}</td>
-                  <td className="px-4 py-2 text-gray-300">{formatKoreanPhone(p.user?.phone)}</td>
-                  <td className="px-4 py-2 text-gray-300">{p.user?.name ?? "-"}</td>
-                  <td className="px-4 py-2 text-gray-300">{profile?.height ?? "-"}</td>
-                  <td className="px-4 py-2 text-gray-300">{profile?.weight ?? "-"}</td>
+                  <td className={TABLE_STYLES.primaryCell}>{p.id}</td>
+                  <td className={TABLE_STYLES.bodyCell}>{p.user?.nickname || "-"}</td>
+                  <td className={TABLE_STYLES.bodyCell}>{p.user?.email || "-"}</td>
+                  <td className={TABLE_STYLES.bodyCell}>{p.user?.birthday || "-"}</td>
+                  <td className={TABLE_STYLES.bodyCell}>{formatKoreanPhone(p.user?.phone)}</td>
+                  <td className={TABLE_STYLES.bodyCell}>{p.user?.name ?? "-"}</td>
+                  <td className={TABLE_STYLES.bodyCell}>{profile?.height ?? "-"}</td>
+                  <td className={TABLE_STYLES.bodyCell}>{profile?.weight ?? "-"}</td>
                 </tr>
               );
             })}

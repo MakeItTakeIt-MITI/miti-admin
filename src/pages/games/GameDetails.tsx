@@ -1,51 +1,25 @@
-import { useSearchParams } from "react-router-dom";
-import { useGameDetailsDataHook } from "../../features/games/hooks/useGameDetailsDataHook";
-import { useState } from "react";
 import { Reports } from "../../features/games/components/Reports";
 import { Participants } from "../../features/games/components/Participants";
-import { usePatchGameDetailsHook } from "../../features/games/hooks/usePatchGameDetailsHook";
+import { useGameDetailsPage } from "../../features/games/hooks/useGameDetailsPage";
 
 import { GameInfo } from "../../features/games/components/GameInfo";
 
 const GameDetails = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const gameId = searchParams.get("gameId");
-  const tab = searchParams.get("tab");
-
-  // FETCH GAME INFO
-  const { data } = useGameDetailsDataHook(Number(gameId));
-  // PATCH GAME INFO
-  const { mutate } = usePatchGameDetailsHook(Number(gameId));
-
-  const handleDisplayEditContainer = () => setShowEditContainer(!showEditContainer);
-
-  const [minPlayers, setMinPlayers] = useState<number>(data?.data.min_invitation);
-  const [maxPlayers, setMaxPlayers] = useState<number>(data?.data.max_invitation);
-  const [gameInfo, setGameInfo] = useState(data?.data.info);
-  const [showEditContainer, setShowEditContainer] = useState(false);
-
-  const handleSetTab = (selected: "gameInfo" | "participants" | "hostReportInfo") => {
-    setSearchParams((prev) => {
-      const params = new URLSearchParams(prev);
-      params.set("tab", selected);
-      return params;
-    });
-  };
-
-  const handleSubmitUpdate = () => {
-    mutate(
-      {
-        min_invitation: minPlayers,
-        max_invitation: maxPlayers,
-        info: gameInfo,
-      },
-      {
-        onSuccess: () => {
-          setShowEditContainer(false);
-        },
-      },
-    );
-  };
+  const {
+    gameId,
+    tab,
+    data,
+    showEditContainer,
+    minPlayers,
+    maxPlayers,
+    gameInfo,
+    setMinPlayers,
+    setMaxPlayers,
+    setGameInfo,
+    handleDisplayEditContainer,
+    handleSetTab,
+    handleSubmitUpdate,
+  } = useGameDetailsPage();
 
   return (
     <>
@@ -166,8 +140,8 @@ const GameDetails = () => {
             {tab === "gameInfo" && (
               <GameInfo data={data?.data} handleDisplayEditContainer={handleDisplayEditContainer} />
             )}
-            {tab === "participants" && <Participants gameId={Number(gameId)} />}
-            {tab === "hostReportInfo" && <Reports gameId={Number(gameId)} />}
+            {tab === "participants" && <Participants gameId={gameId} />}
+            {tab === "hostReportInfo" && <Reports gameId={gameId} />}
           </div>
         </div>
       </section>

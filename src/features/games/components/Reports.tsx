@@ -1,5 +1,6 @@
 import { useHostReportDetailsHook } from "../hooks/useHostReportDetailsHook";
 import { HostReportField } from "../interface/host_reports";
+import { TABLE_STYLES } from "../../../components/common/tableStyles";
 
 interface ReportsProps {
   gameId: number;
@@ -71,30 +72,30 @@ export const Reports = ({ gameId }: ReportsProps) => {
                 {/* Reporter */}
                 <div className="space-y-2">
                   <h3 className="text-xs font-semibold text-gray-200">신고자 정보</h3>
-                  <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
-                    <table className="min-w-[900px] w-full text-xs">
-                      <thead className="bg-gray-900 text-gray-200">
-                        <tr className="text-left">
+                  <div className={TABLE_STYLES.container}>
+                    <table className={`min-w-[900px] ${TABLE_STYLES.table}`}>
+                      <thead className={TABLE_STYLES.head}>
+                        <tr className={TABLE_STYLES.headerRow}>
                           {userHeaders.map((h) => (
-                            <th key={h} className="px-4 py-2 font-medium">
+                            <th key={h} className={TABLE_STYLES.headerCell}>
                               {h}
                             </th>
                           ))}
                         </tr>
                       </thead>
                       <tbody>
-                        <tr className="border-t border-gray-700 hover:bg-gray-800 transition-colors">
-                          <td className="px-4 py-2 text-white">{reporter.id}</td>
-                          <td className="px-4 py-2 text-gray-300">{reporter.email}</td>
-                          <td className="px-4 py-2 text-gray-300">{reporter.nickname}</td>
-                          <td className="px-4 py-2 text-gray-300">{reporter.name}</td>
-                          <td className="px-4 py-2 text-gray-300">{reporter.birthday}</td>
-                          <td className="px-4 py-2">
+                        <tr className={TABLE_STYLES.bodyRow}>
+                          <td className={TABLE_STYLES.primaryCell}>{reporter.id}</td>
+                          <td className={TABLE_STYLES.bodyCell}>{reporter.email}</td>
+                          <td className={TABLE_STYLES.bodyCell}>{reporter.nickname}</td>
+                          <td className={TABLE_STYLES.bodyCell}>{reporter.name}</td>
+                          <td className={TABLE_STYLES.bodyCell}>{reporter.birthday}</td>
+                          <td className={TABLE_STYLES.bodyCell}>
                             <span className="inline-block rounded bg-gray-700 px-2 py-1 text-[10px] text-gray-200">
                               {reporter.signup_method || "-"}
                             </span>
                           </td>
-                          <td className="px-4 py-2 text-gray-300">
+                          <td className={TABLE_STYLES.bodyCell}>
                             {formatKoreanPhone(reporter.phone)}
                           </td>
                         </tr>
@@ -106,30 +107,30 @@ export const Reports = ({ gameId }: ReportsProps) => {
                 {/* Reportee */}
                 <div className="space-y-2">
                   <h3 className="text-xs font-semibold text-gray-200">피신고자 정보</h3>
-                  <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
-                    <table className="min-w-[900px] w-full text-xs">
-                      <thead className="bg-gray-900 text-gray-200">
-                        <tr className="text-left">
+                  <div className={TABLE_STYLES.container}>
+                    <table className={`min-w-[900px] ${TABLE_STYLES.table}`}>
+                      <thead className={TABLE_STYLES.head}>
+                        <tr className={TABLE_STYLES.headerRow}>
                           {userHeaders.map((h) => (
-                            <th key={h} className="px-4 py-2 font-medium">
+                            <th key={h} className={TABLE_STYLES.headerCell}>
                               {h}
                             </th>
                           ))}
                         </tr>
                       </thead>
                       <tbody>
-                        <tr className="border-t border-gray-700 hover:bg-gray-800 transition-colors">
-                          <td className="px-4 py-2 text-white">{reportee.id}</td>
-                          <td className="px-4 py-2 text-gray-300">{reportee.email}</td>
-                          <td className="px-4 py-2 text-gray-300">{reportee.nickname}</td>
-                          <td className="px-4 py-2 text-gray-300">{reportee.name}</td>
-                          <td className="px-4 py-2 text-gray-300">{reportee.birthday}</td>
-                          <td className="px-4 py-2">
+                        <tr className={TABLE_STYLES.bodyRow}>
+                          <td className={TABLE_STYLES.primaryCell}>{reportee.id}</td>
+                          <td className={TABLE_STYLES.bodyCell}>{reportee.email}</td>
+                          <td className={TABLE_STYLES.bodyCell}>{reportee.nickname}</td>
+                          <td className={TABLE_STYLES.bodyCell}>{reportee.name}</td>
+                          <td className={TABLE_STYLES.bodyCell}>{reportee.birthday}</td>
+                          <td className={TABLE_STYLES.bodyCell}>
                             <span className="inline-block rounded bg-gray-700 px-2 py-1 text-[10px] text-gray-200">
                               {reportee.signup_method || "-"}
                             </span>
                           </td>
-                          <td className="px-4 py-2 text-gray-300">
+                          <td className={TABLE_STYLES.bodyCell}>
                             {formatKoreanPhone(reportee.phone)}
                           </td>
                         </tr>

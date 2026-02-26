@@ -50,5 +50,6 @@ export const patchGameDetails = async (gameId: number, gameDetails: GameEditFiel
     return response.data;
   } catch (error) {
     console.log(error);
+    throw error;
   }
 };

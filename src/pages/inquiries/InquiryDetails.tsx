@@ -1,5 +1,6 @@
 import { InquiryAnswerField } from "../../features/inquries/interface/inquries";
 import { useInquiryDetailPage } from "../../features/inquries/hooks/useInquiryDetailPage";
+import { TABLE_STYLES } from "../../components/common/tableStyles";
 
 export const InquiryDetails = () => {
   const {
@@ -40,39 +41,39 @@ export const InquiryDetails = () => {
       </div>
 
       {/* User Info Table */}
-      <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
-        <table className="min-w-[900px] w-full text-xs">
-          <thead className="bg-gray-800 text-gray-200">
-            <tr className="text-left">
-              <th className="px-4 py-3 font-medium">사용자 ID</th>
-              <th className="px-4 py-3 font-medium">이메일</th>
-              <th className="px-4 py-3 font-medium">닉네임</th>
-              <th className="px-4 py-3 font-medium">생년월일</th>
-              <th className="px-4 py-3 font-medium">가입수단</th>
-              <th className="px-4 py-3 font-medium">연락처</th>
-              <th className="px-4 py-3 font-medium">가입 날짜</th>
+      <div className={TABLE_STYLES.container}>
+        <table className={`min-w-[900px] ${TABLE_STYLES.table}`}>
+          <thead className={TABLE_STYLES.head}>
+            <tr className={TABLE_STYLES.headerRow}>
+              <th className={TABLE_STYLES.headerCell}>사용자 ID</th>
+              <th className={TABLE_STYLES.headerCell}>이메일</th>
+              <th className={TABLE_STYLES.headerCell}>닉네임</th>
+              <th className={TABLE_STYLES.headerCell}>생년월일</th>
+              <th className={TABLE_STYLES.headerCell}>가입수단</th>
+              <th className={TABLE_STYLES.headerCell}>연락처</th>
+              <th className={TABLE_STYLES.headerCell}>가입 날짜</th>
             </tr>
           </thead>
           <tbody>
             {data?.user ? (
-              <tr className="border-t border-gray-700 hover:bg-gray-800 transition-colors">
-                <td className="px-4 py-2 text-white">{data.user.id}</td>
-                <td className="px-4 py-2 text-gray-300">{data.user.email}</td>
-                <td className="px-4 py-2 text-gray-300">{data.user.nickname || "-"}</td>
-                <td className="px-4 py-2 text-gray-300">{data.user.birthday || "-"}</td>
-                <td className="px-4 py-2">
+              <tr className={TABLE_STYLES.bodyRow}>
+                <td className={TABLE_STYLES.primaryCell}>{data.user.id}</td>
+                <td className={TABLE_STYLES.bodyCell}>{data.user.email}</td>
+                <td className={TABLE_STYLES.bodyCell}>{data.user.nickname || "-"}</td>
+                <td className={TABLE_STYLES.bodyCell}>{data.user.birthday || "-"}</td>
+                <td className={TABLE_STYLES.bodyCell}>
                   <span className="inline-block rounded bg-gray-700 px-2 py-1 text-[10px] text-gray-200">
                     {data.user.signup_method || "-"}
                   </span>
                 </td>
-                <td className="px-4 py-2 text-gray-300">{formatKoreanPhone(data.user.phone)}</td>
-                <td className="px-4 py-2 text-gray-300">
+                <td className={TABLE_STYLES.bodyCell}>{formatKoreanPhone(data.user.phone)}</td>
+                <td className={TABLE_STYLES.bodyCell}>
                   {data.user.created_at?.slice(0, 10) || "-"}
                 </td>
               </tr>
             ) : (
               <tr>
-                <td colSpan={7} className="px-4 py-6 text-center text-gray-400">
+                <td colSpan={7} className={TABLE_STYLES.emptyCell}>
                   사용자 정보가 없습니다.
                 </td>
               </tr>

@@ -1,6 +1,7 @@
 import { useTransferStatusesPage } from "../../features/transactions/hooks/useTransactionsPage.ts";
 import { useTransactionDetailsContainer } from "../../features/transactions/hooks/useTransactionDetailsContainer.ts";
 import NextPageLoader from "../../features/common/NextPageLoader.tsx";
+import { TABLE_STYLES } from "../../components/common/tableStyles";
 
 export default function TransferStatus() {
   const { hasNextPage, fetchNextPage, rows } = useTransferStatusesPage();
@@ -24,25 +25,25 @@ export default function TransferStatus() {
         <h1 className="text-white font-bold text-2xl">정산금 요청 목록</h1>
       </div>
 
-      <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
-        <table className="min-w-[1000px] w-full text-xs">
-          <thead className="bg-gray-800 text-gray-200">
-            <tr className="text-left">
-              <th className="px-4 py-3 font-medium">ID</th>
-              <th className="px-4 py-3 font-medium">계정</th>
-              <th className="px-4 py-3 font-medium">이체 상태</th>
-              <th className="px-4 py-3 font-medium">금액</th>
-              <th className="px-4 py-3 font-medium">은행</th>
-              <th className="px-4 py-3 font-medium">예금주</th>
-              <th className="px-4 py-3 font-medium">계좌번호</th>
-              <th className="px-4 py-3 font-medium">생성일</th>
-              <th className="px-4 py-3 font-medium">상세</th>
+      <div className={TABLE_STYLES.container}>
+        <table className={`min-w-[1000px] ${TABLE_STYLES.table}`}>
+          <thead className={TABLE_STYLES.head}>
+            <tr className={TABLE_STYLES.headerRow}>
+              <th className={TABLE_STYLES.headerCell}>ID</th>
+              <th className={TABLE_STYLES.headerCell}>계정</th>
+              <th className={TABLE_STYLES.headerCell}>이체 상태</th>
+              <th className={TABLE_STYLES.headerCell}>금액</th>
+              <th className={TABLE_STYLES.headerCell}>은행</th>
+              <th className={TABLE_STYLES.headerCell}>예금주</th>
+              <th className={TABLE_STYLES.headerCell}>계좌번호</th>
+              <th className={TABLE_STYLES.headerCell}>생성일</th>
+              <th className={TABLE_STYLES.headerCell}>상세</th>
             </tr>
           </thead>
           <tbody>
             {rows.length === 0 && (
               <tr>
-                <td colSpan={9} className="px-4 py-10 text-center text-gray-400">
+                <td colSpan={9} className={TABLE_STYLES.emptyCell}>
                   결과가 없습니다.
                 </td>
               </tr>
@@ -55,29 +56,26 @@ export default function TransferStatus() {
                     ? "bg-amber-600/20 text-amber-300 ring-1 ring-inset ring-amber-500/30"
                     : "bg-rose-600/20 text-rose-300 ring-1 ring-inset ring-rose-500/30";
               return (
-                <tr
-                  key={r.id}
-                  className="border-t border-gray-700 hover:bg-gray-800 transition-colors"
-                >
-                  <td className="px-4 py-2 text-white">{r.id}</td>
-                  <td className="px-4 py-2 text-gray-300">{r.account}</td>
-                  <td className="px-4 py-2">
+                <tr key={r.id} className={TABLE_STYLES.bodyRow}>
+                  <td className={TABLE_STYLES.primaryCell}>{r.id}</td>
+                  <td className={TABLE_STYLES.bodyCell}>{r.account}</td>
+                  <td className={TABLE_STYLES.bodyCell}>
                     <span
                       className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${statusCls}`}
                     >
                       {r.transfer_status}
                     </span>
                   </td>
-                  <td className="px-4 py-2 text-gray-300">
+                  <td className={TABLE_STYLES.bodyCell}>
                     {r.amount ? `${r.amount.toLocaleString()}원` : "-"}
                   </td>
-                  <td className="px-4 py-2 text-gray-300">{r.account_bank || "-"}</td>
-                  <td className="px-4 py-2 text-gray-300">{r.account_holder || "-"}</td>
-                  <td className="px-4 py-2 text-gray-300">{r.account_number || "-"}</td>
-                  <td className="px-4 py-2 text-gray-300">
+                  <td className={TABLE_STYLES.bodyCell}>{r.account_bank || "-"}</td>
+                  <td className={TABLE_STYLES.bodyCell}>{r.account_holder || "-"}</td>
+                  <td className={TABLE_STYLES.bodyCell}>{r.account_number || "-"}</td>
+                  <td className={TABLE_STYLES.bodyCell}>
                     {r.created_at ? new Date(r.created_at).toLocaleString() : "-"}
                   </td>
-                  <td className="px-4 py-2">
+                  <td className={TABLE_STYLES.bodyCell}>
                     <button
                       onClick={() => setOpenId(r.id)}
                       className="text-blue-400 hover:underline text-xs"

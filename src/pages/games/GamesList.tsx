@@ -1,4 +1,5 @@
 import SearchField from "../../components/common/SearchField";
+import { TABLE_STYLES } from "../../components/common/tableStyles";
 import NextPageLoader from "../../features/common/NextPageLoader";
 import { useGamesPage } from "../../features/games/hooks/useGamesPage";
 import { Link } from "react-router-dom";
@@ -34,26 +35,26 @@ const GamesList = () => {
         </select>
       </div>
 
-      <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
-        <table className="min-w-[1100px] w-full text-xs">
-          <thead className="bg-gray-800 text-gray-200">
-            <tr className="text-left">
-              <th className="px-4 py-3 font-medium">ID</th>
-              <th className="px-4 py-3 font-medium">상태</th>
-              <th className="px-4 py-3 font-medium">제목</th>
-              <th className="px-4 py-3 font-medium">시작</th>
-              <th className="px-4 py-3 font-medium">종료</th>
-              <th className="px-4 py-3 font-medium">초대 (최소/최대)</th>
-              <th className="px-4 py-3 font-medium">참가 인원</th>
-              <th className="px-4 py-3 font-medium">참가비</th>
-              <th className="px-4 py-3 font-medium">생성일</th>
-              <th className="px-4 py-3 font-medium">상세</th>
+      <div className={TABLE_STYLES.container}>
+        <table className={`min-w-[1100px] ${TABLE_STYLES.table}`}>
+          <thead className={TABLE_STYLES.head}>
+            <tr className={TABLE_STYLES.headerRow}>
+              <th className={TABLE_STYLES.headerCell}>ID</th>
+              <th className={TABLE_STYLES.headerCell}>상태</th>
+              <th className={TABLE_STYLES.headerCell}>제목</th>
+              <th className={TABLE_STYLES.headerCell}>시작</th>
+              <th className={TABLE_STYLES.headerCell}>종료</th>
+              <th className={TABLE_STYLES.headerCell}>초대 (최소/최대)</th>
+              <th className={TABLE_STYLES.headerCell}>참가 인원</th>
+              <th className={TABLE_STYLES.headerCell}>참가비</th>
+              <th className={TABLE_STYLES.headerCell}>생성일</th>
+              <th className={TABLE_STYLES.headerCell}>상세</th>
             </tr>
           </thead>
           <tbody>
             {rows.length === 0 && (
               <tr>
-                <td colSpan={10} className="px-4 py-10 text-center text-gray-400">
+                <td colSpan={10} className={TABLE_STYLES.emptyCell}>
                   결과가 없습니다.
                 </td>
               </tr>
@@ -80,36 +81,33 @@ const GamesList = () => {
               const statusLabel = statusLabelMap[g.game_status] ?? g.game_status;
 
               return (
-                <tr
-                  key={g.id}
-                  className="border-t border-gray-700 hover:bg-gray-800 transition-colors"
-                >
-                  <td className="px-4 py-2 text-white">{g.id}</td>
-                  <td className="px-4 py-2">
+                <tr key={g.id} className={TABLE_STYLES.bodyRow}>
+                  <td className={TABLE_STYLES.primaryCell}>{g.id}</td>
+                  <td className={TABLE_STYLES.bodyCell}>
                     <span
                       className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${statusCls}`}
                     >
                       {statusLabel}
                     </span>
                   </td>
-                  <td className="px-4 py-2 text-gray-300">{g.title || "-"}</td>
-                  <td className="px-4 py-2 text-gray-300">
+                  <td className={TABLE_STYLES.bodyCell}>{g.title || "-"}</td>
+                  <td className={TABLE_STYLES.bodyCell}>
                     {g.startdate} {g.starttime?.slice(0, 5)}
                   </td>
-                  <td className="px-4 py-2 text-gray-300">
+                  <td className={TABLE_STYLES.bodyCell}>
                     {g.enddate} {g.endtime?.slice(0, 5)}
                   </td>
-                  <td className="px-4 py-2 text-gray-300">
+                  <td className={TABLE_STYLES.bodyCell}>
                     {g.min_invitation}/{g.max_invitation}
                   </td>
-                  <td className="px-4 py-2 text-gray-300">{g.num_of_participations}</td>
-                  <td className="px-4 py-2 text-gray-300">
+                  <td className={TABLE_STYLES.bodyCell}>{g.num_of_participations}</td>
+                  <td className={TABLE_STYLES.bodyCell}>
                     {g.fee ? `${g.fee.toLocaleString()}원` : "무료"}
                   </td>
-                  <td className="px-4 py-2 text-gray-300">
+                  <td className={TABLE_STYLES.bodyCell}>
                     {g.created_at ? new Date(g.created_at).toLocaleString() : "-"}
                   </td>
-                  <td className="px-4 py-2">
+                  <td className={TABLE_STYLES.bodyCell}>
                     <Link
                       to={`detail?gameId=${g.id}&tab=gameInfo`}
                       className="text-blue-400 hover:underline text-xs"
