@@ -6,20 +6,27 @@ import { authLogin } from "../../../api/auth";
 export const useLoginHook = () => {
   const navigate = useNavigate();
   const { login } = useUserStore();
+
   return useMutation({
-    mutationFn: authLogin,
-    onSuccess: (response) => {
-      if (response.status_code === 200) {
-        const { access, refresh } = response.data.token;
+    mutationFn: async (credentials: { email: string; password: string }) => {
+      const response = await authLogin(credentials);
 
-        sessionStorage.setItem("accessToken", access);
-        sessionStorage.setItem("refreshToken", refresh);
-
-        login(response?.data);
-        navigate("/");
-      } else {
-        console.error("Login failed with status code:", response.status_code);
+      if (response?.status_code !== 200) {
+        throw new Error(
+          response?.message || "로그인에 실패했습니다. 이메일/비밀번호를 확인해주세요.",
+        );
       }
+
+      return response;
+    },
+    onSuccess: (response) => {
+      const { access, refresh } = response.data.token;
+
+      sessionStorage.setItem("accessToken", access);
+      sessionStorage.setItem("refreshToken", refresh);
+
+      login(response?.data);
+      navigate("/");
     },
   });
 };

@@ -13,13 +13,21 @@ const useAuthPage = () => {
   const { isLoggedIn } = useUserStore();
   const navigate = useNavigate();
 
-  const { register, handleSubmit, watch } = useForm<Inputs>();
-  const email = watch("email");
-  const password = watch("password");
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<Inputs>({ mode: "onChange" });
 
-  const { mutate, isPending } = useLoginHook();
+  const { mutate, isPending, isError, error } = useLoginHook();
 
-  const onSubmit = () => mutate({ email: email, password: password });
+  const onSubmit = (values: Inputs) => mutate(values);
+
+  const loginError = isError
+    ? error instanceof Error
+      ? error.message
+      : "로그인에 실패했습니다. 다시 시도해주세요."
+    : null;
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -32,9 +40,11 @@ const useAuthPage = () => {
     register,
     handleSubmit,
     onSubmit,
+    isValid,
 
     isPending,
     isLoggedIn,
+    loginError,
   };
 };
 
