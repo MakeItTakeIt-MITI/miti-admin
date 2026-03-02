@@ -3,9 +3,9 @@ import { patchCourtsDetails } from "../../api/courts";
 import { toast } from "react-toastify";
 
 interface CourtPatchPayload {
-  name?: string;
-  info?: string;
-  images?: string[];
+  name: string;
+  info: string;
+  images: string[];
 }
 
 export const useEditCourtDetails = (courtId: number) => {

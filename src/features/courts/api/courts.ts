@@ -33,10 +33,10 @@ export const getCourtsDetails = async (courtId: null | number) => {
 };
 
 interface CourtPatchPayload {
-  name?: string;
+  name: string;
 
-  info?: string;
-  images?: string[];
+  info: string;
+  images: string[];
 }
 export const patchCourtsDetails = async (courtId: number, data: CourtPatchPayload) => {
   const response = await axiosUrl.patch(`/admin/courts/${courtId}`, data);

@@ -28,8 +28,8 @@ export const useCourtsDetailPage = () => {
   };
   const saveEdit = (state: { name: string; info: string; images: string[] }) => {
     mutateCourtDetails({
-      name: state.name,
-      info: state.info,
+      name: state.name ,
+      info: state.info || "",
       images:
         responseUploadUrl.length > 0
           ? gameDetailsData.images.concat(responseUploadUrl)

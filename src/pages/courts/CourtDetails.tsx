@@ -26,14 +26,12 @@ export default function CourtDetails() {
     return <div className="w-full p-8 text-white">경기장 정보를 불러오는 중입니다...</div>;
   }
 
-  if (isLoading) {
+  if (isLoading || uploadImgPending) {
     return <Spinner />;
   }
 
   return (
     <section className="w-full p-8 flex flex-col gap-6 bg-black">
-      {uploadImgPending && <Spinner />}
-
       <div className="flex items-center justify-between">
         <h1 className="text-white font-bold text-2xl">경기장 상세 - ID ({gameDetailsData?.id})</h1>
 
