@@ -79,12 +79,16 @@ export const TeamScheduleInfo = ({ data }: TeamScheduleInfoProps) => {
           {/* Team */}
           <div className="rounded-lg border border-gray-700 bg-gray-900 p-4 space-y-3">
             <h2 className="text-sm font-semibold tracking-wide text-gray-200">팀 정보</h2>
-            <ul className="space-y-1 text-xs text-gray-300">
-              <li><span className="font-medium text-gray-400">팀 ID:</span> {data.team.id}</li>
-              <li><span className="font-medium text-gray-400">팀명:</span> {data.team.name}</li>
-              <li><span className="font-medium text-gray-400">상태:</span> {data.team.status}</li>
-              <li><span className="font-medium text-gray-400">레벨:</span> {data.team.level}</li>
-            </ul>
+            {data.team ? (
+              <ul className="space-y-1 text-xs text-gray-300">
+                <li><span className="font-medium text-gray-400">팀 ID:</span> {data.team.id}</li>
+                <li><span className="font-medium text-gray-400">팀명:</span> {data.team.name}</li>
+                <li><span className="font-medium text-gray-400">상태:</span> {data.team.status}</li>
+                <li><span className="font-medium text-gray-400">레벨:</span> {data.team.level}</li>
+              </ul>
+            ) : (
+              <p className="text-xs text-gray-500">팀 정보 없음</p>
+            )}
           </div>
 
           {/* Host */}

@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { useGameDetailsDataHook } from "./useGameDetailsDataHook";
 import { usePatchGameDetailsHook } from "./usePatchGameDetailsHook";
 import { useTeamScheduleDetailHook } from "./query/useTeamScheduleDetailHook";
+import { TeamScheduleDetail } from "../interface/game";
 
 type GameDetailsTab = "gameInfo" | "participants" | "hostReportInfo";
 type TeamScheduleTab = "scheduleInfo" | "participants";
@@ -29,8 +30,8 @@ export const useGameDetailsPage = () => {
 
   // data.data is the actual game object ({ data: gameDetail, status_code })
   const { data } = useGameDetailsDataHook(gameType === "game" ? gameId : 0);
-  // teamData is the team schedule object directly
-  const { data: teamData } = useTeamScheduleDetailHook(gameType === "team_game" ? gameId : 0);
+  const { data: teamDataRaw } = useTeamScheduleDetailHook(gameType === "team_game" ? gameId : 0);
+  const teamData: TeamScheduleDetail | undefined = teamDataRaw?.data ?? teamDataRaw;
 
   const { mutate: mutateGameDetails } = usePatchGameDetailsHook(gameId, setShowEditContainer);
 
