@@ -1,14 +1,16 @@
 import { Reports } from "../../features/games/components/Reports";
 import { Participants } from "../../features/games/components/Participants";
 import { useGameDetailsPage } from "../../features/games/hooks/useGameDetailsPage";
-
 import { GameInfo } from "../../features/games/components/GameInfo";
+import { TeamScheduleInfo } from "../../features/games/components/TeamScheduleInfo";
 
 const GameDetails = () => {
   const {
     gameId,
+    gameType,
     tab,
     data,
+    teamData,
     showEditContainer,
     minPlayers,
     maxPlayers,
@@ -21,10 +23,24 @@ const GameDetails = () => {
     handleSubmitUpdate,
   } = useGameDetailsPage();
 
+  const isTeamGame = gameType === "team_game";
+
+  const tabs = isTeamGame
+    ? [
+        { key: "scheduleInfo", label: "일정 정보" },
+        { key: "participants", label: "참가자 목록" },
+      ]
+    : [
+        { key: "gameInfo", label: "경기 정보" },
+        { key: "participants", label: "참가자 목록" },
+        { key: "hostReportInfo", label: "호스트 신고 정보" },
+      ];
+
   return (
     <>
-      {showEditContainer && (
-        <div className=" fixed top-0 right-0 bottom-0 left-0  bg-[#0000004b] z-99 flex items-center justify-center">
+      {/* Edit modal — only for individual game type */}
+      {!isTeamGame && showEditContainer && (
+        <div className="fixed top-0 right-0 bottom-0 left-0 bg-[#0000004b] z-99 flex items-center justify-center">
           <div className="absolute bg-white flex flex-col justify-between h-[800px] w-[500px] p-6 rounded-lg">
             <button
               onClick={handleDisplayEditContainer}
@@ -39,10 +55,9 @@ const GameDetails = () => {
                 <p className="text-xs text-red-600">최소 인원은 최대 인원보다 작아야 합니다.</p>
               )}
             </div>
-            {/* <hr /> */}
-            <div className="flex flex-col gap-4 text-xs  ">
+            <div className="flex flex-col gap-4 text-xs">
               <div className="flex flex-col gap-1">
-                <label htmlFor="min_players " className="text-xs">
+                <label htmlFor="min_players" className="text-xs">
                   최소 인원
                 </label>
                 <input
@@ -86,8 +101,8 @@ const GameDetails = () => {
               onClick={handleSubmitUpdate}
               disabled={minPlayers >= maxPlayers}
               className={`w-full h-10 ${
-                minPlayers >= maxPlayers ? "bg-gray-200 text-gray-400" : " bg-blue-600 text-white"
-              }  rounded-lg  font-semibold`}
+                minPlayers >= maxPlayers ? "bg-gray-200 text-gray-400" : "bg-blue-600 text-white"
+              } rounded-lg font-semibold`}
             >
               수정하기
             </button>
@@ -97,17 +112,13 @@ const GameDetails = () => {
 
       <section className="px-4 pt-4 w-full">
         <div className="flex flex-col gap-4">
-          {/* Tabs styled similar to GamesList table header */}
+          {/* Tabs */}
           <div
             className="rounded-lg border border-gray-700 overflow-hidden bg-gray-900/60"
             role="tablist"
           >
-            <div className="grid grid-cols-3">
-              {[
-                { key: "gameInfo", label: "경기 정보" },
-                { key: "participants", label: "참가자 목록" },
-                { key: "hostReportInfo", label: "호스트 신고 정보" },
-              ].map((t) => {
+            <div className={isTeamGame ? "grid grid-cols-2" : "grid grid-cols-3"}>
+              {tabs.map((t) => {
                 const active = tab === t.key;
                 return (
                   <button
@@ -115,9 +126,7 @@ const GameDetails = () => {
                     type="button"
                     role="tab"
                     aria-selected={active}
-                    onClick={() =>
-                      handleSetTab(t.key as "gameInfo" | "participants" | "hostReportInfo")
-                    }
+                    onClick={() => handleSetTab(t.key as typeof tab)}
                     className={`px-4 py-3 text-xs font-semibold flex items-center justify-center transition-colors
                       ${
                         active
@@ -135,13 +144,27 @@ const GameDetails = () => {
             </div>
           </div>
 
-          {/* Tab content container */}
+          {/* Tab content */}
           <div className="rounded-lg border border-gray-700 bg-gray-800 p-6">
-            {tab === "gameInfo" && (
-              <GameInfo data={data?.data} handleDisplayEditContainer={handleDisplayEditContainer} />
+            {isTeamGame ? (
+              <>
+                {tab === "scheduleInfo" && <TeamScheduleInfo data={teamData} />}
+                {tab === "participants" && (
+                  <Participants gameId={gameId} gameType="team_game" />
+                )}
+              </>
+            ) : (
+              <>
+                {tab === "gameInfo" && (
+                  <GameInfo
+                    data={data?.data}
+                    handleDisplayEditContainer={handleDisplayEditContainer}
+                  />
+                )}
+                {tab === "participants" && <Participants gameId={gameId} gameType="game" />}
+                {tab === "hostReportInfo" && <Reports gameId={gameId} />}
+              </>
             )}
-            {tab === "participants" && <Participants gameId={gameId} />}
-            {tab === "hostReportInfo" && <Reports gameId={gameId} />}
           </div>
         </div>
       </section>

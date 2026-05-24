@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useGameDetailsDataHook } from "./useGameDetailsDataHook";
 import { usePatchGameDetailsHook } from "./usePatchGameDetailsHook";
+import { useTeamScheduleDetailHook } from "./query/useTeamScheduleDetailHook";
 
 type GameDetailsTab = "gameInfo" | "participants" | "hostReportInfo";
+type TeamScheduleTab = "scheduleInfo" | "participants";
 
 export const useGameDetailsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -13,13 +15,23 @@ export const useGameDetailsPage = () => {
   const [gameInfo, setGameInfo] = useState("");
 
   const gameId = Number(searchParams.get("gameId"));
+  const gameType = (searchParams.get("type") ?? "game") as "game" | "team_game";
   const tabParam = searchParams.get("tab");
-  const tab: GameDetailsTab =
-    tabParam === "participants" || tabParam === "hostReportInfo" || tabParam === "gameInfo"
-      ? tabParam
-      : "gameInfo";
 
-  const { data } = useGameDetailsDataHook(gameId);
+  const tab: GameDetailsTab | TeamScheduleTab =
+    gameType === "team_game"
+      ? tabParam === "participants"
+        ? "participants"
+        : "scheduleInfo"
+      : tabParam === "participants" || tabParam === "hostReportInfo" || tabParam === "gameInfo"
+        ? tabParam
+        : "gameInfo";
+
+  // data.data is the actual game object ({ data: gameDetail, status_code })
+  const { data } = useGameDetailsDataHook(gameType === "game" ? gameId : 0);
+  // teamData is the team schedule object directly
+  const { data: teamData } = useTeamScheduleDetailHook(gameType === "team_game" ? gameId : 0);
+
   const { mutate: mutateGameDetails } = usePatchGameDetailsHook(gameId, setShowEditContainer);
 
   useEffect(() => {
@@ -33,7 +45,7 @@ export const useGameDetailsPage = () => {
     setShowEditContainer((prev) => !prev);
   };
 
-  const handleSetTab = (selected: GameDetailsTab) => {
+  const handleSetTab = (selected: GameDetailsTab | TeamScheduleTab) => {
     setSearchParams((prev) => {
       const params = new URLSearchParams(prev);
       params.set("tab", selected);
@@ -51,8 +63,10 @@ export const useGameDetailsPage = () => {
 
   return {
     gameId,
+    gameType,
     tab,
     data,
+    teamData,
     showEditContainer,
     minPlayers,
     maxPlayers,

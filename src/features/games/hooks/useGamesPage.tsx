@@ -3,31 +3,35 @@ import { useGamesListHook } from "./query/useGamesListHook";
 import { useMemo, useState } from "react";
 
 export const useGamesPage = () => {
-  const [status, setStatus] = useState<null | string>(null);
+  const [status, setStatus] = useState<string | null>(null);
+  const [province, setProvince] = useState<string | null>(null);
 
   const [searchParams] = useSearchParams();
   const search = searchParams.get("search");
-  const { data, hasNextPage, hasPreviousPage, fetchNextPage, fetchPreviousPage } = useGamesListHook(
-    search,
-    status,
-  );
 
-  const gamesDataPage = data?.pages?.flatMap((page) => page?.data?.items);
+  const statusArr = status ? [status] : [];
+  const provinceArr = province ? [province] : [];
+
+  const { data, hasNextPage, fetchNextPage } = useGamesListHook(search, statusArr, provinceArr);
+
+  const gamesDataPage = data?.pages?.flatMap((page) => {
+    const pageData = page?.data ?? page;
+    return pageData?.items ?? [];
+  });
 
   const rows = useMemo(() => {
     if (!gamesDataPage) return [];
-    if (Array.isArray(gamesDataPage)) return gamesDataPage;
-
     return gamesDataPage;
   }, [gamesDataPage]);
+
   return {
     gamesDataPage,
     hasNextPage,
-    hasPreviousPage,
     fetchNextPage,
-    fetchPreviousPage,
     rows,
     status,
     setStatus,
+    province,
+    setProvince,
   };
 };
