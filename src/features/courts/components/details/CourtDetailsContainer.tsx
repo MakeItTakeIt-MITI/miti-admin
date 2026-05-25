@@ -8,79 +8,61 @@ interface CourtDetailsContainerProps {
     images?: string[];
   } | null;
   isEditing: boolean;
-  draft?: {
-    id?: string;
-    name?: string;
-    address?: string;
-    address_detail?: string;
-    info?: string;
-    images?: string[];
-  };
 }
 
-const inputCls =
-  "h-9 rounded-md bg-gray-800 border border-gray-700 px-3 text-xs text-gray-200 outline-none disabled:opacity-80";
+const fieldCls =
+  "h-9 w-full rounded-md border border-gray-700 bg-gray-800 px-3 text-xs text-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 disabled:opacity-70";
 const textareaCls =
-  "rounded-md bg-gray-800 border border-gray-700 p-3 text-xs text-gray-200 outline-none disabled:opacity-80";
+  "w-full rounded-md border border-gray-700 bg-gray-800 p-3 text-xs text-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 disabled:opacity-70";
 
-const CourtDetailsContainer = ({
-  gameDetailsData,
-}: // isEditing,
-// draft,
-CourtDetailsContainerProps) => {
+const CourtDetailsContainer = ({ gameDetailsData }: CourtDetailsContainerProps) => {
   const display = gameDetailsData ?? {};
 
   return (
-    <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
-      {/* ID: read-only always */}
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
       <label className="flex flex-col gap-1">
-        <span className="text-[11px] text-gray-400">경기장 아이디</span>
-        <p className="flex items-center h-9 rounded-md bg-gray-800 border border-gray-700 px-3 text-xs text-gray-200">
+        <span className="text-[11px] text-gray-500">경기장 아이디</span>
+        <p className="flex h-9 items-center rounded-md border border-gray-700 bg-gray-800 px-3 text-xs tabular-nums text-gray-400">
           {display.id ?? "-"}
         </p>
       </label>
 
-      {/* 이름 */}
       <label className="flex flex-col gap-1">
-        <span className="text-[11px] text-gray-400">경기장 이름</span>
-        <input className={inputCls} value={display.name ?? ""} />
+        <span className="text-[11px] text-gray-500">경기장 이름</span>
+        <input disabled className={fieldCls} value={display.name ?? ""} readOnly />
       </label>
 
-      {/* 주소 */}
       <label className="flex flex-col gap-1 sm:col-span-2">
-        <span className="text-[11px] text-gray-400">주소</span>
-        <input className={inputCls} value={display.address ?? ""} />
+        <span className="text-[11px] text-gray-500">주소</span>
+        <input disabled className={fieldCls} value={display.address ?? ""} readOnly />
       </label>
 
-      {/* 상세 주소 */}
       <label className="flex flex-col gap-1 sm:col-span-2">
-        <span className="text-[11px] text-gray-400">상세 주소</span>
-        <input className={inputCls} value={display.address_detail ?? ""} />
+        <span className="text-[11px] text-gray-500">상세 주소</span>
+        <input disabled className={fieldCls} value={display.address_detail ?? ""} readOnly />
       </label>
 
-      {/* 정보 */}
       <label className="flex flex-col gap-1 sm:col-span-2">
-        <span className="text-[11px] text-gray-400">정보</span>
-        <textarea rows={4} className={textareaCls} value={display.info ?? ""} />
+        <span className="text-[11px] text-gray-500">경기장 정보</span>
+        <textarea disabled rows={4} className={textareaCls} value={display.info ?? ""} readOnly />
       </label>
 
-      {/* images */}
       {display.images && display.images.length > 0 ? (
         <div className="sm:col-span-2">
-          <span className="text-[11px] text-gray-400">이미지</span>
-          <div className="mt-1 flex flex-wrap gap-3">
+          <span className="text-[11px] text-gray-500">이미지</span>
+          <div className="mt-2 flex flex-wrap gap-3">
             {display.images.map((imgUrl, idx) => (
               <img
                 key={idx}
                 src={imgUrl}
-                alt={`Court Image ${idx + 1}`}
-                className="w-24 h-24 object-cover rounded-md border border-gray-700"
+                alt={`경기장 이미지 ${idx + 1}`}
+                className="size-20 rounded-md border border-gray-700 object-cover"
               />
             ))}
           </div>
         </div>
       ) : (
-        <p className="sm:col-span-2 text-xs text-gray-200 ">등록된 이미지가 없습니다.</p>
+        <p className="sm:col-span-2 text-xs text-gray-500">등록된 이미지가 없습니다.</p>
       )}
     </div>
   );
