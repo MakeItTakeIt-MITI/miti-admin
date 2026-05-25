@@ -15,9 +15,11 @@ export default function PrivateRoute() {
   }
 
   return (
-    <div className="flex md:space-y-0 space-y-14">
+    <div className="flex h-dvh overflow-hidden bg-black">
       <Navbar />
-      <Outlet />;
+      <main className="flex-1 overflow-auto pt-14 md:pt-0">
+        <Outlet />
+      </main>
     </div>
   );
 }
