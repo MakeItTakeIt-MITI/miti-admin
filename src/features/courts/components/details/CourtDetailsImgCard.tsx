@@ -12,71 +12,98 @@ const CourtDetailsImgCard = ({ gameDetailsData }: CourtDetailsImgCardProps) => {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    if (index >= images.length) {
-      setIndex(Math.max(0, images.length - 1));
-    }
+    if (index >= images.length) setIndex(Math.max(0, images.length - 1));
   }, [images, index]);
 
   const prev = () => setIndex((i) => Math.max(0, i - 1));
   const next = () => setIndex((i) => Math.min(images.length - 1, i + 1));
-  const go = (i: number) => setIndex(i);
+
+  if (images.length === 0) {
+    return (
+      <div className="flex h-64 w-full flex-col items-center justify-center gap-2 bg-gray-900 md:h-80">
+        <svg
+          className="size-10 text-gray-700"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1}
+            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+          />
+        </svg>
+        <p className="text-pretty text-sm text-gray-600">등록된 이미지가 없습니다</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="w-[600px] mx-auto h-[360px]">
-      {images.length === 0 ? (
-        <div className="border border-[#fff] h-full flex flex-col items-center justify-center py-20 text-center">
-          <p className="text-gray-500 text-sm">등록된 이미지가 없습니다.</p>
-        </div>
-      ) : (
-        <div className="h-full w-full relative">
-          {/* MAIN img */}
-          <img
-            src={images[index]}
-            alt={`${gameDetailsData.name}-${index}`}
-            className="h-full w-full object-cover transition-transform duration-300 rounded"
-          />
+    <div className="relative w-full">
+      {/* Main image */}
+      <div className="relative h-64 w-full overflow-hidden bg-gray-900 md:h-96">
+        <img
+          key={index}
+          src={images[index]}
+          alt={`${gameDetailsData.name} ${index + 1}`}
+          className="h-full w-full object-cover"
+        />
 
-          {/* Left/ Right Buttons */}
+        {/* Prev */}
+        {index > 0 && (
           <button
             onClick={prev}
-            disabled={index === 0}
-            aria-label="previous"
-            className={`absolute left-2 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-black/50 text-white flex items-center justify-center ${
-              index === 0 ? "opacity-40 cursor-not-allowed" : "hover:bg-black/60"
-            }`}
+            aria-label="이전 이미지"
+            className="absolute left-3 top-1/2 -translate-y-1/2 flex size-9 items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80"
           >
-            ‹
+            <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
           </button>
+        )}
+
+        {/* Next */}
+        {index < images.length - 1 && (
           <button
             onClick={next}
-            disabled={index === images.length - 1}
-            aria-label="next"
-            className={`absolute right-2 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-black/50 text-white flex items-center justify-center ${
-              index === images.length - 1 ? "opacity-40 cursor-not-allowed" : "hover:bg-black/60"
-            }`}
+            aria-label="다음 이미지"
+            className="absolute right-3 top-1/2 -translate-y-1/2 flex size-9 items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80"
           >
-            ›
+            <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
           </button>
+        )}
 
-          {/* thumbmails on center/bottom */}
-          <div className="absolute left-1/2 -translate-x-1/2 bottom-3 w-[92%]">
-            <div className="flex items-center justify-center gap-2 overflow-x-auto pb-1">
-              {images.map((src, i) => (
-                <button
-                  key={i}
-                  onClick={() => go(i)}
-                  className={`h-14 w-20 flex-shrink-0 rounded overflow-hidden border-2 ${
-                    i === index ? "border-blue-500" : "border-transparent"
-                  } focus:outline-none`}
-                >
-                  <img src={src} alt={`thumb-${i}`} className="h-full w-full object-cover" />
-                </button>
-              ))}
-            </div>
+        {/* Counter */}
+        {images.length > 1 && (
+          <div className="absolute bottom-3 right-3 rounded-full bg-black/60 px-2.5 py-1 text-[11px] tabular-nums text-gray-300">
+            {index + 1} / {images.length}
           </div>
+        )}
+      </div>
+
+      {/* Thumbnails */}
+      {images.length > 1 && (
+        <div className="flex gap-2 overflow-x-auto bg-gray-950 p-3">
+          {images.map((src, i) => (
+            <button
+              key={i}
+              onClick={() => setIndex(i)}
+              aria-label={`이미지 ${i + 1} 보기`}
+              className={`size-14 flex-shrink-0 overflow-hidden rounded border-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 ${
+                i === index ? "border-blue-500" : "border-transparent opacity-60 hover:opacity-90"
+              }`}
+            >
+              <img src={src} alt={`썸네일 ${i + 1}`} className="h-full w-full object-cover" />
+            </button>
+          ))}
         </div>
       )}
     </div>
   );
 };
+
 export default CourtDetailsImgCard;
