@@ -17,6 +17,53 @@ export const gamesListData = async (
   }
 };
 
+export const fetchMatchList = async (
+  cursor: string | null,
+  limit: number,
+  search: string | null,
+  status: string[],
+  province: string[],
+) => {
+  try {
+    const response = await axiosUrl.get("/admin/matches", {
+      params: { cursor, limit, search, status, province },
+      paramsSerializer: (params) => {
+        const searchParams = new URLSearchParams();
+        Object.entries(params).forEach(([key, value]) => {
+          if (value == null) return;
+          if (Array.isArray(value)) {
+            value.forEach((v) => searchParams.append(key, v));
+          } else {
+            searchParams.set(key, String(value));
+          }
+        });
+        return searchParams.toString();
+      },
+    });
+    return response.data;
+  } catch {
+    throw new Error();
+  }
+};
+
+export const fetchTeamScheduleDetail = async (scheduleId: number) => {
+  try {
+    const response = await axiosUrl.get(`/admin/team-schedules/${scheduleId}`);
+    return response.data;
+  } catch {
+    throw new Error();
+  }
+};
+
+export const fetchTeamScheduleParticipations = async (scheduleId: number) => {
+  try {
+    const response = await axiosUrl.get(`/admin/team-schedules/${scheduleId}/participations`);
+    return response.data;
+  } catch {
+    throw new Error();
+  }
+};
+
 export const gameDetailsData = async (gameId: number | null) => {
   try {
     const response = await axiosUrl.get(`/admin/games/${gameId}`);
