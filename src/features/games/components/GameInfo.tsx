@@ -34,150 +34,217 @@ interface GameInfoProps {
   handleDisplayEditContainer: () => void;
 }
 
-const statusClass = (s: string) =>
-  s === "completed"
-    ? "bg-emerald-600/20 text-emerald-300 ring-1 ring-inset ring-emerald-500/30"
-    : s === "pending"
-      ? "bg-amber-600/20 text-amber-300 ring-1 ring-inset ring-amber-500/30"
-      : "bg-blue-600/20 text-blue-300 ring-1 ring-inset ring-blue-500/30";
+const statusConfig: Record<string, { label: string; cls: string }> = {
+  open: {
+    label: "모집중",
+    cls: "bg-blue-500/10 text-blue-400 ring-1 ring-inset ring-blue-500/25",
+  },
+  closed: {
+    label: "모집완료",
+    cls: "bg-amber-500/10 text-amber-400 ring-1 ring-inset ring-amber-500/25",
+  },
+  completed: {
+    label: "완료",
+    cls: "bg-emerald-500/10 text-emerald-400 ring-1 ring-inset ring-emerald-500/25",
+  },
+  canceled: {
+    label: "취소",
+    cls: "bg-red-500/10 text-red-400 ring-1 ring-inset ring-red-500/25",
+  },
+  pending: {
+    label: "대기",
+    cls: "bg-amber-500/10 text-amber-400 ring-1 ring-inset ring-amber-500/25",
+  },
+};
+
+const Row = ({ label, value }: { label: string; value: React.ReactNode }) => (
+  <div className="flex items-start gap-2 py-1.5 border-b border-zinc-800/60 last:border-0">
+    <span className="w-24 flex-shrink-0 text-[11px] text-zinc-600 pt-0.5">{label}</span>
+    <span className="text-xs text-zinc-200 break-all">{value}</span>
+  </div>
+);
 
 export const GameInfo = ({ data, handleDisplayEditContainer }: GameInfoProps) => {
+  if (!data) return null;
+
   const capacityPct =
-    data?.max_invitation > 0
-      ? Math.min(100, Math.round((data?.num_of_participations / data?.max_invitation) * 100))
+    data.max_invitation > 0
+      ? Math.min(100, Math.round((data.num_of_participations / data.max_invitation) * 100))
       : 0;
 
+  const barColor =
+    capacityPct >= 100 ? "bg-emerald-500" : capacityPct >= 75 ? "bg-amber-500" : "bg-blue-500";
+
+  const st = statusConfig[data.game_status] ?? {
+    label: data.game_status,
+    cls: "bg-zinc-700 text-zinc-300",
+  };
+
   return (
-    <article className="bg-gray-800 text-white rounded-lg border border-gray-700 overflow-hidden">
-      {/* Header */}
-      <div className="flex flex-col gap-3 p-6 bg-gradient-to-r from-gray-800 to-gray-700">
-        <div className="flex items-start justify-between gap-4">
-          <div className="space-y-1">
-            <h1 className="text-2xl font-semibold">{data?.title}</h1>
-            <div className="flex items-center gap-3">
-              <span
-                className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${statusClass(
-                  data?.game_status,
-                )}`}
-              >
-                {data?.game_status}
+    <div className="space-y-4">
+      {/* Header card */}
+      <div className="rounded-xl border border-zinc-800 bg-zinc-900 overflow-hidden">
+        <div className="px-6 py-5 flex items-start justify-between gap-4">
+          <div className="space-y-2 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className={`inline-flex rounded px-2 py-0.5 text-[11px] font-medium ${st.cls}`}>
+                {st.label}
               </span>
-              <span className="text-xs text-gray-400">생성일: {data?.created_at.slice(0, 10)}</span>
+              <span className="text-[11px] text-zinc-600 font-mono">
+                ID {data.id}
+              </span>
+              <span className="text-[11px] text-zinc-600">
+                생성 {data.created_at?.slice(0, 10)}
+              </span>
             </div>
+            <h1 className="text-lg font-semibold text-white leading-tight truncate">{data.title}</h1>
           </div>
           <button
             type="button"
             onClick={handleDisplayEditContainer}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-shrink-0 inline-flex items-center gap-1.5 h-8 px-3 rounded-lg bg-zinc-800 border border-zinc-700 text-xs font-medium text-zinc-300 hover:text-white hover:border-zinc-600 transition-colors"
           >
-            경기 정보 수정
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            수정
           </button>
         </div>
 
-        {/* Progress */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs text-gray-300">
-            <span>
-              모집 현황 {data?.num_of_participations}/{data?.max_invitation}
-            </span>
-            <span>{capacityPct}%</span>
+        {/* Capacity bar */}
+        <div className="px-6 pb-5">
+          <div className="rounded-lg bg-zinc-800/60 border border-zinc-800 p-4 space-y-2.5">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-zinc-400">
+                모집 현황{" "}
+                <span className="font-mono text-white font-medium">
+                  {data.num_of_participations}
+                </span>
+                <span className="text-zinc-600">/{data.max_invitation}명</span>
+              </span>
+              <div className="flex items-center gap-3 text-[11px]">
+                <span className="text-zinc-500">
+                  최소 <span className="font-mono text-zinc-400">{data.min_invitation}</span>명
+                </span>
+                <span
+                  className={`font-mono font-semibold ${
+                    capacityPct >= 100 ? "text-emerald-400" : capacityPct >= 75 ? "text-amber-400" : "text-blue-400"
+                  }`}
+                >
+                  {capacityPct}%
+                </span>
+              </div>
+            </div>
+            <div className="h-1.5 w-full bg-zinc-700 rounded-full overflow-hidden">
+              <div
+                className={`h-full rounded-full transition-all ${barColor}`}
+                style={{ width: `${capacityPct}%` }}
+              />
+            </div>
           </div>
-          <div className="h-2 w-full bg-gray-700 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-blue-500 transition-all"
-              style={{ width: `${capacityPct}%` }}
+        </div>
+      </div>
+
+      {/* Info grid */}
+      <div className="grid gap-4 md:grid-cols-3">
+        {/* Host */}
+        <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-5 space-y-3">
+          <h2 className="text-[10px] uppercase tracking-widest font-medium text-zinc-600">
+            호스트 정보
+          </h2>
+          <div className="space-y-0">
+            <Row label="ID" value={<span className="font-mono">{data.host?.id}</span>} />
+            <Row label="이름" value={data.host?.name} />
+            <Row label="닉네임" value={data.host?.nickname} />
+            <Row label="이메일" value={data.host?.email} />
+            <Row label="생년월일" value={data.host?.birthday} />
+            <Row label="연락처" value={data.host?.phone} />
+          </div>
+        </div>
+
+        {/* Court */}
+        <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-5 space-y-3">
+          <h2 className="text-[10px] uppercase tracking-widest font-medium text-zinc-600">
+            코트 정보
+          </h2>
+          <div className="space-y-0">
+            <Row label="코트 ID" value={<span className="font-mono">{data.court?.id}</span>} />
+            <Row label="이름" value={data.court?.name} />
+            <Row label="주소" value={data.court?.address} />
+            {data.court?.address_detail && (
+              <Row label="상세 주소" value={data.court.address_detail} />
+            )}
+          </div>
+        </div>
+
+        {/* Game meta */}
+        <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-5 space-y-3">
+          <h2 className="text-[10px] uppercase tracking-widest font-medium text-zinc-600">
+            경기 메타
+          </h2>
+          <div className="space-y-0">
+            <Row
+              label="시작"
+              value={
+                <span className="font-mono">
+                  {data.startdate}{" "}
+                  <span className="text-zinc-500">{data.starttime?.slice(0, 5)}</span>
+                </span>
+              }
+            />
+            <Row
+              label="종료"
+              value={
+                <span className="font-mono">
+                  {data.enddate}{" "}
+                  <span className="text-zinc-500">{data.endtime?.slice(0, 5)}</span>
+                </span>
+              }
+            />
+            <Row
+              label="참가비"
+              value={
+                data.fee ? (
+                  <span className="font-mono">{data.fee.toLocaleString()}원</span>
+                ) : (
+                  <span className="text-zinc-600">무료</span>
+                )
+              }
+            />
+            <Row
+              label="최소/최대"
+              value={
+                <span className="font-mono">
+                  {data.min_invitation}
+                  <span className="text-zinc-600"> / </span>
+                  {data.max_invitation}명
+                </span>
+              }
+            />
+            <Row
+              label="현재 인원"
+              value={
+                <span className="font-mono">{data.num_of_participations}명</span>
+              }
             />
           </div>
         </div>
       </div>
 
-      {/* Grid Sections */}
-      <div className="p-6 space-y-8">
-        {/* Host / Court / Game meta */}
-        <div className="grid gap-6 md:grid-cols-3">
-          {/* Host */}
-          <div className="rounded-lg border border-gray-700 bg-gray-900 p-4 space-y-3">
-            <h2 className="text-sm font-semibold tracking-wide text-gray-200">호스트 정보</h2>
-            <ul className="space-y-1 text-xs text-gray-300">
-              <li>
-                <span className="font-medium text-gray-400">ID:</span> {data?.host.id}
-              </li>
-              <li>
-                <span className="font-medium text-gray-400">이름:</span> {data?.host.name}
-              </li>
-              <li>
-                <span className="font-medium text-gray-400">닉네임:</span> {data?.host.nickname}
-              </li>
-              <li>
-                <span className="font-medium text-gray-400">이메일:</span> {data?.host.email}
-              </li>
-              <li>
-                <span className="font-medium text-gray-400">생년월일:</span> {data?.host.birthday}
-              </li>
-              <li>
-                <span className="font-medium text-gray-400">연락처:</span> {data?.host.phone}
-              </li>
-            </ul>
-          </div>
-
-          {/* Court */}
-          <div className="rounded-lg border border-gray-700 bg-gray-900 p-4 space-y-3">
-            <h2 className="text-sm font-semibold tracking-wide text-gray-200">코트 정보</h2>
-            <ul className="space-y-1 text-xs text-gray-300">
-              <li>
-                <span className="font-medium text-gray-400">코트 ID:</span> {data?.court.id}
-              </li>
-              <li>
-                <span className="font-medium text-gray-400">주소:</span> {data?.court.address}
-              </li>
-              <li>
-                <span className="font-medium text-gray-400">상세 주소:</span> {data?.court.name}
-              </li>
-            </ul>
-          </div>
-
-          {/* Game Metrics */}
-          <div className="rounded-lg border border-gray-700 bg-gray-900 p-4 space-y-3">
-            <h2 className="text-sm font-semibold tracking-wide text-gray-200">경기 메타</h2>
-            <ul className="space-y-1 text-xs text-gray-300">
-              <li>
-                <span className="font-medium text-gray-400">경기 ID:</span> {data?.id}
-              </li>
-              <li>
-                <span className="font-medium text-gray-400">시작:</span> {data?.startdate} (
-                {data?.starttime.slice(0, 5)})
-              </li>
-              <li>
-                <span className="font-medium text-gray-400">종료:</span> {data?.enddate} (
-                {data?.endtime.slice(0, 5)})
-              </li>
-              <li>
-                <span className="font-medium text-gray-400">참가비:</span>{" "}
-                {data?.fee ? `${data?.fee.toLocaleString()}원` : "무료"}
-              </li>
-              <li>
-                <span className="font-medium text-gray-400">최소/최대:</span> {data?.min_invitation}
-                /{data?.max_invitation}
-              </li>
-              <li>
-                <span className="font-medium text-gray-400">현재 인원:</span>{" "}
-                {data?.num_of_participations}
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Detailed Info */}
-        <div className="rounded-lg border border-gray-700 bg-gray-900 p-5">
-          <h2 className="text-sm font-semibold tracking-wide mb-3 text-gray-200">상세 정보</h2>
+      {/* Info text */}
+      {data.info && (
+        <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-5 space-y-3">
+          <h2 className="text-[10px] uppercase tracking-widest font-medium text-zinc-600">
+            상세 안내
+          </h2>
           <div
-            className="text-sm leading-relaxed whitespace-pre-line max-h-[320px] overflow-y-auto pr-1 text-gray-300"
-            style={{ scrollbarWidth: "thin" }}
+            className="text-sm leading-relaxed whitespace-pre-line max-h-72 overflow-y-auto text-zinc-300 pr-2"
+            style={{ scrollbarWidth: "thin", scrollbarColor: "#3f3f46 transparent" }}
           >
-            {data?.info || "상세 정보가 없습니다."}
+            {data.info}
           </div>
         </div>
-      </div>
-    </article>
+      )}
+    </div>
   );
 };
