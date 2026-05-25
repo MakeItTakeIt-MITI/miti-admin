@@ -2,17 +2,17 @@ import axiosUrl from "../../../utils/axios";
 
 export const getCourtsList = async (
   cursor: null | string,
-  size: number,
+  limit: number,
   search: string | null,
   province: string | null,
 ) => {
   try {
     const response = await axiosUrl.get("/admin/courts", {
       params: {
-        cursor: cursor,
-        size: size,
-        search: search,
-        province: province,
+        cursor,
+        limit,
+        search,
+        province: province ?? undefined,
       },
     });
     return response.data;
@@ -20,6 +20,19 @@ export const getCourtsList = async (
     console.log(error);
     throw new Error("Failed to fetch courts list");
   }
+};
+
+interface CourtCreatePayload {
+  address: string;
+  address_detail?: string | null;
+  name?: string | null;
+  info?: string | null;
+  images?: string[];
+}
+
+export const createCourt = async (data: CourtCreatePayload) => {
+  const response = await axiosUrl.post("/admin/courts", data);
+  return response.data;
 };
 export const getCourtsDetails = async (courtId: null | number) => {
   try {
@@ -33,11 +46,13 @@ export const getCourtsDetails = async (courtId: null | number) => {
 };
 
 interface CourtPatchPayload {
-  name: string;
-
-  info: string;
-  images: string[];
+  name?: string;
+  address?: string;
+  address_detail?: string | null;
+  info?: string | null;
+  images?: string[];
 }
+
 export const patchCourtsDetails = async (courtId: number, data: CourtPatchPayload) => {
   const response = await axiosUrl.patch(`/admin/courts/${courtId}`, data);
   return response.data;
