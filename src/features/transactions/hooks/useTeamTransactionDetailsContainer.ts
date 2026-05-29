@@ -10,7 +10,7 @@ export const useTeamTransactionDetailsContainer = () => {
   const [openId, setOpenId] = useState<number | null>(null);
 
   const { data } = useTeamTransferRequestDetails(openId);
-  const detailData = data ?? null;
+  const detailData = data?.data ?? null;
   const handleClose = () => setOpenId(null);
 
   useEffect(() => {
