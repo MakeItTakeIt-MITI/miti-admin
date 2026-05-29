@@ -1,17 +1,17 @@
 import { useMemo, useState } from "react";
-import { useGetTransferRequests } from "./query/useGetTransferRequests";
-import { SettlementsListItem } from "../interface/settlements";
+import { useGetTeamTransferRequests } from "./query/useGetTeamTransferRequests";
+import { TeamTransferListItem } from "../interface/settlements";
 
-export const useTransferStatusesPage = () => {
+export const useTeamTransferStatusesPage = () => {
   const [transferStatus] = useState<null | "completed" | "waiting" | "declined">(null);
   const { data, hasNextPage, hasPreviousPage, fetchNextPage, fetchPreviousPage } =
-    useGetTransferRequests(transferStatus);
+    useGetTeamTransferRequests(transferStatus);
 
-  const transferRequestData = data?.pages?.flatMap((page) => page?.items as SettlementsListItem[]);
+  const transferRequestData = data?.pages?.flatMap((page) => page?.items as TeamTransferListItem[]);
 
   const rows = useMemo(() => {
     if (!transferRequestData) return [];
-    return transferRequestData.filter((row): row is SettlementsListItem => Boolean(row));
+    return transferRequestData.filter((row): row is TeamTransferListItem => Boolean(row));
   }, [transferRequestData]);
 
   return {

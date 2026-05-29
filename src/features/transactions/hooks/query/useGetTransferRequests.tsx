@@ -6,11 +6,9 @@ export const useGetTransferRequests = (status: string | null) => {
     queryKey: ["Transfer Request List", status],
     queryFn: ({ pageParam }) => fetchPaymentsList(pageParam, 40, status),
     getNextPageParam: (lastPage) => {
-      const data = lastPage?.data;
-      if (!data) return undefined;
-      return data.has_more ? data.page_last_cursor : undefined;
+      if (!lastPage) return undefined;
+      return lastPage.has_more ? lastPage.page_last_cursor : undefined;
     },
-
     initialPageParam: null,
   });
 };
