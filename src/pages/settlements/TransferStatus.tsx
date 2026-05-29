@@ -127,8 +127,8 @@ function PersonalTab({ cols }: { cols: string[] }) {
             <tbody>
               {rows.length === 0 && (
                 <tr>
-                  <td colSpan={cols.length} className="px-4 py-20 text-center text-zinc-600 text-sm">
-                    결과가 없습니다
+                  <td colSpan={cols.length} className="px-4 py-20 text-center text-zinc-400 text-sm">
+                    이체 요청 내역이 없습니다
                   </td>
                 </tr>
               )}
@@ -354,8 +354,8 @@ function TeamTab({ cols }: { cols: string[] }) {
             <tbody>
               {rows.length === 0 && (
                 <tr>
-                  <td colSpan={cols.length} className="px-4 py-20 text-center text-zinc-600 text-sm">
-                    결과가 없습니다
+                  <td colSpan={cols.length} className="px-4 py-20 text-center text-zinc-400 text-sm">
+                    이체 요청 내역이 없습니다
                   </td>
                 </tr>
               )}
