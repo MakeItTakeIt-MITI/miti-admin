@@ -7,7 +7,7 @@ export const useTransferStatusesPage = () => {
   const { data, hasNextPage, hasPreviousPage, fetchNextPage, fetchPreviousPage } =
     useGetTransferRequests(transferStatus);
 
-  const transferRequestData = data?.pages?.flatMap((page) => page?.items as SettlementsListItem[]);
+  const transferRequestData = data?.pages?.flatMap((page) => page?.data?.items as SettlementsListItem[]);
 
   const rows = useMemo(() => {
     if (!transferRequestData) return [];

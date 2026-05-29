@@ -6,8 +6,9 @@ export const useGetTeamTransferRequests = (status: string | null) => {
     queryKey: ["Team Transfer Request List", status],
     queryFn: ({ pageParam }) => fetchTeamTransferRequestsList(pageParam, 40, status),
     getNextPageParam: (lastPage) => {
-      if (!lastPage) return undefined;
-      return lastPage.has_more ? lastPage.page_last_cursor : undefined;
+      const data = lastPage?.data;
+      if (!data) return undefined;
+      return data.has_more ? data.page_last_cursor : undefined;
     },
     initialPageParam: null,
   });
