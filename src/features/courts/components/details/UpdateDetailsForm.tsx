@@ -1,0 +1,152 @@
+import { useState } from "react";
+
+interface CourtDetailsData {
+  name: string;
+  info: string;
+  images?: string[];
+  address?: string;
+  address_detail?: string;
+}
+
+interface CourtEditPayload {
+  name: string;
+  info: string;
+  images: string[];
+}
+
+interface UpdateDetailsFormProps {
+  gameDetailsData: CourtDetailsData;
+  cancelEdit: () => void;
+  saveEdit: (data: CourtEditPayload) => void;
+  file?: FileList | null;
+  onChangeSaveImageHandler?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  uploadImgToNaverHandler?: () => void;
+}
+
+const UpdateDetailsForm = ({
+  gameDetailsData,
+  cancelEdit,
+  saveEdit,
+  file,
+  onChangeSaveImageHandler,
+  uploadImgToNaverHandler,
+}: UpdateDetailsFormProps) => {
+  const [formState, setFormState] = useState({
+    name: gameDetailsData.name,
+    info: gameDetailsData.info,
+    images: gameDetailsData.images ?? [], // Initialize with existing images
+  });
+
+  const inputCls =
+    "h-9 rounded-md bg-gray-800 border border-gray-700 px-3 text-xs text-gray-200 outline-none disabled:opacity-80";
+  const textareaCls =
+    "rounded-md bg-gray-800 border border-gray-700 p-3 text-xs text-gray-200 outline-none disabled:opacity-80";
+
+  return (
+    <form className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <label className="flex flex-col gap-1">
+        <span className="text-[11px] text-gray-400">경기장 이름</span>
+        <input
+          value={formState.name}
+          onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+          className={inputCls}
+          placeholder={gameDetailsData?.name ?? ""}
+        />
+      </label>
+      {/* 주소 */}
+      <label className="flex flex-col gap-1 sm:col-span-2">
+        <span className="text-[11px] text-gray-400">주소</span>
+        <input disabled className={inputCls} placeholder={gameDetailsData?.address ?? ""} />
+      </label>
+      {/* 상세 주소 */}
+      <label className="flex flex-col gap-1 sm:col-span-2">
+        <span className="text-[11px] text-gray-400">상세 주소</span>
+        <input disabled className={inputCls} placeholder={gameDetailsData?.address_detail ?? ""} />
+      </label>
+      {/* 정보 */}
+      <label className="flex flex-col gap-1 sm:col-span-2">
+        <span className="text-[11px] text-gray-400">정보</span>
+        <textarea
+          rows={4}
+          value={formState.info}
+          onChange={(e) => setFormState({ ...formState, info: e.target.value })}
+          className={textareaCls}
+          placeholder={gameDetailsData?.info ?? ""}
+        />
+      </label>
+      {/* imaages upload */}
+      <label className="flex flex-col gap-2 sm:col-span-2">
+        <span className="text-[11px] text-gray-400">이미지 업로드</span>
+
+        <div className="flex items-center gap-3">
+          <label className="inline-flex items-center px-3 h-9 rounded-md bg-gray-700 hover:bg-gray-600 text-xs text-gray-100 cursor-pointer">
+            파일 선택
+            <input
+              type="file"
+              accept="image/png, image/jpeg, image/jpg, image/webp"
+              onChange={onChangeSaveImageHandler}
+              className="hidden"
+            />
+          </label>
+
+          <div className="text-[11px] text-gray-400">선택된 파일 없음</div>
+        </div>
+
+        <div className="flex flex-wrap gap-2 mt-3">
+          {/* 썸네일 프리뷰가 있으면 여기에 렌더링 */}
+          {file && file.length > 0 && (
+            <img
+              src={URL.createObjectURL(file[0])}
+              alt="Selected Preview"
+              className="w-20 h-20 object-cover rounded-md border border-gray-700"
+            />
+          )}
+        </div>
+
+        {gameDetailsData.images && gameDetailsData.images.length > 0 ? (
+          <div className="sm:col-span-2">
+            <span className="text-[11px] text-gray-400">이미지</span>
+            <div className="mt-1 flex flex-wrap gap-3">
+              {gameDetailsData.images.map((imgUrl: string, idx: number) => (
+                <img
+                  key={idx}
+                  src={imgUrl}
+                  alt={`Court Image ${idx + 1}`}
+                  className="w-24 h-24 object-cover rounded-md border border-gray-700"
+                />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <p className="sm:col-span-2 text-xs text-gray-200 ">등록된 이미지가 없습니다.</p>
+        )}
+      </label>
+
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={uploadImgToNaverHandler}
+          className="text-[11px] px-3 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white"
+        >
+          NCP 이미지 업로드
+        </button>
+        <button
+          type="button"
+          onClick={() => saveEdit(formState)}
+          className="text-[11px] px-3 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white"
+        >
+          저장
+        </button>
+        <button
+          type="button"
+          onClick={cancelEdit}
+          className="text-[11px] px-3 py-2 rounded-md bg-red-600 hover:bg-red-700 text-white"
+        >
+          취소
+        </button>
+      </div>
+    </form>
+  );
+};
+
+export default UpdateDetailsForm;
