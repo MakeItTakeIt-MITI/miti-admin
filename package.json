@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "upload": "aws --endpoint-url=https://kr.object.ncloudstorage.com s3 sync ./dist s3://miti.admin --acl public-read",
+    "predeploy": "npm run lint && npm run format:check",
+    "deploy": "npm run build && npm run upload",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",

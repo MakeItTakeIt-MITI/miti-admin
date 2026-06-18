@@ -8,26 +8,25 @@ import UpdateDetailsForm from "../../features/courts/components/details/UpdateDe
 import { Spinner } from "../../components/common/Spinner";
 
 export default function CourtDetails() {
-  const {
-    gameDetailsData,
-    startEdit,
-    cancelEdit,
-    isLoading,
-    isEditing,
-    saveEdit,
-    onChangeSaveImageHandler,
-    uploadImgToNaverHandler,
-    file,
-    uploadImgPending,
-  } = useCourtsDetailPage();
+  const { gameDetailsData, startEdit, cancelEdit, isLoading, isEditing, saveEdit } =
+    useCourtsDetailPage();
 
-  if (isLoading || uploadImgPending) return <Spinner />;
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-black text-white">
+        <Spinner />
+      </div>
+    );
+  }
 
   if (!gameDetailsData) {
     return (
-      <div className="flex min-h-dvh flex-col items-center justify-center gap-3 bg-black">
-        <p className="text-pretty text-sm text-gray-500">경기장 정보를 불러올 수 없습니다.</p>
-        <Link to="/courts" className="text-xs text-blue-400 hover:text-blue-300">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-black text-white">
+        <p className="text-sm text-zinc-500 font-medium">경기장 정보를 불러올 수 없습니다.</p>
+        <Link
+          to="/courts"
+          className="h-9 px-4 flex items-center justify-center rounded-lg border border-zinc-700 text-zinc-400 text-xs font-medium hover:text-white hover:border-zinc-650 transition-colors"
+        >
           목록으로 돌아가기
         </Link>
       </div>
@@ -35,38 +34,48 @@ export default function CourtDetails() {
   }
 
   return (
-    <div className="min-h-dvh bg-black">
+    <div className="flex flex-col min-h-screen bg-black text-white">
       {/* Sticky nav */}
-      <header className="sticky top-0 z-10 flex items-center justify-between border-b border-white/5 bg-black/90 px-6 py-3 backdrop-blur-sm">
-        <nav className="flex items-center gap-2 text-[11px]" aria-label="경로">
-          <Link to="/courts" className="text-gray-500 hover:text-gray-300">
-            경기장
-          </Link>
-          <span className="text-gray-700" aria-hidden="true">
-            /
-          </span>
-          <span className="tabular-nums text-gray-400">{gameDetailsData.id}</span>
-        </nav>
-        <EditActionsButton isEditing={isEditing} startEdit={startEdit} />
+      <header className="sticky top-0 z-10 bg-zinc-950/95 backdrop-blur border-b border-zinc-800">
+        <div className="px-8 py-4 flex items-center justify-between gap-4">
+          <nav className="flex items-center gap-2 text-xs font-mono" aria-label="경로">
+            <Link to="/courts" className="text-zinc-500 hover:text-zinc-350 transition-colors">
+              경기장 목록
+            </Link>
+            <span className="text-zinc-700" aria-hidden="true">
+              /
+            </span>
+            <span className="text-zinc-300 font-semibold">#{gameDetailsData.id}</span>
+          </nav>
+          <div className="flex items-center gap-2">
+            <Link
+              to="/courts"
+              className="h-9 px-4 flex items-center justify-center rounded-lg border border-zinc-700 text-zinc-400 text-xs font-medium hover:text-white hover:border-zinc-650 transition-colors"
+            >
+              목록으로
+            </Link>
+            <EditActionsButton isEditing={isEditing} startEdit={startEdit} />
+          </div>
+        </div>
       </header>
 
-      <main className="mx-auto max-w-4xl px-6 pb-16 pt-6">
+      <main className="flex-1 px-8 py-6 max-w-5xl w-full mx-auto space-y-6">
         {/* Hero image */}
-        <div className="mb-6 overflow-hidden rounded-xl border border-white/5">
+        <div className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950">
           <CourtDetailsImgCard gameDetailsData={gameDetailsData} />
         </div>
 
         {/* Name + address */}
-        <div className="mb-6 px-1">
-          <h1 className="text-balance text-2xl font-bold text-white">
+        <div className="space-y-1.5 px-1">
+          <h1 className="text-2xl font-bold text-white tracking-tight">
             {gameDetailsData.name ?? "이름 없음"}
           </h1>
-          <p className="text-pretty mt-1.5 text-sm text-gray-400">
+          <p className="text-sm text-zinc-400 font-mono">
             {gameDetailsData.address}
             {gameDetailsData.address_detail && (
               <>
                 {" "}
-                · <span className="text-gray-500">{gameDetailsData.address_detail}</span>
+                · <span className="text-zinc-500">{gameDetailsData.address_detail}</span>
               </>
             )}
           </p>
@@ -75,8 +84,10 @@ export default function CourtDetails() {
         {/* Two-column layout */}
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
           {/* Info / edit form — 2/3 */}
-          <div className="rounded-xl border border-white/5 bg-gray-900/50 p-5 lg:col-span-2">
-            <p className="mb-4 text-[11px] font-medium uppercase text-gray-600">경기장 정보</p>
+          <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-6 lg:col-span-2 space-y-4">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 pb-3 border-b border-zinc-800/80">
+              경기장 세부 정보
+            </p>
             {!isEditing ? (
               <CourtDetailsContainer gameDetailsData={gameDetailsData} isEditing={isEditing} />
             ) : (
@@ -84,16 +95,15 @@ export default function CourtDetails() {
                 gameDetailsData={gameDetailsData}
                 saveEdit={saveEdit}
                 cancelEdit={cancelEdit}
-                file={file}
-                onChangeSaveImageHandler={onChangeSaveImageHandler}
-                uploadImgToNaverHandler={uploadImgToNaverHandler}
               />
             )}
           </div>
 
           {/* Coordinates sidebar — 1/3 */}
-          <div className="rounded-xl border border-white/5 bg-gray-900/50 p-5">
-            <p className="mb-4 text-[11px] font-medium uppercase text-gray-600">위치 좌표</p>
+          <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-6 space-y-4 h-fit">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 pb-3 border-b border-zinc-800/80">
+              위치 좌표
+            </p>
             <CoordinatesField gameDetailsData={gameDetailsData} />
           </div>
         </div>

@@ -5,7 +5,7 @@ export default function Home() {
     {
       title: "회원 관리",
       description: "회원 목록 및 상세 정보 조회",
-      href: "/users",
+      href: "/users?page=1&search=",
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -21,7 +21,7 @@ export default function Home() {
     {
       title: "경기 관리",
       description: "경기 목록 및 참가자 관리",
-      href: "/games",
+      href: "/games?page=1&search=",
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -37,7 +37,7 @@ export default function Home() {
     {
       title: "코트 관리",
       description: "코트 등록 및 수정",
-      href: "/courts",
+      href: "/courts?page=1&search=",
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -51,41 +51,9 @@ export default function Home() {
       color: "bg-purple-600/10 border-purple-600/20 hover:bg-purple-600/20 text-purple-400",
     },
     {
-      title: "문의 관리",
-      description: "사용자 문의 및 답변",
-      href: "/inquiry",
-      icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-          />
-        </svg>
-      ),
-      color: "bg-amber-600/10 border-amber-600/20 hover:bg-amber-600/20 text-amber-400",
-    },
-    {
-      title: "익명 문의",
-      description: "익명 문의 관리",
-      href: "/anonymous-inquiry",
-      icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-      ),
-      color: "bg-orange-600/10 border-orange-600/20 hover:bg-orange-600/20 text-orange-400",
-    },
-    {
       title: "신고 관리",
       description: "신고 내역 및 처리",
-      href: "/reports",
+      href: "/reports?page=1&search=",
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -101,7 +69,7 @@ export default function Home() {
     {
       title: "정산 관리",
       description: "정산 요청 및 처리",
-      href: "/settlements",
+      href: "/settlements?page=1&search=",
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -114,28 +82,86 @@ export default function Home() {
       ),
       color: "bg-emerald-600/10 border-emerald-600/20 hover:bg-emerald-600/20 text-emerald-400",
     },
-    // {
-    //   title: "결제 내역",
-    //   description: "경기 결제 내역 조회",
-    //   href: "/payments",
-    //   icon: (
-    //     <svg
-    //       className="w-8 h-8"
-    //       fill="none"
-    //       stroke="currentColor"
-    //       viewBox="0 0 24 24"
-    //     >
-    //       <path
-    //         strokeLinecap="round"
-    //         strokeLinejoin="round"
-    //         strokeWidth={2}
-    //         d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-    //       />
-    //     </svg>
-    //   ),
-    //   color:
-    //     "bg-cyan-600/10 border-cyan-600/20 hover:bg-cyan-600/20 text-cyan-400",
-    // },
+    {
+      title: "리뷰 관리",
+      description: "경기 리뷰 목록 및 상세 조회",
+      href: "/reviews?search=",
+      icon: (
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.907c.961 0 1.36 1.242.588 1.81l-3.97 2.883a1 1 0 00-.364 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.971-2.883a1 1 0 00-1.18 0l-3.97 2.883c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.364-1.118l-3.97-2.883c-.772-.568-.372-1.81.588-1.81h4.906a1 1 0 00.951-.69l1.519-4.674z"
+          />
+        </svg>
+      ),
+      color: "bg-pink-600/10 border-pink-600/20 hover:bg-pink-600/20 text-pink-400",
+    },
+    {
+      title: "문의 관리",
+      description: "사용자 문의 및 답변",
+      href: "/inquiry?page=1&search=",
+      icon: (
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+          />
+        </svg>
+      ),
+      color: "bg-amber-600/10 border-amber-600/20 hover:bg-amber-600/20 text-amber-400",
+    },
+    {
+      title: "익명 문의",
+      description: "익명 문의 관리",
+      href: "/anonymous-inquiry?search=",
+      icon: (
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      ),
+      color: "bg-orange-600/10 border-orange-600/20 hover:bg-orange-600/20 text-orange-400",
+    },
+    {
+      title: "쿠폰 관리",
+      description: "할인 쿠폰 발행 및 관리",
+      href: "/coupons",
+      icon: (
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"
+          />
+        </svg>
+      ),
+      color: "bg-cyan-600/10 border-cyan-600/20 hover:bg-cyan-600/20 text-cyan-400",
+    },
+    {
+      title: "공지사항 관리",
+      description: "공지사항 등록 및 푸시 알림",
+      href: "/notifications?search=",
+      icon: (
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+          />
+        </svg>
+      ),
+      color: "bg-sky-600/10 border-sky-600/20 hover:bg-sky-600/20 text-sky-400",
+    },
   ];
 
   return (

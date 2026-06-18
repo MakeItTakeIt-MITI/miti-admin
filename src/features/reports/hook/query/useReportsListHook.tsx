@@ -1,10 +1,10 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchReports } from "../../api/reports";
 
-export const useReportsListHook = () => {
+export const useReportsListHook = (status?: string[], search?: string) => {
   return useInfiniteQuery({
-    queryKey: ["Reports List"],
-    queryFn: ({ pageParam }) => fetchReports(pageParam, 40),
+    queryKey: ["Reports List", { status, search }],
+    queryFn: ({ pageParam }) => fetchReports(pageParam, 20, status, search),
 
     getNextPageParam: (lastPage) => {
       const data = lastPage?.data;

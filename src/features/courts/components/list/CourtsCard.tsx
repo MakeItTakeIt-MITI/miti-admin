@@ -16,10 +16,10 @@ const CourtsCard = ({ u }: CourtsCardProps) => {
   return (
     <Link
       to={`detail?courtId=${u.id}`}
-      className="group relative flex flex-col overflow-hidden rounded-2xl bg-gray-900 border border-white/5 shadow-md transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:border-white/10"
+      className="group relative flex flex-col overflow-hidden rounded-2xl bg-zinc-900/40 border border-zinc-800 shadow-xl transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:border-zinc-700"
     >
       {/* Image */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-gray-800">
+      <div className="relative aspect-[4/3] overflow-hidden bg-zinc-900">
         {thumb ? (
           <img
             src={thumb}
@@ -29,7 +29,7 @@ const CourtsCard = ({ u }: CourtsCardProps) => {
         ) : (
           <div className="flex h-full items-center justify-center">
             <svg
-              className="h-12 w-12 text-gray-700"
+              className="h-10 w-10 text-zinc-700"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -45,16 +45,16 @@ const CourtsCard = ({ u }: CourtsCardProps) => {
         )}
 
         {/* Persistent bottom gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-transparent to-transparent" />
 
         {/* ID badge */}
-        <div className="absolute top-3 right-3 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 px-2.5 py-1 text-[10px] font-mono text-gray-300">
+        <div className="absolute top-3 right-3 rounded-full bg-zinc-950/75 backdrop-blur-sm border border-zinc-800 px-2.5 py-0.5 text-[10px] font-mono text-zinc-300">
           #{u.id}
         </div>
 
         {/* Image count */}
         {u.images.length > 1 && (
-          <div className="absolute top-3 left-3 flex items-center gap-1 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 px-2 py-1 text-[10px] text-gray-300">
+          <div className="absolute top-3 left-3 flex items-center gap-1 rounded-full bg-zinc-950/75 backdrop-blur-sm border border-zinc-800 px-2 py-0.5 text-[10px] text-zinc-300 font-mono">
             <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
               <path
                 fillRule="evenodd"
@@ -72,11 +72,11 @@ const CourtsCard = ({ u }: CourtsCardProps) => {
         <h3 className="truncate text-sm font-semibold text-white leading-tight">
           {u.name ?? "이름 없음"}
         </h3>
-        <p className="text-[11px] text-gray-500 leading-relaxed line-clamp-1">
+        <p className="text-[11px] text-zinc-500 leading-relaxed line-clamp-1 font-mono">
           {u.address}
           {u.address_detail ? ` · ${u.address_detail}` : ""}
         </p>
-        <div className="mt-1.5 flex items-center gap-1 text-[11px] font-medium text-blue-400 transition-colors group-hover:text-blue-300">
+        <div className="mt-1.5 flex items-center gap-1 text-[11px] font-semibold text-zinc-400 transition-colors group-hover:text-white">
           상세 보기
           <svg
             className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5"

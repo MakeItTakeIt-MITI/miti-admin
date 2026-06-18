@@ -34,9 +34,28 @@ export interface GameField {
 }
 
 export interface GameEditField {
-  min_invitation: number;
-  max_invitation: number;
-  info: string;
+  min_invitation?: number;
+  max_invitation?: number;
+  info?: string | null;
+  host?: number;
+  startdate?: string;
+  starttime?: string;
+  enddate?: string;
+  endtime?: string;
+}
+
+export interface TeamScheduleEditField {
+  content?: string;
+  max_invitation?: number;
+  member_fee?: number;
+  is_external_allowed?: boolean;
+  min_invitation?: number;
+  fee?: number | null;
+  info?: string | null;
+  startdate?: string;
+  starttime?: string;
+  enddate?: string;
+  endtime?: string;
 }
 
 export interface MatchListItem {

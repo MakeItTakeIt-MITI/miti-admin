@@ -1,217 +1,269 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import SearchField from "../../components/common/SearchField";
 import { TABLE_STYLES } from "../../components/common/tableStyles";
 import { useReportsPage } from "../../features/reports/hook/useReportsPage";
 import NextPageLoader from "../../features/common/NextPageLoader";
+import { ReportStatus, ReportType } from "../../features/reports/interface/reports";
+
+const STATUS_OPTIONS: { value: ReportStatus; label: string }[] = [
+  { value: "waiting", label: "대기중" },
+  { value: "evidence_requested", label: "자료 요청" },
+  { value: "investigation_in_progress", label: "조사진행중" },
+  { value: "concluded", label: "처리완료" },
+];
+
+const statusLabel = (status: string) => {
+  switch (status) {
+    case "waiting":
+      return "대기중";
+    case "evidence_requested":
+      return "자료 요청";
+    case "investigation_in_progress":
+      return "조사진행중";
+    case "concluded":
+      return "처리완료";
+    default:
+      return status;
+  }
+};
+
+const typeLabel = (type: string) => {
+  switch (type) {
+    case "host_report":
+      return "호스트 신고";
+    case "guest_report":
+      return "게스트 신고";
+    case "post_report":
+      return "게시글 신고";
+    case "team_schedule_host_report":
+      return "팀 일정 주최자 신고";
+    case "user_report":
+      return "사용자 신고";
+    default:
+      return type || "-";
+  }
+};
+
+const statusBadge = (status: string) => {
+  switch (status) {
+    case "concluded":
+      return "bg-emerald-600/10 text-emerald-400 ring-1 ring-inset ring-emerald-500/20";
+    case "waiting":
+      return "bg-amber-600/10 text-amber-400 ring-1 ring-inset ring-amber-500/20";
+    case "evidence_requested":
+      return "bg-blue-600/10 text-blue-400 ring-1 ring-inset ring-blue-500/20";
+    case "investigation_in_progress":
+      return "bg-purple-600/10 text-purple-400 ring-1 ring-inset ring-purple-500/20";
+    default:
+      return "bg-zinc-800 text-zinc-400 ring-1 ring-inset ring-zinc-700/50";
+  }
+};
+
+const typeBadge = (type: ReportType) => {
+  switch (type) {
+    case "host_report":
+      return "bg-indigo-600/10 text-indigo-400 ring-1 ring-inset ring-indigo-500/20";
+    case "guest_report":
+      return "bg-cyan-600/10 text-cyan-400 ring-1 ring-inset ring-cyan-500/20";
+    case "post_report":
+      return "bg-rose-600/10 text-rose-400 ring-1 ring-inset ring-rose-500/20";
+    case "team_schedule_host_report":
+      return "bg-orange-600/10 text-orange-400 ring-1 ring-inset ring-orange-500/20";
+    case "user_report":
+      return "bg-yellow-600/10 text-yellow-400 ring-1 ring-inset ring-yellow-500/20";
+    default:
+      return "bg-zinc-800 text-zinc-400 ring-1 ring-inset ring-zinc-700/50";
+  }
+};
 
 const ReportsList = () => {
   const { rows, hasNextPage, fetchNextPage } = useReportsPage();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedStatuses = searchParams.getAll("status");
 
-  // 상태 한글 변환
-  const statusLabel = (status: string) => {
-    switch (status) {
-      case "waiting":
-        return "대기중";
-      case "evidence_requested":
-        return "자료 요청";
-      case "investigation_in_progress":
-        return "조사진행중";
-      case "concluded":
-        return "처리완료";
-      default:
-        return status;
+  const toggleStatus = (value: ReportStatus) => {
+    const current = searchParams.getAll("status");
+    const next = new URLSearchParams(searchParams);
+    next.delete("status");
+    if (current.includes(value)) {
+      current.filter((s) => s !== value).forEach((s) => next.append("status", s));
+    } else {
+      [...current, value].forEach((s) => next.append("status", s));
     }
-  };
-
-  // 신고 타입 한글 변환
-  const typeLabel = (type: string) => {
-    switch (type) {
-      case "post_report":
-        return "게시글 신고";
-      case "user_report":
-        return "사용자 신고";
-      case "comment_report":
-        return "댓글 신고";
-      case "game_report":
-        return "경기 신고";
-      case "host_report":
-        return "호스트 신고";
-      default:
-        return type || "-";
-    }
-  };
-
-  // 상태 뱃지 클래스
-  const statusBadge = (status: string) => {
-    switch (status) {
-      case "concluded":
-        return "bg-emerald-600/20 text-emerald-300 ring-1 ring-inset ring-emerald-500/30";
-      case "waiting":
-        return "bg-amber-600/20 text-amber-300 ring-1 ring-inset ring-amber-500/30";
-      case "evidence_requested":
-        return "bg-blue-600/20 text-blue-300 ring-1 ring-inset ring-blue-500/30";
-      case "investigation_in_progress":
-        return "bg-purple-600/20 text-purple-300 ring-1 ring-inset ring-purple-500/30";
-      default:
-        return "bg-gray-600/20 text-gray-300 ring-1 ring-inset ring-gray-500/30";
-    }
-  };
-
-  // 타입 뱃지 클래스
-  const typeBadge = (type: string) => {
-    switch (type) {
-      case "post_report":
-        return "bg-rose-600/20 text-rose-300 ring-1 ring-inset ring-rose-500/30";
-      case "user_report":
-        return "bg-orange-600/20 text-orange-300 ring-1 ring-inset ring-orange-500/30";
-      case "comment_report":
-        return "bg-cyan-600/20 text-cyan-300 ring-1 ring-inset ring-cyan-500/30";
-      case "game_report":
-        return "bg-indigo-600/20 text-indigo-300 ring-1 ring-inset ring-indigo-500/30";
-      default:
-        return "bg-gray-600/20 text-gray-300 ring-1 ring-inset ring-gray-500/30";
-    }
+    setSearchParams(next);
   };
 
   return (
-    <section className="w-full min-h-screen p-8 bg-black">
-      <div className="max-w-[1600px] mx-auto space-y-6">
-        {/* Header */}
-        <div>
-          <h1 className="text-2xl font-bold text-white">신고 관리</h1>
-          <p className="text-sm text-gray-400 mt-1">
-            총 <span className="text-blue-400 font-medium">{rows.length}</span>
-            개의 신고
-          </p>
+    <div className="flex flex-col min-h-screen bg-black text-white">
+      {/* Page header */}
+      <header className="sticky top-0 z-10 bg-zinc-950/95 backdrop-blur border-b border-zinc-800">
+        <div className="px-8 py-4 flex items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <div className="h-7 w-0.5 rounded-full bg-blue-500" />
+            <div>
+              <h1 className="text-sm font-semibold text-white tracking-tight leading-none">
+                신고 관리
+              </h1>
+              <p className="text-[11px] text-zinc-500 mt-1">접수된 유저 및 게임 신고 내역 목록</p>
+            </div>
+          </div>
+          <span className="inline-flex items-center gap-1.5 rounded-lg bg-zinc-900 border border-zinc-800 px-3 py-1.5 text-xs font-mono text-zinc-400">
+            {rows.length}
+            <span className="text-zinc-600">건</span>
+          </span>
         </div>
 
-        {/* Search */}
-        <div className=" border border-gray-800 rounded-lg p-4">
-          <div className="space-y-2">
-            <label className="text-xs font-medium text-gray-300 block">검색</label>
-            <SearchField paramKey="search" />
+        {/* Filter bar */}
+        <div className="px-8 py-2.5 border-t border-zinc-800/60 flex items-center gap-3 flex-wrap">
+          <SearchField paramKey="search" />
+
+          <div className="flex items-center gap-1">
+            {STATUS_OPTIONS.map((opt) => {
+              const active = selectedStatuses.includes(opt.value);
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => toggleStatus(opt.value)}
+                  className={`h-7 px-3 rounded-md text-[11px] font-medium transition-all ${
+                    active
+                      ? "bg-blue-600 text-white shadow-sm"
+                      : "bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </header>
+
+      {/* Table */}
+      <main className="flex-1 px-8 py-6 flex flex-col gap-4">
+        <div className={TABLE_STYLES.container}>
+          <div className="overflow-x-auto">
+            <table className={`min-w-[1200px] ${TABLE_STYLES.table}`}>
+              <thead className={TABLE_STYLES.head}>
+                <tr className={TABLE_STYLES.headerRow}>
+                  <th className={`${TABLE_STYLES.headerCell} w-20`}>ID</th>
+                  <th className={`${TABLE_STYLES.headerCell} w-28`}>상태</th>
+                  <th className={`${TABLE_STYLES.headerCell} w-36`}>타입</th>
+                  <th className={TABLE_STYLES.headerCell}>신고 사유</th>
+                  <th className={TABLE_STYLES.headerCell}>신고 내용</th>
+                  <th className={TABLE_STYLES.headerCell}>피신고자</th>
+                  <th className={TABLE_STYLES.headerCell}>신고자</th>
+                  <th className={`${TABLE_STYLES.headerCell} w-44`}>신고일</th>
+                  <th className={`${TABLE_STYLES.headerCell} w-16`} />
+                </tr>
+              </thead>
+              <tbody>
+                {rows.length === 0 && (
+                  <tr>
+                    <td colSpan={9} className={TABLE_STYLES.emptyCell}>
+                      신고 내역이 없습니다
+                    </td>
+                  </tr>
+                )}
+                {rows.map((r) => (
+                  <tr key={r?.id} className={TABLE_STYLES.bodyRow}>
+                    <td className={`${TABLE_STYLES.primaryCell} font-mono`}>#{r?.id}</td>
+
+                    <td className={TABLE_STYLES.bodyCell}>
+                      <span
+                        className={`inline-flex rounded px-2 py-0.5 text-[11px] font-semibold ${statusBadge(r?.status)}`}
+                      >
+                        {statusLabel(r?.status)}
+                      </span>
+                    </td>
+
+                    <td className={TABLE_STYLES.bodyCell}>
+                      <span
+                        className={`inline-flex rounded px-2 py-0.5 text-[11px] font-semibold ${typeBadge(r?.report_type)}`}
+                      >
+                        {typeLabel(r?.report_type)}
+                      </span>
+                    </td>
+
+                    <td className={TABLE_STYLES.bodyCell}>
+                      <div className="max-w-[150px] truncate" title={r?.report_reason}>
+                        {r?.report_reason || "—"}
+                      </div>
+                    </td>
+
+                    <td className={TABLE_STYLES.bodyCell}>
+                      <div className="max-w-[200px] truncate" title={r?.content}>
+                        {r?.content || "—"}
+                      </div>
+                    </td>
+
+                    <td className={TABLE_STYLES.bodyCell}>
+                      <div className="space-y-0.5">
+                        <div className="text-zinc-200 font-semibold">
+                          {r?.reportee?.nickname || "—"}
+                        </div>
+                        <div className="text-zinc-500 font-mono text-[10px]">
+                          {r?.reportee?.email || "—"}
+                        </div>
+                      </div>
+                    </td>
+
+                    <td className={TABLE_STYLES.bodyCell}>
+                      <div className="space-y-0.5">
+                        <div className="text-zinc-200 font-semibold">
+                          {r?.reporter?.nickname || "—"}
+                        </div>
+                        <div className="text-zinc-500 font-mono text-[10px]">
+                          {r?.reporter?.email || "—"}
+                        </div>
+                      </div>
+                    </td>
+
+                    <td className={TABLE_STYLES.bodyCell}>
+                      <span className="font-mono text-zinc-400">
+                        {r?.created_at
+                          ? new Date(r.created_at).toLocaleString("ko-KR", {
+                              year: "numeric",
+                              month: "2-digit",
+                              day: "2-digit",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
+                          : "—"}
+                      </span>
+                    </td>
+
+                    <td className={TABLE_STYLES.bodyCell}>
+                      <Link
+                        to={`detail?report_type=${r?.report_type}&reportId=${r?.id}`}
+                        className="inline-flex items-center gap-0.5 text-[11px] font-medium text-zinc-500 hover:text-blue-400 transition-colors"
+                      >
+                        보기
+                        <svg
+                          className="w-3 h-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          strokeWidth={2}
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 
-        {/* Table */}
-        <div className={TABLE_STYLES.container}>
-          <table className={`min-w-[1200px] ${TABLE_STYLES.table}`}>
-            <thead className={TABLE_STYLES.head}>
-              <tr className={TABLE_STYLES.headerRow}>
-                <th className={`${TABLE_STYLES.headerCell} w-20`}>ID</th>
-                <th className={`${TABLE_STYLES.headerCell} w-28`}>상태</th>
-                <th className={`${TABLE_STYLES.headerCell} w-28`}>타입</th>
-                <th className={TABLE_STYLES.headerCell}>신고 사유</th>
-                <th className={TABLE_STYLES.headerCell}>신고 내용</th>
-                <th className={TABLE_STYLES.headerCell}>피신고자</th>
-                <th className={TABLE_STYLES.headerCell}>신고자</th>
-                <th className={`${TABLE_STYLES.headerCell} w-36`}>신고일</th>
-                <th className={`${TABLE_STYLES.headerCell} w-16`}>상세</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.length === 0 && (
-                <tr>
-                  <td colSpan={9} className="px-4 py-12 text-center">
-                    <div className="flex flex-col items-center gap-3">
-                      <svg
-                        className="w-12 h-12 text-gray-700"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                        />
-                      </svg>
-                      <p className="text-gray-400 text-sm">신고 내역이 없습니다</p>
-                    </div>
-                  </td>
-                </tr>
-              )}
-              {rows.map((r) => (
-                <tr key={r?.id} className={TABLE_STYLES.bodyRow}>
-                  <td className={`${TABLE_STYLES.primaryCell} font-medium`}>#{r?.id}</td>
-
-                  <td className={TABLE_STYLES.bodyCell}>
-                    <span
-                      className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-medium ${statusBadge(
-                        r?.report_status,
-                      )}`}
-                    >
-                      {statusLabel(r?.report_status)}
-                    </span>
-                  </td>
-
-                  <td className={TABLE_STYLES.bodyCell}>
-                    <span
-                      className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-medium ${typeBadge(
-                        r?.report_type,
-                      )}`}
-                    >
-                      {typeLabel(r?.report_type)}
-                    </span>
-                  </td>
-
-                  <td className={TABLE_STYLES.bodyCell}>
-                    <div className="max-w-[150px] truncate" title={r?.report_reason}>
-                      {r?.report_reason || "-"}
-                    </div>
-                  </td>
-
-                  <td className={TABLE_STYLES.bodyCell}>
-                    <div className="max-w-[200px] truncate" title={r?.content}>
-                      {r?.content || "-"}
-                    </div>
-                  </td>
-
-                  <td className={TABLE_STYLES.bodyCell}>
-                    <div className="space-y-1">
-                      <div className="text-white font-medium">{r?.reportee?.nickname || "-"}</div>
-                      <div className="text-gray-400 text-[10px]">{r?.reportee?.email || "-"}</div>
-                    </div>
-                  </td>
-
-                  <td className={TABLE_STYLES.bodyCell}>
-                    <div className="space-y-1">
-                      <div className="text-white font-medium">{r?.reporter?.nickname || "-"}</div>
-                      <div className="text-gray-400 text-[10px]">{r?.reporter?.email || "-"}</div>
-                    </div>
-                  </td>
-
-                  <td className={TABLE_STYLES.bodyCell}>
-                    {r?.created_at
-                      ? new Date(r.created_at).toLocaleString("ko-KR", {
-                          year: "2-digit",
-                          month: "2-digit",
-                          day: "2-digit",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })
-                      : "-"}
-                  </td>
-
-                  <td className={TABLE_STYLES.bodyCell}>
-                    <Link
-                      to={`detail?report_type=${r?.report_type}&reportId=${r?.id}`}
-                      className="text-blue-400 hover:text-blue-300 hover:underline transition-colors"
-                    >
-                      보기
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Load More */}
-        {hasNextPage && <NextPageLoader hasNextPage={hasNextPage} fetchNextPage={fetchNextPage} />}
-      </div>
-    </section>
+        {hasNextPage && (
+          <div className="flex justify-center pt-2">
+            <NextPageLoader hasNextPage={hasNextPage} fetchNextPage={fetchNextPage} />
+          </div>
+        )}
+      </main>
+    </div>
   );
 };
 

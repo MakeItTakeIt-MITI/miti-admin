@@ -1,28 +1,28 @@
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, useWatch } from "react-hook-form";
+import { DismissPayload, PenalizePayload } from "../api/report_update";
+import { ReportType } from "../interface/reports";
 
-interface ReportStatusFormData {
-  result: string;
+interface FormData {
   penalty: string;
-  report_status: string;
   duration: string;
-  refund_participation_payment: boolean;
   content: string;
+  refund_participation_payment: boolean;
+  delete_post: boolean;
 }
 
 interface Props {
   isModalOpen: "approve" | "dismiss" | null;
-  reportType: string | null;
+  reportType: ReportType | null;
   setIsModalOpen: (arg: "approve" | "dismiss" | null) => void;
-  handleDismissReport: (arg: { result: string; report_status: string; content: string }) => void;
-  handlePenalizeReport: (arg: {
-    result: string;
-    penalty: string;
-    report_status: string;
-    duration: string;
-    content: string;
-    refund_participation_payment?: boolean;
-  }) => void;
+  handleDismissReport: (data: DismissPayload) => void;
+  handlePenalizeReport: (data: PenalizePayload) => void;
 }
+
+const selectClassName =
+  "w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500";
+
+const inputClassName =
+  "w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500";
 
 export const ReportActionModal = ({
   isModalOpen,
@@ -31,147 +31,155 @@ export const ReportActionModal = ({
   handleDismissReport,
   handlePenalizeReport,
 }: Props) => {
-  const { register, handleSubmit } = useForm<ReportStatusFormData>();
+  const { register, handleSubmit, control } = useForm<FormData>({
+    defaultValues: {
+      penalty: "warning",
+      duration: "",
+      content: "",
+      refund_participation_payment: true,
+      delete_post: true,
+    },
+  });
 
-  if (isModalOpen === null) {
-    return null;
-  }
+  const penalty = useWatch({ control, name: "penalty" });
+  const isSuspension = penalty === "suspension";
+  const isHostOrTeam = reportType === "host_report" || reportType === "team_schedule_host_report";
+  const isPost = reportType === "post_report";
 
-  const onFormSubmit: SubmitHandler<ReportStatusFormData> = (data) => {
-    console.log(data);
+  if (isModalOpen === null) return null;
+
+  const onFormSubmit: SubmitHandler<FormData> = (data) => {
     if (isModalOpen === "dismiss") {
-      handleDismissReport(data);
-    } else if (isModalOpen === "approve") {
-      handlePenalizeReport(data);
+      handleDismissReport({ content: data.content });
+    } else {
+      const payload: PenalizePayload = {
+        penalty: data.penalty,
+        content: data.content,
+      };
+      if (isSuspension) {
+        payload.duration = Number(data.duration);
+      }
+      if (isHostOrTeam) {
+        payload.refund_participation_payment = data.refund_participation_payment;
+      }
+      if (isPost) {
+        payload.delete_post = data.delete_post;
+      }
+      handlePenalizeReport(payload);
     }
-    setIsModalOpen(null);
   };
 
-  const selectClassName =
-    "w-full appearance-none rounded-lg border border-gray-300 bg-gray-50 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236b7280%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:0.7em_0.7em] bg-[right_0.75rem_center] bg-no-repeat px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500";
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <div className="w-full max-w-lg overflow-hidden rounded-xl bg-white shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+      <div className="w-full max-w-lg overflow-hidden rounded-xl bg-gray-900 border border-gray-700 shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
-          <h2 className="text-lg font-semibold text-gray-900">
+        <div className="flex items-center justify-between border-b border-gray-700 px-6 py-4">
+          <h2 className="text-lg font-semibold text-white">
             {isModalOpen === "approve" ? "신고 인정" : "신고 기각"}
           </h2>
           <button
             onClick={() => setIsModalOpen(null)}
-            className="rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+            className="rounded-full p-1 text-gray-400 hover:bg-gray-800 hover:text-gray-200"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
-        {/* Body */}
-        <form onSubmit={handleSubmit(onFormSubmit)} className="px-6 py-6">
-          <div className="space-y-5">
-            {/* Result */}
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-gray-700">처리 결과</label>
-              <select {...register("result", { required: true })} className={selectClassName}>
-                {isModalOpen === "approve" ? (
-                  <option value="penalized">신고 인정 </option>
-                ) : (
-                  <option value="dismissed">신고 기각 </option>
-                )}
-              </select>
-            </div>
-
-            {/* Penalty */}
-            {isModalOpen === "approve" && (
+        <form onSubmit={handleSubmit(onFormSubmit)} className="px-6 py-6 space-y-5">
+          {/* 신고 인정 전용 필드 */}
+          {isModalOpen === "approve" && (
+            <>
+              {/* 제재 수위 */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">신고 내용</label>
-                <select {...register("penalty", { required: true })} className={selectClassName}>
-                  <option value="">선택안함</option>
-                  <option value="suspension">이용 정지 </option>
-                  <option value="warning">서비스 경고 </option>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">제재 수위</label>
+                <select {...register("penalty")} className={selectClassName}>
+                  <option value="warning">서비스 경고</option>
+                  <option value="suspension">이용 정지</option>
+                  <option value="no_action">조치 없음</option>
                 </select>
               </div>
-            )}
 
-            {/* Report Status */}
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-gray-700">진행 상태</label>
-              <select
-                {...register("report_status", { required: true })}
-                className={selectClassName}
-              >
-                <option value="">선택안함</option>
-                <option value="waiting">대기중 </option>
-                <option value="evidence_requested">자료 요청</option>
-                <option value="investigation_in_progress">조사진행중</option>
-                <option value="concluded">처리완료 </option>
-              </select>
-            </div>
+              {/* 정지 기간 (suspension 선택 시에만) */}
+              {isSuspension && (
+                <div>
+                  <label className="mb-1.5 block text-sm font-medium text-gray-300">
+                    정지 기간 (일) <span className="text-red-400">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    min={1}
+                    {...register("duration", { required: isSuspension })}
+                    placeholder="예: 7"
+                    className={inputClassName}
+                  />
+                </div>
+              )}
 
-            {/* Duration */}
-            {isModalOpen === "approve" && (
-              <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">신고 기간</label>
-                <input
-                  type="text"
-                  {...register("duration")}
-                  placeholder="숫제를 입력해 주세요 (예: 7)"
-                  className="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
-                />
-              </div>
-            )}
+              {/* 참가비 환불 (host_report / team_schedule_host_report) */}
+              {isHostOrTeam && (
+                <div className="flex items-center gap-3 rounded-lg border border-gray-700 p-3">
+                  <input
+                    id="refund_payment"
+                    type="checkbox"
+                    {...register("refund_participation_payment")}
+                    className="h-4 w-4 rounded border-gray-600 bg-gray-800 text-blue-500 focus:ring-blue-500"
+                  />
+                  <label htmlFor="refund_payment" className="cursor-pointer text-sm font-medium text-gray-300">
+                    참가비 환불
+                  </label>
+                </div>
+              )}
 
-            {/* Refund Checkbox */}
-            {isModalOpen === "approve" && reportType === "host_report" && (
-              <div className="flex items-center gap-3 rounded-lg border border-gray-200 p-3">
-                <input
-                  id="refund_payment"
-                  type="checkbox"
-                  {...register("refund_participation_payment")}
-                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                />
-                <label
-                  htmlFor="refund_payment"
-                  className="cursor-pointer text-sm font-medium text-gray-700"
-                >
-                  참가비 환불
-                </label>
-              </div>
-            )}
+              {/* 게시글 삭제 (post_report) */}
+              {isPost && (
+                <div className="flex items-center gap-3 rounded-lg border border-gray-700 p-3">
+                  <input
+                    id="delete_post"
+                    type="checkbox"
+                    {...register("delete_post")}
+                    className="h-4 w-4 rounded border-gray-600 bg-gray-800 text-blue-500 focus:ring-blue-500"
+                  />
+                  <label htmlFor="delete_post" className="cursor-pointer text-sm font-medium text-gray-300">
+                    신고된 게시글 삭제
+                  </label>
+                </div>
+              )}
+            </>
+          )}
 
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-gray-700">처리 내용</label>
-              <textarea
-                {...register("content", { required: true })}
-                className={
-                  "text-sm appearance-none rounded-lg border border-gray-300 bg-gray-50 p-2 w-full"
-                }
-                placeholder={"사유를 입력하세요 (필수)"}
-              />
-            </div>
+          {/* 처리 내용 */}
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-gray-300">
+              처리 내용 <span className="text-red-400">*</span>
+            </label>
+            <textarea
+              {...register("content", { required: true })}
+              rows={4}
+              placeholder="사유를 입력하세요 (필수)"
+              className={`${inputClassName} resize-none`}
+            />
           </div>
 
           {/* Footer */}
-          <div className="mt-8 flex items-center justify-end gap-3">
+          <div className="flex items-center justify-end gap-3 pt-2">
             <button
               type="button"
               onClick={() => setIsModalOpen(null)}
-              className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200"
+              className="rounded-lg border border-gray-600 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700"
             >
               취소
             </button>
             <button
               type="submit"
-              className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className={`rounded-lg px-4 py-2 text-sm font-medium text-white ${
+                isModalOpen === "approve"
+                  ? "bg-red-600 hover:bg-red-500"
+                  : "bg-blue-700 hover:bg-blue-600"
+              }`}
             >
-              저장
+              {isModalOpen === "approve" ? "신고 인정" : "신고 기각"}
             </button>
           </div>
         </form>

@@ -2,6 +2,7 @@ import { TeamScheduleDetail } from "../interface/game";
 
 interface TeamScheduleInfoProps {
   data: TeamScheduleDetail | undefined;
+  handleDisplayEditContainer: () => void;
 }
 
 const statusConfig: Record<string, { label: string; cls: string }> = {
@@ -30,7 +31,7 @@ const Row = ({ label, value }: { label: string; value: React.ReactNode }) => (
   </div>
 );
 
-export const TeamScheduleInfo = ({ data }: TeamScheduleInfoProps) => {
+export const TeamScheduleInfo = ({ data, handleDisplayEditContainer }: TeamScheduleInfoProps) => {
   if (!data)
     return (
       <div className="flex items-center justify-center py-20 text-zinc-600 text-sm">
@@ -52,7 +53,8 @@ export const TeamScheduleInfo = ({ data }: TeamScheduleInfoProps) => {
     <div className="space-y-4">
       {/* Header card */}
       <div className="rounded-xl border border-zinc-800 bg-zinc-900 overflow-hidden">
-        <div className="px-6 py-5 space-y-2">
+        <div className="px-6 py-5 flex items-start justify-between gap-4">
+          <div className="space-y-2 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="inline-flex rounded px-2 py-0.5 text-[11px] font-medium bg-violet-500/10 text-violet-400 ring-1 ring-inset ring-violet-500/20">
               팀전
@@ -72,6 +74,19 @@ export const TeamScheduleInfo = ({ data }: TeamScheduleInfoProps) => {
             <p className="text-xs text-zinc-500">
               게스트 제목: {data.external_title}
             </p>
+          )}
+          </div>
+          {isGame && (
+            <button
+              type="button"
+              onClick={handleDisplayEditContainer}
+              className="flex-shrink-0 inline-flex items-center gap-1.5 h-8 px-3 rounded-lg bg-zinc-800 border border-zinc-700 text-xs font-medium text-zinc-300 hover:text-white hover:border-zinc-600 transition-colors"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+              수정
+            </button>
           )}
         </div>
 

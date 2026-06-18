@@ -1,7 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 
-// const baseUrl = 'https://api.makeittakeit.kr'
-const baseUrl = "https://dev.makeittakeit.kr";
+const baseUrl = import.meta.env.VITE_API_URL;
 
 const axiosUrl: AxiosInstance = axios.create({
   baseURL: baseUrl,

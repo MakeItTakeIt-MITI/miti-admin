@@ -24,8 +24,21 @@ import Home from "./pages/Home.tsx";
 import PrivateInquires from "./pages/inquiries/PrivateInquires.tsx";
 import PrivateInquiryDetails from "./pages/inquiries/PrivateInquiryDetails.tsx";
 import CourtsList from "./pages/courts/CourtsList.tsx";
+import TeamsList from "./pages/teams/TeamsList.tsx";
+import TeamDetails from "./pages/teams/TeamDetails.tsx";
 import CourtDetails from "./pages/courts/CourtDetails.tsx";
 import { ReportDetails } from "./pages/reports/ReportDetails.tsx";
+import CouponsPage from "./pages/coupons/CouponsPage.tsx";
+import NotificationsList from "./pages/notifications/NotificationsList.tsx";
+import NotificationCreate from "./pages/notifications/NotificationCreate.tsx";
+import NotificationDetail from "./pages/notifications/NotificationDetail.tsx";
+import PopupsList from "./pages/popups/PopupsList.tsx";
+import PopupCreate from "./pages/popups/PopupCreate.tsx";
+import PopupDetail from "./pages/popups/PopupDetail.tsx";
+import AdvertisementCreate from "./pages/popups/AdvertisementCreate.tsx";
+import AdvertisementDetail from "./pages/popups/AdvertisementDetail.tsx";
+import ReviewsList from "./pages/reviews/ReviewsList.tsx";
+import ReviewDetails from "./pages/reviews/ReviewDetails.tsx";
 
 const queryClient = new QueryClient();
 
@@ -58,6 +71,13 @@ const router = createBrowserRouter([
         ],
       },
       {
+        path: "teams",
+        children: [
+          { path: "", element: <TeamsList /> },
+          { path: "detail", element: <TeamDetails /> },
+        ],
+      },
+      {
         path: "/reports",
         children: [
           { path: "", element: <ReportsList /> },
@@ -67,6 +87,13 @@ const router = createBrowserRouter([
       {
         path: "settlements",
         children: [{ path: "", element: <TransferStatus /> }],
+      },
+      {
+        path: "reviews",
+        children: [
+          { path: "", element: <ReviewsList /> },
+          { path: "detail", element: <ReviewDetails /> },
+        ],
       },
       { path: "payments", element: <GamePayments /> },
       {
@@ -81,6 +108,28 @@ const router = createBrowserRouter([
         children: [
           { path: "", element: <PrivateInquires /> },
           { path: ":inquiryId", element: <PrivateInquiryDetails /> },
+        ],
+      },
+      {
+        path: "coupons",
+        children: [{ path: "", element: <CouponsPage /> }],
+      },
+      {
+        path: "notifications",
+        children: [
+          { path: "", element: <NotificationsList /> },
+          { path: "create", element: <NotificationCreate /> },
+          { path: ":id", element: <NotificationDetail /> },
+        ],
+      },
+      {
+        path: "popups",
+        children: [
+          { path: "", element: <PopupsList /> },
+          { path: "create", element: <PopupCreate /> },
+          { path: "detail", element: <PopupDetail /> },
+          { path: "advertisements/create", element: <AdvertisementCreate /> },
+          { path: "advertisements/detail", element: <AdvertisementDetail /> },
         ],
       },
     ],

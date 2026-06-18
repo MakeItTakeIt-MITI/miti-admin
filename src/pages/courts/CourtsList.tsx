@@ -9,34 +9,41 @@ const CourtsList = () => {
     useCourtsPage();
 
   return (
-    <section className="w-full min-h-screen bg-black p-6 md:p-8">
-      <div className="mx-auto max-w-[1600px] space-y-6">
-        {/* Header */}
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600">
-              Admin · Courts
-            </p>
-            <h1 className="text-3xl font-bold tracking-tight text-white">경기장 관리</h1>
+    <section className="w-full min-h-screen bg-black text-white">
+      {/* 헤더 */}
+      <header className="sticky top-0 z-10 bg-zinc-950/95 backdrop-blur border-b border-zinc-800">
+        <div className="px-8 py-4 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="h-7 w-0.5 rounded-full bg-blue-500" />
+            <div>
+              <h1 className="text-sm font-semibold text-white tracking-tight leading-none">
+                경기장 관리
+              </h1>
+              <p className="text-[11px] text-zinc-500 mt-1">
+                등록된 전체 경기장 목록 조회 및 정보 관리
+              </p>
+            </div>
           </div>
           {rows.length > 0 && (
-            <span className="text-xs text-gray-600">{rows.length}개 표시 중</span>
+            <span className="text-xs text-zinc-500 font-mono">{rows.length}개 표시 중</span>
           )}
         </div>
+      </header>
 
+      <div className="px-8 py-6 max-w-[1600px] space-y-6 mx-auto">
         {/* Search */}
         <div className="max-w-lg">
           <SearchField paramKey="search" />
         </div>
 
         {/* Province pill filters */}
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5 pt-1">
           <button
             onClick={() => setProvince(null)}
-            className={`h-8 rounded-full px-4 text-[11px] font-medium transition-all duration-200 ${
+            className={`h-7 rounded-full px-3.5 text-[11px] font-semibold transition-all duration-200 ${
               !province
-                ? "bg-white text-black"
-                : "bg-gray-900 text-gray-400 hover:bg-gray-800 hover:text-gray-200 border border-white/5"
+                ? "bg-white text-zinc-950"
+                : "bg-zinc-900 text-zinc-400 hover:text-white hover:bg-zinc-800 border border-zinc-800/80"
             }`}
           >
             전체
@@ -45,10 +52,10 @@ const CourtsList = () => {
             <button
               key={p}
               onClick={() => setProvince(province === p ? null : p)}
-              className={`h-8 rounded-full px-4 text-[11px] font-medium transition-all duration-200 ${
+              className={`h-7 rounded-full px-3.5 text-[11px] font-semibold transition-all duration-200 ${
                 province === p
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-900 text-gray-400 hover:bg-gray-800 hover:text-gray-200 border border-white/5"
+                  ? "bg-white text-zinc-950"
+                  : "bg-zinc-900 text-zinc-400 hover:text-white hover:bg-zinc-800 border border-zinc-800/80"
               }`}
             >
               {p}
@@ -58,17 +65,17 @@ const CourtsList = () => {
 
         {/* Loading */}
         {isLoading && rows.length === 0 && (
-          <div className="flex justify-center py-20">
+          <div className="flex justify-center py-24">
             <Spinner />
           </div>
         )}
 
         {/* Empty state */}
         {!isLoading && rows.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-24 text-center">
-            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-gray-800 bg-gray-900">
+          <div className="flex flex-col items-center justify-center py-28 text-center">
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-zinc-800 bg-zinc-900">
               <svg
-                className="h-7 w-7 text-gray-600"
+                className="h-6 w-6 text-zinc-650"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -81,13 +88,13 @@ const CourtsList = () => {
                 />
               </svg>
             </div>
-            <p className="text-sm text-gray-500">경기장이 없습니다</p>
+            <p className="text-sm text-zinc-450 font-medium">검색된 경기장이 없습니다</p>
             {province && (
               <button
                 onClick={() => setProvince(null)}
-                className="mt-3 text-xs text-blue-400 hover:text-blue-300 transition-colors"
+                className="mt-3 text-xs text-zinc-400 hover:text-white underline transition-colors"
               >
-                전체 보기
+                필터 해제하기
               </button>
             )}
           </div>
@@ -104,7 +111,9 @@ const CourtsList = () => {
 
         {/* Load more */}
         {hasNextPage && !isLoading && (
-          <NextPageLoader hasNextPage={hasNextPage} fetchNextPage={fetchNextPage} />
+          <div className="flex justify-center pt-4">
+            <NextPageLoader hasNextPage={hasNextPage} fetchNextPage={fetchNextPage} />
+          </div>
         )}
       </div>
     </section>

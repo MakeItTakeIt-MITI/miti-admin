@@ -4,8 +4,23 @@ import { useGamesPage } from "../../features/games/hooks/useGamesPage";
 import { Link } from "react-router-dom";
 
 const PROVINCES = [
-  "서울", "경기", "인천", "부산", "대구", "광주", "대전", "울산",
-  "세종", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주",
+  "서울",
+  "경기",
+  "인천",
+  "부산",
+  "대구",
+  "광주",
+  "대전",
+  "울산",
+  "세종",
+  "강원",
+  "충북",
+  "충남",
+  "전북",
+  "전남",
+  "경북",
+  "경남",
+  "제주",
 ];
 
 const STATUS_OPTIONS = [
@@ -37,7 +52,7 @@ const statusBadge: Record<string, { label: string; cls: string }> = {
 
 const COLS = [
   { label: "ID", w: "w-16" },
-  { label: "유형", w: "w-20" },
+  { label: "호스트타입", w: "w-24" },
   { label: "상태", w: "w-24" },
   { label: "제목", w: "" },
   { label: "일정", w: "w-48" },
@@ -63,7 +78,7 @@ const GamesList = () => {
               <h1 className="text-sm font-semibold text-white tracking-tight leading-none">
                 경기 목록
               </h1>
-              <p className="text-[11px] text-zinc-500 mt-1">개인전 · 팀전 통합 조회</p>
+              <p className="text-[11px] text-zinc-500 mt-1">픽업게임 · 게스트모집 통합 조회</p>
             </div>
           </div>
           <span className="inline-flex items-center gap-1.5 rounded-lg bg-zinc-900 border border-zinc-800 px-3 py-1.5 text-xs font-mono text-zinc-400">
@@ -147,11 +162,7 @@ const GamesList = () => {
                         )
                       : 0;
                   const barColor =
-                    pct >= 100
-                      ? "bg-emerald-500"
-                      : pct >= 75
-                        ? "bg-amber-500"
-                        : "bg-blue-500";
+                    pct >= 100 ? "bg-emerald-500" : pct >= 75 ? "bg-amber-500" : "bg-blue-500";
 
                   return (
                     <tr
@@ -172,7 +183,7 @@ const GamesList = () => {
                               : "bg-sky-500/10 text-sky-400 ring-1 ring-inset ring-sky-500/20"
                           }`}
                         >
-                          {isTeamGame ? "팀전" : "개인전"}
+                          {isTeamGame ? "팀" : "개인"}
                         </span>
                       </td>
 
@@ -230,8 +241,23 @@ const GamesList = () => {
                       </td>
 
                       {/* Range */}
-                      <td className="px-4 py-3 text-zinc-600 font-mono tabular-nums">
-                        {g.min_invitation}–{g.max_invitation}
+                      <td className="px-4 py-3 text-zinc-500 whitespace-nowrap">
+                        <div className="flex flex-col gap-0.5 leading-snug">
+                          <span>
+                            최소 :{" "}
+                            <span className="text-zinc-300 font-mono tabular-nums">
+                              {g.min_invitation}
+                            </span>
+                            명
+                          </span>
+                          <span>
+                            최대 :{" "}
+                            <span className="text-zinc-300 font-mono tabular-nums">
+                              {g.max_invitation}
+                            </span>
+                            명
+                          </span>
+                        </div>
                       </td>
 
                       {/* Fee */}

@@ -1,5 +1,5 @@
 import axiosUrl from "../../../utils/axios";
-import { GameEditField } from "../interface/game";
+import { GameEditField, TeamScheduleEditField } from "../interface/game";
 
 export const gamesListData = async (
   cursor: number | null,
@@ -94,6 +94,19 @@ export const fetchHostReportInfo = async (gameId: number) => {
 export const patchGameDetails = async (gameId: number, gameDetails: GameEditField) => {
   try {
     const response = await axiosUrl.patch(`/admin/games/${gameId}`, gameDetails);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const patchTeamScheduleDetails = async (
+  scheduleId: number,
+  data: TeamScheduleEditField,
+) => {
+  try {
+    const response = await axiosUrl.patch(`/admin/team-schedules/${scheduleId}`, data);
     return response.data;
   } catch (error) {
     console.log(error);

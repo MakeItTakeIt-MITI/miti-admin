@@ -1,56 +1,28 @@
 import axiosUrl from "../../../utils/axios";
 
-interface PenalizeReportStatusData {
-  result: string;
-  penalty: string;
-  report_status: string;
-  duration: string;
-  content: string;
+export interface PenalizePayload {
+  result?: string;
+  penalty?: string;
+  status?: string;
+  duration?: number;
+  content?: string;
   refund_participation_payment?: boolean;
+  delete_post?: boolean;
 }
 
-interface DismissReportStatusData {
-  result: string;
-  report_status: string;
-  content: string;
+export interface DismissPayload {
+  result?: string;
+  status?: string;
+  penalty?: string;
+  content?: string;
 }
 
-type ReportType = "reports" | "host-reports" | "guest-reports" | "post-reports";
-
-// /admin/reports/<int:report_id>/penalize
-// /admin/host-reports/<int:report_id>/penalize
-///admin/guest-reports/<int:report_id>/penalize
-///admin/post-reports/<int:report_id>/penalize
-
-export const penalizerReportStatus = async (
-  report_type: ReportType,
-  reportId: number,
-  data: PenalizeReportStatusData,
-) => {
-  try {
-    const response = await axiosUrl.post(`/admin/${report_type}/${reportId}/penalize`, data);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
+export const penalizeReport = async (reportId: number, data: PenalizePayload) => {
+  const response = await axiosUrl.post(`/admin/reports/${reportId}/penalize`, data);
+  return response.data;
 };
 
-// }/admin/reports/<int:report>/dismiss 관리자 - 유저 신고 기각 API
-// /admin/host-reports/<int:report_id>/dismiss 관리자 - 호스트 신고 기각 API
-// /admin/guest-reports/<int:report_id>/dismiss 관리자 - 게스트 신고 기각 API
-// /admin/post-reports/<int:report_id>/dismiss 관리자 - 게시글 신고 기각 API
-
-export const dismissReportStatus = async (
-  report_type: ReportType,
-  reportId: number,
-  data: DismissReportStatusData,
-) => {
-  try {
-    const response = await axiosUrl.post(`/admin/${report_type}/${reportId}/dismiss`, data);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
+export const dismissReport = async (reportId: number, data: DismissPayload) => {
+  const response = await axiosUrl.post(`/admin/reports/${reportId}/dismiss`, data);
+  return response.data;
 };
